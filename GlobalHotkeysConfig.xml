@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hotkeys>
+  <!--hotkey name="Play" action="PlayPause" key="space" alt="true" control="false" shift="false" win="false"/-->
+  <hotkey name="Play" action="PlayPause" key="space" alt="true"/>
+  <hotkey name="Next" action="NextTrack" key="." alt="true"/>
+  <hotkey name="Prev" action="PreviousTrack" key="," alt="true"/>
+</hotkeys>

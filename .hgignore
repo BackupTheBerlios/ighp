@@ -1,0 +1,9 @@
+syntax: glob
+
+*.ncb
+*.suo
+*.user
+Debug
+debug
+Release
+release
