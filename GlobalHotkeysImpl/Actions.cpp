@@ -1,5 +1,14 @@
 #include "Actions.h"
 
+std::map<const std::string, Actions> actionsMap = std::map<const std::string, Actions>();
+
+void InitActionsMap()
+{
+	actionsMap["PlayPause"] = eActionPlayPause;
+	actionsMap["NextTrack"] = eActionNextTrack;
+	actionsMap["PreviousTrack"] = eActionPreviousTrack;
+}
+
 void PlayPause()
 {
 	IiTunes *iITunes = 0;

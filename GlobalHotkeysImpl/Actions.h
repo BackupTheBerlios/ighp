@@ -4,7 +4,22 @@
 #include <windows.h>
 #include <comutil.h>
 
+#include <string>
+#include <map>
+
 #include "iTunesCOMInterface.h"
+
+static enum Actions
+{
+	eActionNotDefined,
+	eActionPlayPause,
+	eActionNextTrack,
+	eActionPreviousTrack
+};
+
+extern std::map<const std::string, Actions> actionsMap;
+
+void InitActionsMap();
 
 void PlayPause();
 void NextTrack();
