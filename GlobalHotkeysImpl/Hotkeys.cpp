@@ -114,6 +114,22 @@ void (*Hotkey::GetAction(const std::string action_name))(void)
 		return &PreviousTrack;
 	case eActionNextTrack:
 		return &NextTrack;
+	case eActionRandom:
+		return &Random;
+	case eActionRepeat:
+		return &Repeat;
+	case eActionSongRatingClear:
+		return &ClearSongRating;
+	case eActionSongRating1:
+		return &SongRating1;
+	case eActionSongRating2:
+		return &SongRating2;
+	case eActionSongRating3:
+		return &SongRating3;
+	case eActionSongRating4:
+		return &SongRating4;
+	case eActionSongRating5:
+		return &SongRating5;
 	default:
 		return 0;
 	}
