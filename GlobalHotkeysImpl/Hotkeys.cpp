@@ -6,7 +6,79 @@ std::map<const unsigned int, Hotkey*> hotkey = std::map<const unsigned int, Hotk
 
 void InitHotkeysMap()
 {
-	hotkeysMap["space"] = VK_SPACE;
+	char str[4];
+	for (int i = 0; i < 4; i++)
+		str[i] = '\0';
+
+	// add 0-9
+	for (unsigned int i = 0x30; i < 0x3A; i++) {
+		str[0] = i; 
+		hotkeysMap[std::string(str)] = i;
+	}
+
+	// add A-Z
+	for (unsigned int i = 0x41; i < 0x5A; i++) {
+		str[0] = i; 
+		hotkeysMap[std::string(str)] = i;
+	}
+
+	// add a-z
+	unsigned int j  = 0x61;
+	for (unsigned int i = 0x41; i < 0x5A; i++) {
+		str[0] = j++; 
+		hotkeysMap[std::string(str)] = i;
+	}
+
+	str[0] = 'F';
+	j  = 0x31;
+	// add F1-F9
+	for (unsigned int i = 0x70; i < 0x79; i++) {
+		str[1] = j++; 
+		hotkeysMap[std::string(str)] = i;
+	}
+
+	str[1] = '1';
+	j  = 0x30;
+	// add F10-F19
+	for (unsigned int i = 0x79; i < 0x83; i++) {
+		str[2] = j++; 
+		hotkeysMap[std::string(str)] = i;
+	}
+
+	str[1] = '2';
+	j  = 0x30;
+	// add F20-F24
+	for (unsigned int i = 0x83; i < 0x88; i++) {
+		str[2] = j++; 
+		hotkeysMap[std::string(str)] = i;
+	}
+
+	hotkeysMap["Spacebar"] = VK_SPACE;
+	hotkeysMap["Backspace"] = VK_BACK;
+	hotkeysMap["Tab"] = VK_TAB;
+	hotkeysMap["Escape"] = VK_ESCAPE;
+	
+	hotkeysMap["PageUp"] = VK_PRIOR;
+	hotkeysMap["PageDown"] = VK_NEXT;
+	
+	hotkeysMap["End"] = VK_END;
+	hotkeysMap["Home"] = VK_HOME;
+
+	hotkeysMap["Left"] = VK_LEFT;
+	hotkeysMap["Up"] = VK_UP;
+	hotkeysMap["Right"] = VK_RIGHT;
+	hotkeysMap["Down"] = VK_DOWN;
+
+	hotkeysMap["Insert"] = VK_INSERT;
+	hotkeysMap["Delete"] = VK_DELETE;
+
+	hotkeysMap["PrintScreen"] = VK_SNAPSHOT;
+	hotkeysMap["Pause"] = VK_PAUSE;
+	hotkeysMap["NumLock"] = VK_NUMLOCK;
+
+	hotkeysMap["-"] = VK_SUBTRACT;
+	hotkeysMap["="] = VK_ADD;
+	hotkeysMap["/"] = VK_DIVIDE;
 	hotkeysMap[","] = VK_OEM_COMMA;
 	hotkeysMap["."] = VK_OEM_PERIOD;
 }
