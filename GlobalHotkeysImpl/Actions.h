@@ -44,7 +44,8 @@ static enum Actions
 	eActionSongRating2,
 	eActionSongRating3,
 	eActionSongRating4,
-	eActionSongRating5
+	eActionSongRating5,
+	eActionShowHide
 };
 
 extern std::map<const std::string, Actions> actionsMap;
@@ -62,5 +63,6 @@ void SongRating2();
 void SongRating3();
 void SongRating4();
 void SongRating5();
+void ShowHide();
 
 #endif /* ACTIONS_H */

@@ -152,6 +152,8 @@ void (*Hotkey::GetAction(const std::string action_name))(void)
 		return &SongRating4;
 	case eActionSongRating5:
 		return &SongRating5;
+	case eActionShowHide:
+		return &ShowHide;
 	default:
 		return 0;
 	}

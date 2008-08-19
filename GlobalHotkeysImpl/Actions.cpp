@@ -37,6 +37,7 @@ void InitActionsMap()
 	actionsMap["SongRating3"] = eActionSongRating3;
 	actionsMap["SongRating4"] = eActionSongRating4;
 	actionsMap["SongRating5"] = eActionSongRating5;
+	actionsMap["ShowHide"] = eActionShowHide;
 }
 
 void PlayPause()
@@ -221,4 +222,34 @@ void SongRating4()
 void SongRating5()
 {
 	RateSong(100);
+}
+
+void ShowHide()
+{
+	IiTunes* iITunes = 0;
+	IITBrowserWindow* iITBrowserWindow = 0; 
+	HRESULT hRes;
+
+	CoInitialize(0);
+
+	// Create itunes interface
+    hRes = CoCreateInstance(CLSID_iTunesApp, NULL, CLSCTX_LOCAL_SERVER, IID_IiTunes, (PVOID*)&iITunes);
+
+	if(hRes == S_OK && iITunes) {
+		iITunes->get_BrowserWindow(&iITBrowserWindow);
+
+		if(iITBrowserWindow) {
+			VARIANT_BOOL isVisible = 0;
+			iITBrowserWindow->get_Minimized(&isVisible);
+
+			isVisible = (isVisible == 0) ? -1 : 0;
+			iITBrowserWindow->put_Minimized(isVisible);
+
+			iITBrowserWindow->Release();
+		}
+
+		iITunes->Release();
+	}
+
+	CoUninitialize();
 }
