@@ -30,8 +30,8 @@
 //	typedef's, struct's, enum's, etc.
 //########################################
 
-#define kTVisualPluginName              "Global Hotkeys"
-#define	kTVisualPluginCreator			'\?\?\?\?'
+#define kTVisualPluginName              "\0"
+#define	kTVisualPluginCreator			'\0'
 
 #define	kTVisualPluginMajorVersion		0
 #define	kTVisualPluginMinorVersion		1
