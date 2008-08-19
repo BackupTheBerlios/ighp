@@ -39,14 +39,14 @@ void InitHotkeysMap()
 	}
 
 	// add A-Z
-	for (unsigned int i = 0x41; i < 0x5A; i++) {
+	for (unsigned int i = 0x41; i <= 0x5A; i++) {
 		str[0] = i; 
 		hotkeysMap[std::string(str)] = i;
 	}
 
 	// add a-z
 	unsigned int j  = 0x61;
-	for (unsigned int i = 0x41; i < 0x5A; i++) {
+	for (unsigned int i = 0x41; i <= 0x5A; i++) {
 		str[0] = j++; 
 		hotkeysMap[std::string(str)] = i;
 	}
