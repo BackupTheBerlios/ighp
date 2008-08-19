@@ -45,7 +45,10 @@ static enum Actions
 	eActionSongRating3,
 	eActionSongRating4,
 	eActionSongRating5,
-	eActionShowHide
+	eActionShowHide,
+	eActionVolumeUp,
+	eActionVolumeDown,
+	eActionToggleMute
 };
 
 extern std::map<const std::string, Actions> actionsMap;
@@ -64,5 +67,8 @@ void SongRating3();
 void SongRating4();
 void SongRating5();
 void ShowHide();
+void VolumeUp();
+void VolumeDown();
+void ToggleMute();
 
 #endif /* ACTIONS_H */

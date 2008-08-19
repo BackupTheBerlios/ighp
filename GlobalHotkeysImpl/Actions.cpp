@@ -38,6 +38,9 @@ void InitActionsMap()
 	actionsMap["SongRating4"] = eActionSongRating4;
 	actionsMap["SongRating5"] = eActionSongRating5;
 	actionsMap["ShowHide"] = eActionShowHide;
+	actionsMap["VolumeUp"] = eActionVolumeUp;
+	actionsMap["VolumeDown"] = eActionVolumeDown;
+	actionsMap["ToggleMute"] = eActionToggleMute;
 }
 
 void PlayPause()
@@ -247,6 +250,62 @@ void ShowHide()
 
 			iITBrowserWindow->Release();
 		}
+
+		iITunes->Release();
+	}
+
+	CoUninitialize();
+}
+
+void ToggleVolume(long step)
+{
+	IiTunes* iITunes = 0;
+	HRESULT hRes;
+
+	CoInitialize(0);
+
+	// Create itunes interface
+    hRes = CoCreateInstance(CLSID_iTunesApp, NULL, CLSCTX_LOCAL_SERVER, IID_IiTunes, (PVOID*)&iITunes);
+
+	if(hRes == S_OK && iITunes) {
+		long volume = 50;
+		iITunes->get_SoundVolume(&volume);
+
+		volume += step;
+		iITunes->put_SoundVolume(volume);
+
+		iITunes->Release();
+	}
+
+	CoUninitialize();
+}
+
+void VolumeUp()
+{
+	ToggleVolume(5);
+}
+
+void VolumeDown()
+{
+	ToggleVolume(-5);
+}
+
+void ToggleMute()
+{
+	IiTunes* iITunes = 0;
+	HRESULT hRes;
+
+	CoInitialize(0);
+
+	// Create itunes interface
+    hRes = CoCreateInstance(CLSID_iTunesApp, NULL, CLSCTX_LOCAL_SERVER, IID_IiTunes, (PVOID*)&iITunes);
+
+	if(hRes == S_OK && iITunes) {
+		VARIANT_BOOL isMuted = 0;
+		iITunes->get_Mute(&isMuted);
+		
+		isMuted = (isMuted == 0) ? -1 : 0;
+		iITunes->put_Mute(isMuted);
 
 		iITunes->Release();
 	}

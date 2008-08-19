@@ -154,6 +154,12 @@ void (*Hotkey::GetAction(const std::string action_name))(void)
 		return &SongRating5;
 	case eActionShowHide:
 		return &ShowHide;
+	case eActionVolumeUp:
+		return &VolumeUp;
+	case eActionVolumeDown:
+		return &VolumeDown;
+	case eActionToggleMute:
+		return &ToggleMute;
 	default:
 		return 0;
 	}
