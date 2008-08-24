@@ -20,48 +20,34 @@
  * THE SOFTWARE.
  */
 
-#ifndef HOTKEYS_H
-#define HOTKEYS_H
+#ifndef PLUGIN_SETTINGS_H
+#define PLUGIN_SETTINGS_H
 
 #include <windows.h>
 
 #include <string>
 #include <map>
 
-extern std::map<const std::string, unsigned int> hotkeysMap;
+#include "Hotkeys.h"
+#include "Actions.h"
 
-void InitHotkeysMap();
-
-class Hotkey
+class PluginSettings
 {
 public:
-	explicit Hotkey() : Action(0), key(0), alt(false), control(false), shift(false), win(false) { };
-	explicit Hotkey(const std::string action_name, const std::string key_name, const std::string alt_str, 
-		const std::string control_str, const std::string shift_str, const std::string win_str);
-	~Hotkey();
+	static PluginSettings* Instance();
+	static void Destroy();
 
-	inline unsigned int GetKeyCode() { return key; };
+	std::map<const unsigned int, Hotkey*>* GetHotkeys();
 
-	inline bool GetAlt() { return alt; };
-	inline bool GetControl() { return control; };
-	inline bool GetShift() { return shift; };
-	inline bool GetWin() { return win; };
-
-	void PerformAction();	
+	bool ReadConfigFile();
 
 private:
-	// int id;
-	unsigned int key;
-	bool alt;
-	bool control;
-	bool shift;
-	bool win;
+	static PluginSettings* ms_instance;
 
-	void (*Action)(void);
+	std::map<const unsigned int, Hotkey*>* m_hotkeys;
 
-	void (*GetAction(const std::string action_name))(void);
-	unsigned int GetKeyCode(const std::string key_name);
-	bool IsKeyUsed(const std::string key_str);
+	explicit PluginSettings();
+	~PluginSettings();
 };
 
-#endif /* HOTKEYS_H */
+#endif /* PLUGIN_SETTINGS_H */

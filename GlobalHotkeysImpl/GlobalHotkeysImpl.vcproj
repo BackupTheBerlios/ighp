@@ -204,6 +204,10 @@
 				RelativePath=".\iTunesCOMInterface_i.c"
 				>
 			</File>
+			<File
+				RelativePath=".\PluginSettings.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -224,6 +228,10 @@
 			</File>
 			<File
 				RelativePath=".\iTunesCOMInterface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PluginSettings.h"
 				>
 			</File>
 		</Filter>
