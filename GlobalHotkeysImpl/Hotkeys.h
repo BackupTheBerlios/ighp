@@ -23,8 +23,6 @@
 #ifndef HOTKEYS_H
 #define HOTKEYS_H
 
-#include <windows.h>
-
 #include <string>
 #include <map>
 

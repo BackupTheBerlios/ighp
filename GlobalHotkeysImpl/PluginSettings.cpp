@@ -22,6 +22,9 @@
 
 #include "PluginSettings.h" 
 
+#include <windows.h>
+#include <shlobj.h>
+
 #include <tinyxml.h>
 
 PluginSettings* PluginSettings::ms_instance = 0;
@@ -41,7 +44,9 @@ void PluginSettings::Destroy()
 	}
 }
 
-PluginSettings::PluginSettings()
+PluginSettings::PluginSettings() : 
+	m_configFile(std::string("GlobalHotkeysConfig.xml")), 
+	m_pluginFolder(std::string("iTunes Global Hotkeys Plugin"))
 {
 	m_hotkeys = new std::map<const unsigned int, Hotkey*>();
 
@@ -61,29 +66,81 @@ std::map<const unsigned int, Hotkey*>* PluginSettings::GetHotkeys()
 
 bool PluginSettings::ReadConfigFile()
 {
-	// TODO: Determine the path
-	TiXmlDocument configFile("c:\\Program Files\\iTunes\\Plug-Ins\\GlobalHotkeysConfig.xml");
-	bool loadOk = configFile.LoadFile();
-	
-	if (loadOk) {
-		const TiXmlElement* root = configFile.RootElement();
-		unsigned int keyId = 0;
+	std::string configFilePath = std::string("");
+	if (!GetConfigFile(&configFilePath))
+		return false;
 
-		const TiXmlElement* element = root->FirstChildElement();
-		while (element) {
-			std::string action_name = std::string(element->Attribute("action") != 0 ? element->Attribute("action") : "NotDefined");
-			std::string key_name = std::string(element->Attribute("key") != 0 ? element->Attribute("key") : "NotDefined");
-			std::string alt_str = std::string(element->Attribute("alt") != 0 ? element->Attribute("alt") : "NotDefined");
-			std::string control_str = std::string(element->Attribute("control") != 0 ? element->Attribute("control") : "NotDefined");
-			std::string shift_str = std::string(element->Attribute("shift") != 0 ? element->Attribute("shift") : "NotDefined");
-			std::string win_str = std::string(element->Attribute("win") != 0 ? element->Attribute("win") : "NotDefined");
+	TiXmlDocument configFile(configFilePath.c_str());
+	if (!configFile.LoadFile())
+		return false;
 
-			std::map<const unsigned int, Hotkey*>& hotkeys = *this->GetHotkeys();
-			hotkeys[++keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
+	const TiXmlElement* root = configFile.RootElement();
+	unsigned int keyId = 0;
 
-			element = element->NextSiblingElement();
-		}
+	const TiXmlElement* element = root->FirstChildElement();
+	while (element) {
+		std::string action_name = std::string(element->Attribute("action") != 0 ? element->Attribute("action") : "NotDefined");
+		std::string key_name = std::string(element->Attribute("key") != 0 ? element->Attribute("key") : "NotDefined");
+		std::string alt_str = std::string(element->Attribute("alt") != 0 ? element->Attribute("alt") : "NotDefined");
+		std::string control_str = std::string(element->Attribute("control") != 0 ? element->Attribute("control") : "NotDefined");
+		std::string shift_str = std::string(element->Attribute("shift") != 0 ? element->Attribute("shift") : "NotDefined");
+		std::string win_str = std::string(element->Attribute("win") != 0 ? element->Attribute("win") : "NotDefined");
+
+		std::map<const unsigned int, Hotkey*>& hotkeys = *this->GetHotkeys();
+		hotkeys[++keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
+
+		element = element->NextSiblingElement();
 	}
 
-	return loadOk;
+	return true;
+}
+
+bool PluginSettings::WriteConfigFile()
+{
+	std::string configFilePath = std::string("");
+	if (!GetConfigFile(&configFilePath))
+		return false;
+
+	// TODO: Implement this
+
+	return false;	
+}
+
+bool PluginSettings::GetAppSettingsFolder(std::string* str)
+{
+	char path[MAX_PATH];
+	ZeroMemory(path, sizeof(char) * MAX_PATH);
+	
+	if(SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_APPDATA, NULL, 0, path))) {
+		str->append(path);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool PluginSettings::GetPluginFolder(std::string* str)
+{
+	if (!GetAppSettingsFolder(str))
+		return false;
+
+	str->append("\\");
+	str->append(m_pluginFolder);
+
+	return true;
+}
+
+bool PluginSettings::GetConfigFile(std::string* str)
+{
+#ifdef DEBUG
+	str->append("C:\\Program Files\\iTunes\\Plug-Ins\\GlobalHotkeysConfig.xml");
+#else
+	if (!GetPluginFolder(str))
+		return false;
+
+	str->append("\\");
+	str->append(m_configFile);
+#endif
+
+	return true;
 }

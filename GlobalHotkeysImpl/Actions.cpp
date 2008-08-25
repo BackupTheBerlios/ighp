@@ -22,6 +22,11 @@
 
 #include "Actions.h"
 
+#include <windows.h>
+#include <comutil.h>
+
+#include "iTunesCOMInterface.h"
+
 std::map<const std::string, Actions> actionsMap = std::map<const std::string, Actions>();
 
 void InitActionsMap()

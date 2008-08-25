@@ -23,8 +23,6 @@
 #ifndef PLUGIN_SETTINGS_H
 #define PLUGIN_SETTINGS_H
 
-#include <windows.h>
-
 #include <string>
 #include <map>
 
@@ -40,14 +38,22 @@ public:
 	std::map<const unsigned int, Hotkey*>* GetHotkeys();
 
 	bool ReadConfigFile();
+	bool WriteConfigFile();
 
 private:
 	static PluginSettings* ms_instance;
+
+	const std::string m_configFile;
+	const std::string m_pluginFolder;
 
 	std::map<const unsigned int, Hotkey*>* m_hotkeys;
 
 	explicit PluginSettings();
 	~PluginSettings();
+
+	bool GetAppSettingsFolder(std::string* str);
+	bool GetPluginFolder(std::string* str);
+	bool GetConfigFile(std::string* str);
 };
 
 #endif /* PLUGIN_SETTINGS_H */

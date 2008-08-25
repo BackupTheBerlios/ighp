@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+#include <windows.h>
+
 #include "Hotkeys.h"
 #include "Actions.h"
 

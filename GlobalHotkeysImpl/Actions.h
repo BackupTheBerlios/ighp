@@ -23,13 +23,8 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-#include <windows.h>
-#include <comutil.h>
-
 #include <string>
 #include <map>
-
-#include "iTunesCOMInterface.h"
 
 static enum Actions
 {
