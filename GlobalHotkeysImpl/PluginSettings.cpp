@@ -25,7 +25,7 @@
 #include <windows.h>
 #include <shlobj.h>
 
-#include <tinyxml.h>
+#include <tinyxml\tinyxml.h>
 
 PluginSettings* PluginSettings::ms_instance = 0;
 
