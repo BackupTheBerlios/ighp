@@ -74,6 +74,7 @@ typedef struct VisualPluginData VisualPluginData;
 
 static HMODULE hDLL;
 static DLL_Function_InitGlobalHotkeysPlugin InitGlobalHotkeysPlugin;
+static DLL_Function_ReleaseGlobalHotkeysPlugin ReleaseGlobalHotkeysPlugin;
 
 //########################################
 //	exported function prototypes
@@ -125,6 +126,7 @@ static void LoadGlobalHotkeysImplDll()
 	hDLL = LoadLibrary(GetGlobalHotkeysImplDll());
 
 	InitGlobalHotkeysPlugin = (DLL_Function_InitGlobalHotkeysPlugin)GetProcAddress(hDLL,"InitGlobalHotkeysPlugin");
+	ReleaseGlobalHotkeysPlugin = (DLL_Function_ReleaseGlobalHotkeysPlugin)GetProcAddress(hDLL,"ReleaseGlobalHotkeysPlugin");
 }
 
 //########################################
@@ -226,6 +228,7 @@ static OSStatus VisualPluginHandler(OSType message,VisualPluginMessageInfo *mess
 			if (visualPluginData != nil)
 				free(visualPluginData);
 			
+			ReleaseGlobalHotkeysPlugin();
 			FreeLibrary(hDLL);
 
 			break;

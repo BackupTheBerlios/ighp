@@ -88,6 +88,8 @@ extern "C" void WINAPI InitGlobalHotkeysPlugin()
 	WNDCLASS wc;
 	TCHAR szAppName [] = TEXT("GlobalHotkeysClass");
 
+	PluginSettings::Instance()->ReadConfigFile();
+
 	wc.style = CS_HREDRAW|CS_VREDRAW;
 	wc.lpfnWndProc = WindowProc;
 	wc.cbClsExtra = 0;
@@ -105,12 +107,16 @@ extern "C" void WINAPI InitGlobalHotkeysPlugin()
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, NULL, NULL) ; 
 }
 
+extern "C" void WINAPI ReleaseGlobalHotkeysPlugin()
+{
+	PluginSettings::Destroy();
+}
+
 LRESULT CALLBACK WindowProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
 		case WM_CREATE:
-			PluginSettings::Instance()->ReadConfigFile();
 			RegisterGlobalKeys(hwnd);
 			break;
 		case WM_HOTKEY:
@@ -118,7 +124,6 @@ LRESULT CALLBACK WindowProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 			break;
 		case WM_DESTROY:
 			UnregisterGlobalKeys(hwnd);
-			PluginSettings::Destroy();
 			PostQuitMessage (0);
 			return 0;
 	}
