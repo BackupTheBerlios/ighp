@@ -45,12 +45,14 @@ private:
 
 	const std::string m_configFile;
 	const std::string m_pluginFolder;
+	unsigned int m_keyId;
 
 	std::map<const unsigned int, Hotkey*>* m_hotkeys;
 
 	explicit PluginSettings();
 	~PluginSettings();
 
+	void AddDefaultHotkeys();
 	bool GetAppSettingsFolder(std::string* str);
 	bool GetPluginFolder(std::string* str);
 	bool GetConfigFile(std::string* str);

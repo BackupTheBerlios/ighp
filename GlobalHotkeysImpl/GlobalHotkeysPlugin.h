@@ -20,49 +20,50 @@
  * THE SOFTWARE.
  */
 
-#include "PluginSettings.h" 
-#include "GlobalHotkeysPlugin.h"
+#ifndef GLOBAL_HOTKEYS_PLUGIN_H
+#define GLOBAL_HOTKEYS_PLUGIN_H
 
-GlobalHotkeysPlugin* globalHotkeysPlugin = 0;
-HANDLE dllHandle = 0;
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+#include <Win32++\WinCore.h>
+#include "resource.h"
+
+#include "GlobalHotkeysDialog.h"
+
+class GlobalHotkeysWnd : public CWnd
 {
-	dllHandle = hModule;
+public:
+	explicit GlobalHotkeysWnd() { } 
+	virtual ~GlobalHotkeysWnd() { }
 
-	switch (ul_reason_for_call)
-	{
-		case DLL_PROCESS_ATTACH:
-		case DLL_THREAD_ATTACH:
-		case DLL_THREAD_DETACH:
-		case DLL_PROCESS_DETACH:
-			break;
-	}
+protected:
+	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	virtual void PreRegisterClass(WNDCLASS &wc);
+	virtual void PreCreate(CREATESTRUCT &cs);
 
-	return true;
-}
+private:
+	void OnCreate(HWND hWnd);
+	void OnHotkey(WPARAM wParam, LPARAM lParam);
+	void OnDestroy(HWND hWnd);
 
-extern "C" void WINAPI Initialize()
+};
+
+class GlobalHotkeysPlugin : public CWinApp
 {
-	// Write here all the code you need to initialize the DLL
-}
+public:
+	explicit GlobalHotkeysPlugin(); 
+	virtual ~GlobalHotkeysPlugin();
 
-extern "C" void WINAPI Release()
-{
-	// Write here all the code you need to free everything ...
-}
+	GlobalHotkeysDialog& GetGlobalHotkeysDialog() {return m_settingsDialog;}
 
-extern "C" void WINAPI InitGlobalHotkeysPlugin()
-{
-	PluginSettings::Instance()->ReadConfigFile();
+private:
+	GlobalHotkeysWnd m_mainWindow;
+	GlobalHotkeysDialog m_settingsDialog;
 
-	globalHotkeysPlugin = new GlobalHotkeysPlugin();
-}
+};
 
-extern "C" void WINAPI ReleaseGlobalHotkeysPlugin()
-{
-	delete globalHotkeysPlugin;
-	globalHotkeysPlugin = 0;
+// returns a reference to the GlobalHotkeysPlugin object
+inline GlobalHotkeysPlugin& GetGlobalHotkeysPlugin() { return *((GlobalHotkeysPlugin*)GetApp()); }
 
-	PluginSettings::Destroy();
-}
+#endif /* GLOBAL_HOTKEYS_PLUGIN_H */

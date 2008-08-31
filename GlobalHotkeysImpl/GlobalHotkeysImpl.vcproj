@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tinyxml.lib"
+				AdditionalDependencies="tinyxml.lib comctl32.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\other\lib"
 				IgnoreDefaultLibraryNames="LIBCMT.lib"
@@ -189,11 +189,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GlobalHotkeysDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GlobalHotkeysImpl.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\GlobalHotkeysImpl.def"
+				>
+			</File>
+			<File
+				RelativePath=".\GlobalHotkeysPlugin.cpp"
 				>
 			</File>
 			<File
@@ -219,7 +227,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GlobalHotkeysDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GlobalHotkeysImpl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GlobalHotkeysPlugin.h"
 				>
 			</File>
 			<File
@@ -234,12 +250,20 @@
 				RelativePath=".\PluginSettings.h"
 				>
 			</File>
+			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\Resource.rc"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

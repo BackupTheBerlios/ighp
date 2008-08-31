@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+#define WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
 
 #include "Hotkeys.h"
@@ -132,6 +134,8 @@ void (*Hotkey::GetAction(const std::string action_name))(void)
 {
 	switch (actionsMap[action_name])
 	{
+	case eActionOpenSettingsDialog:
+		return &OpenSettingsDialog;
 	case eActionPlayPause:
 		return &PlayPause;
 	case eActionPreviousTrack:

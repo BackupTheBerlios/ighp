@@ -23,6 +23,7 @@
 #ifndef GLOBAL_HOTKEYS_IMPL_H
 #define GLOBAL_HOTKEYS_IMPL_H
 
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 #if defined (__cplusplus)

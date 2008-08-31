@@ -22,6 +22,8 @@
 
 #include "PluginSettings.h" 
 
+#define WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
 #include <shlobj.h>
 
@@ -46,12 +48,15 @@ void PluginSettings::Destroy()
 
 PluginSettings::PluginSettings() : 
 	m_configFile(std::string("GlobalHotkeysConfig.xml")), 
-	m_pluginFolder(std::string("iTunes Global Hotkeys Plugin"))
+	m_pluginFolder(std::string("iTunes Global Hotkeys Plugin")),
+	m_keyId(-1)
 {
 	m_hotkeys = new std::map<const unsigned int, Hotkey*>();
 
 	::InitActionsMap();
 	::InitHotkeysMap();
+
+	AddDefaultHotkeys();
 }
 
 PluginSettings::~PluginSettings()
@@ -75,7 +80,6 @@ bool PluginSettings::ReadConfigFile()
 		return false;
 
 	const TiXmlElement* root = configFile.RootElement();
-	unsigned int keyId = 0;
 
 	const TiXmlElement* element = root->FirstChildElement();
 	while (element) {
@@ -87,12 +91,20 @@ bool PluginSettings::ReadConfigFile()
 		std::string win_str = std::string(element->Attribute("win") != 0 ? element->Attribute("win") : "NotDefined");
 
 		std::map<const unsigned int, Hotkey*>& hotkeys = *this->GetHotkeys();
-		hotkeys[++keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
+		hotkeys[++m_keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
 
 		element = element->NextSiblingElement();
 	}
 
 	return true;
+}
+
+void PluginSettings::AddDefaultHotkeys()
+{
+	std::map<const unsigned int, Hotkey*>& hotkeys = *this->GetHotkeys();
+
+	// Settings Dialog 
+	hotkeys[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
 }
 
 bool PluginSettings::WriteConfigFile()

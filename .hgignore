@@ -3,6 +3,7 @@ syntax: glob
 *.ncb
 *.suo
 *.user
+*.aps
 Debug
 debug
 Release

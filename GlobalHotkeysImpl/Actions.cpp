@@ -22,15 +22,19 @@
 
 #include "Actions.h"
 
+#define WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
 #include <comutil.h>
 
 #include "iTunesCOMInterface.h"
+#include "GlobalHotkeysPlugin.h"
 
 std::map<const std::string, Actions> actionsMap = std::map<const std::string, Actions>();
 
 void InitActionsMap()
 {
+	actionsMap["OpenSettingsDialog"] = eActionOpenSettingsDialog;
 	actionsMap["PlayPause"] = eActionPlayPause;
 	actionsMap["NextTrack"] = eActionNextTrack;
 	actionsMap["PreviousTrack"] = eActionPreviousTrack;
@@ -46,6 +50,11 @@ void InitActionsMap()
 	actionsMap["VolumeUp"] = eActionVolumeUp;
 	actionsMap["VolumeDown"] = eActionVolumeDown;
 	actionsMap["ToggleMute"] = eActionToggleMute;
+}
+
+void OpenSettingsDialog()
+{
+	GetGlobalHotkeysPlugin().GetGlobalHotkeysDialog().DoModal();
 }
 
 void PlayPause()

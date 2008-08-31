@@ -20,49 +20,25 @@
  * THE SOFTWARE.
  */
 
-#include "PluginSettings.h" 
-#include "GlobalHotkeysPlugin.h"
+#ifndef GLOBAL_HOTKEYS_DIALOG_H
+#define GLOBAL_HOTKEYS_DIALOG_H
 
-GlobalHotkeysPlugin* globalHotkeysPlugin = 0;
-HANDLE dllHandle = 0;
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+#include <Win32++\dialog.h>
+#include "resource.h"
+
+class GlobalHotkeysDialog : public CDialog
 {
-	dllHandle = hModule;
+public:
+	explicit GlobalHotkeysDialog(UINT nResID, HWND hWndParent = NULL);
+	virtual ~GlobalHotkeysDialog();
 
-	switch (ul_reason_for_call)
-	{
-		case DLL_PROCESS_ATTACH:
-		case DLL_THREAD_ATTACH:
-		case DLL_THREAD_DETACH:
-		case DLL_PROCESS_DETACH:
-			break;
-	}
+protected:
+	virtual BOOL OnInitDialog();
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	virtual void OnOK();
+};
 
-	return true;
-}
-
-extern "C" void WINAPI Initialize()
-{
-	// Write here all the code you need to initialize the DLL
-}
-
-extern "C" void WINAPI Release()
-{
-	// Write here all the code you need to free everything ...
-}
-
-extern "C" void WINAPI InitGlobalHotkeysPlugin()
-{
-	PluginSettings::Instance()->ReadConfigFile();
-
-	globalHotkeysPlugin = new GlobalHotkeysPlugin();
-}
-
-extern "C" void WINAPI ReleaseGlobalHotkeysPlugin()
-{
-	delete globalHotkeysPlugin;
-	globalHotkeysPlugin = 0;
-
-	PluginSettings::Destroy();
-}
+#endif /* GLOBAL_HOTKEYS_DIALOG_H */

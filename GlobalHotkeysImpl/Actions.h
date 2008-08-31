@@ -29,6 +29,7 @@
 static enum Actions
 {
 	eActionNotDefined,
+	eActionOpenSettingsDialog,
 	eActionPlayPause,
 	eActionNextTrack,
 	eActionPreviousTrack,
@@ -49,6 +50,8 @@ static enum Actions
 extern std::map<const std::string, Actions> actionsMap;
 
 void InitActionsMap();
+
+void OpenSettingsDialog();
 
 void PlayPause();
 void NextTrack();
