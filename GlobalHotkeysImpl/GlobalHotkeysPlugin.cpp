@@ -26,7 +26,7 @@
 extern HANDLE dllHandle;
 
 GlobalHotkeysPlugin::GlobalHotkeysPlugin() 
-	: m_mainWindow(), m_settingsDialog(IDD_DIALOG1)
+	: m_mainWindow(), m_settingsDialog(IDD_GH_DIALOG)
 {
 	SetResourceHandle((HINSTANCE)dllHandle);
 	
