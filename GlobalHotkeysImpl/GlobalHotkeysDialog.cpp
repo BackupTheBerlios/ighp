@@ -106,5 +106,5 @@ void GlobalHotkeysDialog::AddHotkeyListItem(const std::string action, const std:
 	LVITEM lvi;
 	HWND hwndListView = GetDlgItem(IDC_HOTKEYS_LIST);
 
-	ListView_InsertItem(hWndListView, &lvi)
+	ListView_InsertItem(hwndListView, &lvi);
 }
