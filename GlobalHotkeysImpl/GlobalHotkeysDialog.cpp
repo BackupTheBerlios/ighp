@@ -23,6 +23,8 @@
 #include "GlobalHotkeysDialog.h"
 #include "PluginSettings.h" 
 
+extern std::map<const std::string, Actions> actionsMap;
+
 GlobalHotkeysDialog::GlobalHotkeysDialog(UINT nResID, HWND hWndParent) 
 	: CDialog(nResID, hWndParent)
 {
@@ -36,23 +38,38 @@ GlobalHotkeysDialog::~GlobalHotkeysDialog()
 
 BOOL GlobalHotkeysDialog::OnInitDialog()
 {
-	//TODO: Add init code here
+	PopulateActionsComboBox();
 	return TRUE;
 }
 
 BOOL GlobalHotkeysDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-	//switch (LOWORD(wParam))
-    //{
-	//case IDC_BUTTON1:
-	//	OnButton();
-	//	return TRUE;
-    //} //switch (LOWORD(wParam))
+	switch (LOWORD(wParam))
+    {
+	case IDAPPLY:
+		OnApply();
+		return TRUE;
+    }
 
 	return FALSE;
 }
 
 void GlobalHotkeysDialog::OnOK()
 {
-	//TODO: Save settings
+	OnApply();
+}
+
+void GlobalHotkeysDialog::OnApply()
+{
+
+}
+
+void GlobalHotkeysDialog::PopulateActionsComboBox()
+{
+	HWND hwndCombo = GetDlgItem(IDC_ACTIONS_COMBO);
+
+	std::map<const std::string, Actions>::iterator iter;
+	for (iter = actionsMap.begin(); iter != actionsMap.end(); iter++) {
+		SendMessage(hwndCombo, CB_ADDSTRING, 0, (LPARAM) iter->first.c_str());
+	}	 
 }

@@ -39,6 +39,23 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	virtual void OnOK();
+
+private:
+	void OnApply();
+
+	void PopulateActionsComboBox();
+
 };
+
+//class ActionsComboBox : public CWnd
+//{
+//public:
+//	explicit ActionsComboBox();
+//	virtual ~ActionsComboBox();
+//
+//private:
+//	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+//
+//}
 
 #endif /* GLOBAL_HOTKEYS_DIALOG_H */
