@@ -29,6 +29,12 @@
 #include <Win32++\dialog.h>
 #include "resource.h"
 
+typedef struct tagHOTKEYINFO
+{
+	char action[255];
+	char hotkey[255];
+} HOTKEYINFO;
+
 class GlobalHotkeysDialog : public CDialog
 {
 public:
@@ -44,6 +50,8 @@ private:
 	void OnApply();
 
 	void PopulateActionsComboBox();
+	void InitHotkeysListViewColumns();
+	void AddHotkeyListItem(const std::string action, const std::string hotkey);
 
 };
 

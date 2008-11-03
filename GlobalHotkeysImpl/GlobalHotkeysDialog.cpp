@@ -38,6 +38,7 @@ GlobalHotkeysDialog::~GlobalHotkeysDialog()
 
 BOOL GlobalHotkeysDialog::OnInitDialog()
 {
+	InitHotkeysListViewColumns();
 	PopulateActionsComboBox();
 	return TRUE;
 }
@@ -72,4 +73,38 @@ void GlobalHotkeysDialog::PopulateActionsComboBox()
 	for (iter = actionsMap.begin(); iter != actionsMap.end(); iter++) {
 		SendMessage(hwndCombo, CB_ADDSTRING, 0, (LPARAM) iter->first.c_str());
 	}	 
+}
+
+void GlobalHotkeysDialog::InitHotkeysListViewColumns()
+{
+	HWND hwndListView = GetDlgItem(IDC_HOTKEYS_LIST);
+
+	// init columns
+	LVCOLUMN lvc;
+
+	lvc.mask = LVCF_FMT | LVCF_ORDER | LVCF_SUBITEM | LVCF_WIDTH | LVCF_TEXT;
+	lvc.fmt = LVCFMT_LEFT;
+	lvc.cx = 172;
+
+	// Action
+	lvc.iOrder = 0;
+	lvc.iSubItem = 0;
+	lvc.pszText = TEXT("Action");
+
+	ListView_InsertColumn(hwndListView, 0, &lvc);
+
+	// Hotkey
+	lvc.iOrder = 1;
+	lvc.iSubItem = 1;
+	lvc.pszText = TEXT("Hotkey");
+
+	ListView_InsertColumn(hwndListView, 1, &lvc);
+}
+
+void GlobalHotkeysDialog::AddHotkeyListItem(const std::string action, const std::string hotkey)
+{
+	LVITEM lvi;
+	HWND hwndListView = GetDlgItem(IDC_HOTKEYS_LIST);
+
+	ListView_InsertItem(hWndListView, &lvi)
 }
