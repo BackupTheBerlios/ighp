@@ -45,6 +45,9 @@ public:
 	inline bool GetShift() { return shift; };
 	inline bool GetWin() { return win; };
 
+	const std::string GetActionName() { return std::string("Action"); };
+	const std::string GetHotkeyName() { return std::string("Hotkey"); };
+
 	void PerformAction();	
 
 private:

@@ -49,8 +49,10 @@ protected:
 private:
 	void OnApply();
 
-	void PopulateActionsComboBox();
 	void InitHotkeysListViewColumns();
+	void PopulateHotkeysList();
+	void PopulateActionsComboBox();
+
 	void AddHotkeyListItem(const std::string action, const std::string hotkey);
 
 };
