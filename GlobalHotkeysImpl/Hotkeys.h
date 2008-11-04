@@ -38,25 +38,28 @@ public:
 		const std::string control_str, const std::string shift_str, const std::string win_str);
 	~Hotkey();
 
-	inline unsigned int GetKeyCode() { return key; };
+	inline unsigned int GetKeyCode() { return key_code; };
 
 	inline bool GetAlt() { return alt; };
 	inline bool GetControl() { return control; };
 	inline bool GetShift() { return shift; };
 	inline bool GetWin() { return win; };
 
-	const std::string GetActionName() { return std::string("Action"); };
-	const std::string GetHotkeyName() { return std::string("Hotkey"); };
+	inline const std::string GetActionName() { return action; };
+	const std::string GetHotkeyName();
 
 	void PerformAction();	
 
 private:
 	// int id;
-	unsigned int key;
+	unsigned int key_code;
 	bool alt;
 	bool control;
 	bool shift;
 	bool win;
+
+	std::string action;
+	std::string key;
 
 	void (*Action)(void);
 

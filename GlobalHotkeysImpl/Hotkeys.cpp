@@ -112,14 +112,17 @@ void InitHotkeysMap()
 Hotkey::Hotkey(const std::string action_name, const std::string key_name, const std::string alt_str,
 			   const std::string control_str, const std::string shift_str, const std::string win_str)
 {
-	key = GetKeyCode(key_name);
+	action = action_name;
+	key = key_name;
+
+	key_code = GetKeyCode(key_name);
 	
 	alt = IsKeyUsed(alt_str);
 	control = IsKeyUsed(control_str);
 	shift = IsKeyUsed(shift_str);
 	win = IsKeyUsed(win_str);
 
-	/*id = key + (alt ? 1000 * MOD_ALT : 0) + (control ? 10000 * MOD_CONTROL : 0) + 
+	/*id = key_code + (alt ? 1000 * MOD_ALT : 0) + (control ? 10000 * MOD_CONTROL : 0) + 
 		(shift ? 100000 * MOD_SHIFT : 0) + (win ? 1000000 * MOD_WIN : 0);*/
 
 	Action = GetAction(action_name);
@@ -185,4 +188,25 @@ void Hotkey::PerformAction()
 {
 	if(Action > 0)
 		Action();
+}
+
+const std::string Hotkey::GetHotkeyName()
+{
+	std::string hotkey_name = std::string();
+
+	if (GetControl())
+		hotkey_name.append("Ctrl + ");
+
+	if (GetAlt())
+		hotkey_name.append("Alt + ");
+
+	if (GetShift())
+		hotkey_name.append("Shift + ");
+
+	if (GetWin())
+		hotkey_name.append("Win + ");
+
+	hotkey_name.append(key);
+
+	return hotkey_name;
 }
