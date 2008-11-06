@@ -29,17 +29,45 @@
 #include <Win32++\dialog.h>
 #include "resource.h"
 
-typedef struct tagHOTKEYINFO
+class ActionsComboBox : public CWnd
 {
-	char action[255];
-	char hotkey[255];
-} HOTKEYINFO;
+public:
+	explicit ActionsComboBox() { };
+	virtual ~ActionsComboBox() { };
+
+private:
+	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	void OnSelectedActionChanged();
+};
+
+class HotkeysListView : public CWnd
+{
+public:
+	explicit HotkeysListView() { };
+	virtual ~HotkeysListView() { };
+
+private:
+	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+};
+
+class HotkeyTextEdit : public CWnd
+{
+public:
+	explicit HotkeyTextEdit() { };
+	virtual ~HotkeyTextEdit() { };
+
+private:
+	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+};
 
 class GlobalHotkeysDialog : public CDialog
 {
 public:
-	explicit GlobalHotkeysDialog(UINT nResID, HWND hWndParent = NULL);
-	virtual ~GlobalHotkeysDialog();
+	explicit GlobalHotkeysDialog(UINT nResID, HWND hWndParent = NULL) : CDialog(nResID, hWndParent) { };
+	virtual ~GlobalHotkeysDialog() { };
 
 protected:
 	virtual BOOL OnInitDialog();
@@ -47,6 +75,10 @@ protected:
 	virtual void OnOK();
 
 private:
+	ActionsComboBox m_actionsComboBox;
+	HotkeysListView m_hotkeysListView;
+	HotkeyTextEdit m_hotkeyTextEdit;
+
 	void OnApply();
 
 	void InitHotkeysListViewColumns();
@@ -56,16 +88,5 @@ private:
 	void AddHotkeyListItem(const std::string action, const std::string hotkey);
 
 };
-
-//class ActionsComboBox : public CWnd
-//{
-//public:
-//	explicit ActionsComboBox();
-//	virtual ~ActionsComboBox();
-//
-//private:
-//	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-//
-//}
 
 #endif /* GLOBAL_HOTKEYS_DIALOG_H */
