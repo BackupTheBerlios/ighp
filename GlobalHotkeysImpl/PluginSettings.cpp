@@ -104,7 +104,7 @@ void PluginSettings::AddDefaultHotkeys()
 	std::map<const unsigned int, Hotkey*>& hotkeys = *this->GetHotkeys();
 
 	// Settings Dialog 
-	hotkeys[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
+	// hotkeys[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
 }
 
 bool PluginSettings::WriteConfigFile()
