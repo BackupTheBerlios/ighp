@@ -22,6 +22,7 @@
 
 #include <GlobalHotkeysImpl.h>
 #include "iTunesVisualAPI.h"
+#include <stdlib.h>
 
 #define	MAIN iTunesPluginMain
 #define IMPEXP	__declspec(dllexport)
