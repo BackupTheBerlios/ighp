@@ -44,7 +44,6 @@ private:
 	static PluginSettings* ms_instance;
 
 	const std::string m_configFile;
-	const std::string m_pluginFolder;
 	unsigned int m_keyId;
 
 	std::map<const unsigned int, Hotkey*>* m_hotkeys;
@@ -53,8 +52,6 @@ private:
 	~PluginSettings();
 
 	void AddDefaultHotkeys();
-	bool GetAppSettingsFolder(std::string* str);
-	bool GetPluginFolder(std::string* str);
 	bool GetConfigFile(std::string* str);
 };
 

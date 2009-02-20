@@ -48,7 +48,6 @@ void PluginSettings::Destroy()
 
 PluginSettings::PluginSettings() : 
 	m_configFile(std::string("GlobalHotkeysConfig.xml")), 
-	m_pluginFolder(std::string("iTunes Global Hotkeys Plugin")),
 	m_keyId(-1)
 {
 	m_hotkeys = new std::map<const unsigned int, Hotkey*>();
@@ -118,41 +117,31 @@ bool PluginSettings::WriteConfigFile()
 	return false;	
 }
 
-bool PluginSettings::GetAppSettingsFolder(std::string* str)
-{
-	char path[MAX_PATH];
-	ZeroMemory(path, sizeof(char) * MAX_PATH);
-	
-	if(SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_APPDATA, NULL, 0, path))) {
-		str->append(path);
-		return true;
-	} else {
-		return false;
-	}
-}
-
-bool PluginSettings::GetPluginFolder(std::string* str)
-{
-	if (!GetAppSettingsFolder(str))
-		return false;
-
-	str->append("\\");
-	str->append(m_pluginFolder);
-
-	return true;
-}
-
 bool PluginSettings::GetConfigFile(std::string* str)
 {
-#ifdef DEBUG
-	str->append("C:\\Program Files\\iTunes\\Plug-Ins\\GlobalHotkeysConfig.xml");
-#else
-	if (!GetPluginFolder(str))
-		return false;
+	OSVERSIONINFO osvi;
+	
+	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
-	str->append("\\");
+	GetVersionEx(&osvi);
+
+	char path[MAX_PATH];
+	ZeroMemory(path, sizeof(char) * MAX_PATH);
+
+	if (osvi.dwMajorVersion > 5) {
+		// Vista and above
+		SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, path);
+		str->append(path);
+		str->append("\\Apple Computer");
+	} else {
+		// XP and 2000
+		SHGetFolderPath(NULL, CSIDL_MYMUSIC, NULL, 0, path);
+		str->append(path);
+	}
+
+	str->append("\\iTunes\\iTunes Plug-ins\\");
 	str->append(m_configFile);
-#endif
 
 	return true;
 }

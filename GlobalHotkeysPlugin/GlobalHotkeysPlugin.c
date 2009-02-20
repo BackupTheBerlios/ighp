@@ -23,6 +23,7 @@
 #include <GlobalHotkeysImpl.h>
 #include "iTunesVisualAPI.h"
 #include <stdlib.h>
+#include <shlobj.h>
 
 #define	MAIN iTunesPluginMain
 #define IMPEXP	__declspec(dllexport)
@@ -111,7 +112,7 @@ static char* GetPluginsPath()
 	return path + 1;
 }
 
-static char* GetGlobalHotkeysImplDll()
+static char* GetGlobalHotkeysImplDllFromProgramDir()
 {
 	char path[MAX_PATH]; // path to GlobalHotkeysImpl.dll
 	ZeroMemory(path, sizeof(char) * MAX_PATH);
@@ -122,9 +123,40 @@ static char* GetGlobalHotkeysImplDll()
 	return path;
 }
 
+static char* GetGlobalHotkeysImplDllFromUserDir()
+{
+	char path[MAX_PATH];
+	OSVERSIONINFO osvi;
+
+	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+	GetVersionEx(&osvi);
+
+	ZeroMemory(path, sizeof(char) * MAX_PATH);
+
+	if (osvi.dwMajorVersion > 5) {
+		// Vista and above
+		SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, path);
+		strcat_s(path, MAX_PATH, "\\Apple Computer");
+	} else {
+		// XP and 2000
+		SHGetFolderPath(NULL, CSIDL_MYMUSIC, NULL, 0, path);
+	}
+
+	strcat_s(path, MAX_PATH, "\\iTunes\\iTunes Plug-ins\\");
+	strcat_s(path, MAX_PATH, kGlobalHotkeysImpl);
+
+	return path;
+}
+
 static void LoadGlobalHotkeysImplDll()
 {
-	hDLL = LoadLibrary(GetGlobalHotkeysImplDll());
+	if (NULL == (hDLL = LoadLibrary(GetGlobalHotkeysImplDllFromUserDir()))) {
+		if (NULL == (hDLL = LoadLibrary(GetGlobalHotkeysImplDllFromProgramDir()))) {
+			MessageBox(NULL, "Could nod load GlobalHotkeysImpl.dll", "Global Hotkeys", MB_OK | MB_ICONERROR);
+		}
+	}
 
 	InitGlobalHotkeysPlugin = (DLL_Function_InitGlobalHotkeysPlugin)GetProcAddress(hDLL,"InitGlobalHotkeysPlugin");
 	ReleaseGlobalHotkeysPlugin = (DLL_Function_ReleaseGlobalHotkeysPlugin)GetProcAddress(hDLL,"ReleaseGlobalHotkeysPlugin");
