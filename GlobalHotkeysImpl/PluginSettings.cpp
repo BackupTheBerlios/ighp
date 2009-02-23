@@ -54,8 +54,6 @@ PluginSettings::PluginSettings() :
 
 	::InitActionsMap();
 	::InitHotkeysMap();
-
-	AddDefaultHotkeys();
 }
 
 PluginSettings::~PluginSettings()
@@ -103,15 +101,26 @@ bool PluginSettings::ReadConfigFile(std::map<const unsigned int, Hotkey*>* hotke
 		element = element->NextSiblingElement();
 	}
 
+	AddDefaultHotkeys();
+
 	return true;
 }
 
 void PluginSettings::AddDefaultHotkeys()
 {
-	std::map<const unsigned int, Hotkey*>& hotkeys = *this->GetHotkeys();
+	std::map<const unsigned int, Hotkey*>* hotkeys = this->GetHotkeys();
+	std::map<const unsigned int, Hotkey*>::iterator iter;
 
-	// Settings Dialog 
-	// hotkeys[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
+	bool addOpenSettingsDialogHotkey = true;
+
+	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
+		if (iter->second->GetActionName() == "OpenSettingsDialog")
+			addOpenSettingsDialogHotkey = false;
+	}
+
+	// Settings Dialog
+	if (addOpenSettingsDialogHotkey)
+		(*hotkeys)[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
 }
 
 bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys)
