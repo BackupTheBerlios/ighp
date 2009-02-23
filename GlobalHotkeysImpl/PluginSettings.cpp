@@ -68,7 +68,7 @@ std::map<const unsigned int, Hotkey*>* PluginSettings::GetHotkeys()
 	return m_hotkeys;
 }
 
-bool PluginSettings::ReadConfigFile()
+bool PluginSettings::ReadConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys)
 {
 	std::string configFilePath = std::string("");
 	if (!GetConfigFile(&configFilePath))
@@ -78,19 +78,27 @@ bool PluginSettings::ReadConfigFile()
 	if (!configFile.LoadFile())
 		return false;
 
+	m_keyId = -1;
+	hotkeys->clear();
+
 	const TiXmlElement* root = configFile.RootElement();
 
 	const TiXmlElement* element = root->FirstChildElement();
 	while (element) {
-		std::string action_name = std::string(element->Attribute("action") != 0 ? element->Attribute("action") : "NotDefined");
-		std::string key_name = std::string(element->Attribute("key") != 0 ? element->Attribute("key") : "NotDefined");
-		std::string alt_str = std::string(element->Attribute("alt") != 0 ? element->Attribute("alt") : "NotDefined");
-		std::string control_str = std::string(element->Attribute("control") != 0 ? element->Attribute("control") : "NotDefined");
-		std::string shift_str = std::string(element->Attribute("shift") != 0 ? element->Attribute("shift") : "NotDefined");
-		std::string win_str = std::string(element->Attribute("win") != 0 ? element->Attribute("win") : "NotDefined");
+		std::string action_name = std::string(element->Attribute("action") != 0 ? 
+			element->Attribute("action") : "NotDefined");
+		std::string key_name = std::string(element->Attribute("key") != 0 ? 
+			element->Attribute("key") : "NotDefined");
+		std::string alt_str = std::string(element->Attribute("alt") != 0 ? 
+			element->Attribute("alt") : "NotDefined");
+		std::string control_str = std::string(element->Attribute("control") != 0 ? 
+			element->Attribute("control") : "NotDefined");
+		std::string shift_str = std::string(element->Attribute("shift") != 0 ? 
+			element->Attribute("shift") : "NotDefined");
+		std::string win_str = std::string(element->Attribute("win") != 0 ? 
+			element->Attribute("win") : "NotDefined");
 
-		std::map<const unsigned int, Hotkey*>& hotkeys = *this->GetHotkeys();
-		hotkeys[++m_keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
+		(*hotkeys)[++m_keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
 
 		element = element->NextSiblingElement();
 	}
@@ -106,7 +114,7 @@ void PluginSettings::AddDefaultHotkeys()
 	// hotkeys[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
 }
 
-bool PluginSettings::WriteConfigFile()
+bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys)
 {
 	std::string configFilePath = std::string("");
 	if (!GetConfigFile(&configFilePath))

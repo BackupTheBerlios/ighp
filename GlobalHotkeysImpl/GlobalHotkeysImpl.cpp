@@ -54,7 +54,7 @@ extern "C" void WINAPI Release()
 
 extern "C" void WINAPI InitGlobalHotkeysPlugin()
 {
-	PluginSettings::Instance()->ReadConfigFile();
+	PluginSettings::Instance()->ReadConfigFile(PluginSettings::Instance()->GetHotkeys());
 
 	globalHotkeysPlugin = new GlobalHotkeysPlugin();
 }

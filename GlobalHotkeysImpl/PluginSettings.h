@@ -37,8 +37,8 @@ public:
 
 	std::map<const unsigned int, Hotkey*>* GetHotkeys();
 
-	bool ReadConfigFile();
-	bool WriteConfigFile();
+	bool ReadConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys);
+	bool WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys);
 
 private:
 	static PluginSettings* ms_instance;
