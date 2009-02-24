@@ -100,20 +100,17 @@ void GlobalHotkeysDialog::AddHotkeyListItem(const std::string action, const std:
 	LVITEM lvi;
 	ZeroMemory(&lvi, sizeof(LVITEM));
 
-	lvi.mask = LVIF_TEXT | LVIF_STATE | LVIF_PARAM;
+	lvi.mask = LVIF_TEXT | LVIF_STATE;
 	lvi.state = 0;
 	lvi.stateMask = 0;
-	lvi.iItem = index++;
+	lvi.iItem = index;
 	lvi.iSubItem = 0;
-	//lvi.lParam = (LPARAM) action.c_str();
 	lvi.pszText = (LPSTR) action.c_str();
 
 	ListView_InsertItem(hwndListView, &lvi);
+	ListView_SetItemText(hwndListView, index, 1, (LPSTR) hotkey.c_str());
 
-	lvi.iSubItem = 1;
-	lvi.pszText = (LPSTR) hotkey.c_str();
-
-	ListView_SetItem(hwndListView, &lvi); 
+	index++;
 }
 
 void GlobalHotkeysDialog::PopulateHotkeysList()
