@@ -50,6 +50,7 @@ public:
 private:
 	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+	void OnSelectedListItemChanged(LPNMLISTVIEW lpStateChange);
 };
 
 class HotkeyTextEdit : public CWnd

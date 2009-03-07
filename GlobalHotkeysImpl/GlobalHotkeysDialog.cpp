@@ -180,13 +180,40 @@ void ActionsComboBox::OnSelectedActionChanged()
 
 LRESULT HotkeysListView::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch (uMsg)
-	{
-	default:
-		break;
+	if (uMsg == WM_NOTIFY && (LPNMHDR(lParam))->code == LVN_ITEMCHANGED) {
+		OnSelectedListItemChanged(LPNMLISTVIEW(lParam));
 	}
 
 	return WndProcDefault(hWnd, uMsg, wParam, lParam);
+}
+
+void HotkeysListView::OnSelectedListItemChanged(LPNMLISTVIEW lpStateChange)
+{
+	HWND hwndListView = ::GetDlgItem(m_hWndParent, IDC_HOTKEYS_LIST);
+	HWND hwndCombo = ::GetDlgItem(m_hWndParent, IDC_ACTIONS_COMBO);
+	HWND hwndEditText = ::GetDlgItem(m_hWndParent, IDC_HOTKEY_TEXT);
+
+	int i = 0; i = 1/ i;
+
+	if (lpStateChange->uOldState == LVIS_SELECTED || lpStateChange->uNewState != LVIS_SELECTED)
+		return;
+
+	int index = lpStateChange->iItem;
+
+	char selectedItem[255];
+	ZeroMemory(&selectedItem, sizeof(char) * 255);
+
+	ListView_GetItemText (hwndListView, index, 0, selectedItem, 255);
+	
+	int cbItemIndex = SendMessage(hwndCombo, CB_FINDSTRINGEXACT, -1, (LPARAM)(LPCSTR)&selectedItem);
+	int cbSelectedIndex = SendMessage(hwndCombo, CB_GETCURSEL, 0, 0);
+
+	if (cbSelectedIndex != cbItemIndex)
+		SendMessage(hwndCombo, CB_SETCURSEL, cbItemIndex, 0);
+
+	ZeroMemory(&selectedItem, sizeof(char) * 255);
+	ListView_GetItemText (hwndListView, index, 1, selectedItem, 255);
+	SendMessage(hwndEditText, WM_SETTEXT, 0, (LPARAM) &selectedItem);
 }
 
 LRESULT HotkeyTextEdit::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
