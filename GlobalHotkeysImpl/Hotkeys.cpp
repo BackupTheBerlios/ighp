@@ -137,6 +137,8 @@ void (*Hotkey::GetAction(const std::string action_name))(void)
 {
 	switch (actionsMap[action_name])
 	{
+	case eActionReloadHotkeys:
+		return &ReloadHotkeys;
 	case eActionOpenSettingsDialog:
 		return &OpenSettingsDialog;
 	case eActionPlayPause:

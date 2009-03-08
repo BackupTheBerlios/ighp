@@ -25,6 +25,8 @@
 
 extern HANDLE dllHandle;
 
+HWND hWd = 0;
+
 GlobalHotkeysPlugin::GlobalHotkeysPlugin() 
 	: m_mainWindow(), m_settingsDialog(IDD_GH_DIALOG)
 {
@@ -95,6 +97,8 @@ LRESULT GlobalHotkeysWnd::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 //
 void GlobalHotkeysWnd::OnCreate(HWND hWnd)
 {
+	hWd = hWnd;
+
 	std::map<const unsigned int, Hotkey*>* hotkeys = PluginSettings::Instance()->GetHotkeys();
 	std::map<const unsigned int, Hotkey*>::iterator iter;
 

@@ -29,6 +29,7 @@
 static enum Actions
 {
 	eActionNotDefined,
+	eActionReloadHotkeys,
 	eActionOpenSettingsDialog,
 	eActionPlayPause,
 	eActionNextTrack,
@@ -51,6 +52,7 @@ extern std::map<const std::string, Actions> actionsMap;
 
 void InitActionsMap();
 
+void ReloadHotkeys();
 void OpenSettingsDialog();
 
 void PlayPause();

@@ -40,6 +40,8 @@ public:
 	bool ReadConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys);
 	bool WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys);
 
+	bool GetConfigFile(std::string* str);
+
 private:
 	static PluginSettings* ms_instance;
 
@@ -52,7 +54,6 @@ private:
 	~PluginSettings();
 
 	void AddDefaultHotkeys();
-	bool GetConfigFile(std::string* str);
 };
 
 #endif /* PLUGIN_SETTINGS_H */

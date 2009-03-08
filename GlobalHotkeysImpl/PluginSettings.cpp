@@ -112,15 +112,26 @@ void PluginSettings::AddDefaultHotkeys()
 	std::map<const unsigned int, Hotkey*>::iterator iter;
 
 	bool addOpenSettingsDialogHotkey = true;
+	bool addReloadHotkeys = true;
 
 	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
-		if (iter->second->GetActionName() == "OpenSettingsDialog")
+		if (iter->second->GetActionName() == "OpenSettingsDialog") {
 			addOpenSettingsDialogHotkey = false;
+			continue;
+		}
+		if (iter->second->GetActionName() == "ReloadHotkeys") {
+			addReloadHotkeys = false;
+			continue;
+		}
 	}
 
 	// Settings Dialog
 	if (addOpenSettingsDialogHotkey)
 		(*hotkeys)[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
+
+	// Reload hotkeys
+	if (addReloadHotkeys)
+		(*hotkeys)[++m_keyId] = new Hotkey("ReloadHotkeys", "R", "false", "true", "true", "false");
 }
 
 bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys)

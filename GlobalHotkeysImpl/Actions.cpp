@@ -30,10 +30,16 @@
 #include "iTunesCOMInterface.h"
 #include "GlobalHotkeysPlugin.h"
 
+#include "PluginSettings.h" 
+#include "Hotkeys.h"
+
+extern HWND hWd;
+
 std::map<const std::string, Actions> actionsMap = std::map<const std::string, Actions>();
 
 void InitActionsMap()
 {
+	actionsMap["ReloadHotkeys"] = eActionReloadHotkeys;
 	actionsMap["OpenSettingsDialog"] = eActionOpenSettingsDialog;
 	actionsMap["PlayPause"] = eActionPlayPause;
 	actionsMap["NextTrack"] = eActionNextTrack;
@@ -52,9 +58,52 @@ void InitActionsMap()
 	actionsMap["ToggleMute"] = eActionToggleMute;
 }
 
+void ReloadHotkeys()
+{
+	std::map<const unsigned int, Hotkey*>* hotkeys = PluginSettings::Instance()->GetHotkeys();
+	std::map<const unsigned int, Hotkey*>::iterator iter;
+
+	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
+		UnregisterHotKey(hWd, iter->first);
+		delete iter->second;
+		iter->second = 0;
+	}
+
+	PluginSettings::Instance()->ReadConfigFile(PluginSettings::Instance()->GetHotkeys());
+
+	hotkeys = PluginSettings::Instance()->GetHotkeys();
+	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
+		unsigned int modifiers = (iter->second->GetAlt() ? MOD_ALT : 0) | 
+			                     (iter->second->GetControl() ? MOD_CONTROL : 0) | 
+			                     (iter->second->GetShift() ? MOD_SHIFT : 0) | 
+			                     (iter->second->GetWin() ? MOD_WIN : 0);
+		RegisterHotKey(hWd, iter->first, modifiers, iter->second->GetKeyCode());
+	}
+
+	MessageBox(NULL, "Hotkeys reloaded", "Ighp", MB_OK | MB_ICONINFORMATION);
+}
+
 void OpenSettingsDialog()
 {
-	GetGlobalHotkeysPlugin().GetGlobalHotkeysDialog().DoModal();
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+
+	ZeroMemory( &si, sizeof(si) );
+	si.cb = sizeof(si);
+	ZeroMemory( &pi, sizeof(pi) );
+
+	std::string configFilePath = std::string("");
+	if (!(PluginSettings::Instance()->GetConfigFile(&configFilePath)))
+		return;
+
+	char params[MAX_PATH];
+	ZeroMemory(params, sizeof(char) * MAX_PATH);
+
+	strncpy_s(params, MAX_PATH, "notepad.exe ", _TRUNCATE);
+	strcat_s(params, MAX_PATH, configFilePath.c_str());
+
+	CreateProcess(NULL, params, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi); 
+	//GetGlobalHotkeysPlugin().GetGlobalHotkeysDialog().DoModal();
 }
 
 void PlayPause()
