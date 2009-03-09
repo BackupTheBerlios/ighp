@@ -212,3 +212,23 @@ const std::string Hotkey::GetHotkeyName()
 
 	return hotkey_name;
 }
+
+const std::string Hotkey::ToXmlString()
+{
+	std::string hotkey_tag = std::string();
+
+	hotkey_tag.append("<hotkey ");
+	hotkey_tag.append("action=\""); hotkey_tag.append(action); hotkey_tag.append("\" ");
+	hotkey_tag.append("key=\""); hotkey_tag.append(key); hotkey_tag.append("\" ");
+	if (GetControl())
+		hotkey_tag.append("control=\"true\" ");
+	if (GetAlt())
+		hotkey_tag.append("alt=\"true\" ");
+	if (GetShift())
+		hotkey_tag.append("shift=\"true\" ");
+	if (GetWin())
+		hotkey_tag.append("win=\"true\" ");
+	hotkey_tag.append("/>");
+
+	return hotkey_tag;
+}

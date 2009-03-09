@@ -73,35 +73,37 @@ bool PluginSettings::ReadConfigFile(std::map<const unsigned int, Hotkey*>* hotke
 		return false;
 
 	TiXmlDocument configFile(configFilePath.c_str());
-	if (!configFile.LoadFile())
-		return false;
+	if (configFile.LoadFile()) {
+		m_keyId = -1;
+		hotkeys->clear();
 
-	m_keyId = -1;
-	hotkeys->clear();
+		const TiXmlElement* root = configFile.RootElement();
 
-	const TiXmlElement* root = configFile.RootElement();
+		const TiXmlElement* element = root->FirstChildElement();
+		while (element) {
+			std::string action_name = std::string(element->Attribute("action") != 0 ? 
+				element->Attribute("action") : "NotDefined");
+			std::string key_name = std::string(element->Attribute("key") != 0 ? 
+				element->Attribute("key") : "NotDefined");
+			std::string alt_str = std::string(element->Attribute("alt") != 0 ? 
+				element->Attribute("alt") : "NotDefined");
+			std::string control_str = std::string(element->Attribute("control") != 0 ? 
+				element->Attribute("control") : "NotDefined");
+			std::string shift_str = std::string(element->Attribute("shift") != 0 ? 
+				element->Attribute("shift") : "NotDefined");
+			std::string win_str = std::string(element->Attribute("win") != 0 ? 
+				element->Attribute("win") : "NotDefined");
 
-	const TiXmlElement* element = root->FirstChildElement();
-	while (element) {
-		std::string action_name = std::string(element->Attribute("action") != 0 ? 
-			element->Attribute("action") : "NotDefined");
-		std::string key_name = std::string(element->Attribute("key") != 0 ? 
-			element->Attribute("key") : "NotDefined");
-		std::string alt_str = std::string(element->Attribute("alt") != 0 ? 
-			element->Attribute("alt") : "NotDefined");
-		std::string control_str = std::string(element->Attribute("control") != 0 ? 
-			element->Attribute("control") : "NotDefined");
-		std::string shift_str = std::string(element->Attribute("shift") != 0 ? 
-			element->Attribute("shift") : "NotDefined");
-		std::string win_str = std::string(element->Attribute("win") != 0 ? 
-			element->Attribute("win") : "NotDefined");
+			(*hotkeys)[++m_keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
 
-		(*hotkeys)[++m_keyId] = new Hotkey(action_name, key_name, alt_str, control_str, shift_str, win_str);
+			element = element->NextSiblingElement();
+		}
 
-		element = element->NextSiblingElement();
+		AddDefaultHotkeys();
+	} else {
+		AddDefaultHotkeys();
+		WriteConfigFile(hotkeys);
 	}
-
-	AddDefaultHotkeys();
 
 	return true;
 }
@@ -140,9 +142,29 @@ bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotk
 	if (!GetConfigFile(&configFilePath))
 		return false;
 
-	// TODO: Implement this
+	std::string config_file = std::string();
+	config_file.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n");
 
-	return false;	
+	config_file.append("<hotkeys>\r\n");
+
+	std::map<const unsigned int, Hotkey*>::iterator iter;
+	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
+		config_file.append("  ");
+		config_file.append(iter->second->ToXmlString());
+		config_file.append("\r\n");
+	}
+
+	config_file.append("</hotkeys>\r\n");
+
+	HANDLE hFile;
+	DWORD wmWritten;
+
+	hFile = CreateFile(configFilePath.c_str() ,GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL); 
+	WriteFile(hFile, config_file.c_str(), (DWORD)(strlen(config_file.c_str())), &wmWritten, NULL);
+	CloseHandle(hFile);
+
+	return true;	
 }
 
 bool PluginSettings::GetConfigFile(std::string* str)

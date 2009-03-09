@@ -50,6 +50,8 @@ public:
 
 	void PerformAction();	
 
+	const std::string ToXmlString();
+
 private:
 	// int id;
 	unsigned int key_code;
