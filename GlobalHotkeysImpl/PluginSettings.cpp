@@ -138,6 +138,13 @@ void PluginSettings::AddDefaultHotkeys()
 
 bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys)
 {
+	std::string configFilePathDir = std::string("");
+	GetConfigFileDir(&configFilePathDir);
+	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(configFilePathDir.c_str())) {
+		if (!CreateDirectory(configFilePathDir.c_str(), NULL))
+			return false;
+	}
+
 	std::string configFilePath = std::string("");
 	if (!GetConfigFile(&configFilePath))
 		return false;
@@ -167,7 +174,7 @@ bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotk
 	return true;	
 }
 
-bool PluginSettings::GetConfigFile(std::string* str)
+bool PluginSettings::GetConfigFileDir(std::string* str)
 {
 	OSVERSIONINFO osvi;
 	
@@ -190,8 +197,18 @@ bool PluginSettings::GetConfigFile(std::string* str)
 		str->append(path);
 	}
 
-	str->append("\\iTunes\\iTunes Plug-ins\\");
-	str->append(m_configFile);
+	str->append("\\iTunes\\iTunes Plug-ins");
 
 	return true;
+}
+
+bool PluginSettings::GetConfigFile(std::string* str)
+{
+	if (GetConfigFileDir(str)) {
+		str->append("\\");
+		str->append(m_configFile);
+		return true;
+	}
+
+	return false;
 }

@@ -41,6 +41,7 @@ public:
 	bool WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys);
 
 	bool GetConfigFile(std::string* str);
+	bool GetConfigFileDir(std::string* str);
 
 private:
 	static PluginSettings* ms_instance;
