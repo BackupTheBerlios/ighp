@@ -40,6 +40,7 @@ std::map<const std::string, Actions> actionsMap = std::map<const std::string, Ac
 void InitActionsMap()
 {
 	actionsMap["ReloadHotkeys"] = eActionReloadHotkeys;
+	actionsMap["OpenSettingsFile"] = eActionOpenSettingsFile;
 	actionsMap["OpenSettingsDialog"] = eActionOpenSettingsDialog;
 	actionsMap["PlayPause"] = eActionPlayPause;
 	actionsMap["NextTrack"] = eActionNextTrack;
@@ -83,7 +84,7 @@ void ReloadHotkeys()
 	MessageBox(NULL, "Hotkeys reloaded", "Ighp", MB_OK | MB_ICONINFORMATION);
 }
 
-void OpenSettingsDialog()
+void OpenSettingsFile()
 {
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -103,7 +104,11 @@ void OpenSettingsDialog()
 	strcat_s(params, MAX_PATH, configFilePath.c_str());
 
 	CreateProcess(NULL, params, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi); 
-	//GetGlobalHotkeysPlugin().GetGlobalHotkeysDialog().DoModal();
+}
+
+void OpenSettingsDialog()
+{
+	GetGlobalHotkeysPlugin().GetGlobalHotkeysDialog().DoModal();
 }
 
 void PlayPause()

@@ -139,6 +139,8 @@ void (*Hotkey::GetAction(const std::string action_name))(void)
 	{
 	case eActionReloadHotkeys:
 		return &ReloadHotkeys;
+	case eActionOpenSettingsFile:
+		return &OpenSettingsFile;
 	case eActionOpenSettingsDialog:
 		return &OpenSettingsDialog;
 	case eActionPlayPause:

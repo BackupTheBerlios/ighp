@@ -113,12 +113,12 @@ void PluginSettings::AddDefaultHotkeys()
 	std::map<const unsigned int, Hotkey*>* hotkeys = this->GetHotkeys();
 	std::map<const unsigned int, Hotkey*>::iterator iter;
 
-	bool addOpenSettingsDialogHotkey = true;
+	bool addOpenSettingsFileHotkey = true;
 	bool addReloadHotkeys = true;
 
 	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
-		if (iter->second->GetActionName() == "OpenSettingsDialog") {
-			addOpenSettingsDialogHotkey = false;
+		if (iter->second->GetActionName() == "OpenSettingsFile") {
+			addOpenSettingsFileHotkey = false;
 			continue;
 		}
 		if (iter->second->GetActionName() == "ReloadHotkeys") {
@@ -128,8 +128,8 @@ void PluginSettings::AddDefaultHotkeys()
 	}
 
 	// Settings Dialog
-	if (addOpenSettingsDialogHotkey)
-		(*hotkeys)[++m_keyId] = new Hotkey("OpenSettingsDialog", "P", "false", "true", "true", "false");
+	if (addOpenSettingsFileHotkey)
+		(*hotkeys)[++m_keyId] = new Hotkey("OpenSettingsFile", "P", "false", "true", "true", "false");
 
 	// Reload hotkeys
 	if (addReloadHotkeys)
@@ -151,6 +151,18 @@ bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotk
 
 	std::string config_file = std::string();
 	config_file.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n");
+	
+	config_file.append("\r\n<!--\r\n\r\n");
+	config_file.append("  Here is an example of a hotkey:\r\n\r\n");
+	config_file.append("  <hotkey action=\"PlayPause\" key=\"Spacebar\" alt=\"true\" control=\"true\" shift=\"true\" win=\"true\"/>\r\n\r\n");
+	config_file.append("  Action can have one of the following values: PlayPause, NextTrack,\r\n");
+	config_file.append("  PreviousTrack, ToggleRandom, ToggleRepeat, SongRatingClear, SongRating1,\r\n");
+	config_file.append("  SongRating2, SongRating3, SongRating4, SongRating5, ShowHide, VolumeUp,\r\n");
+	config_file.append("  VolumeDown, ToggleMute, OpenSettingsFile, ReloadHotkeys\r\n\r\n");
+	config_file.append("  Key can have one of the following values: a-z, A-Z, 0-9, F1-F24,\r\n");
+	config_file.append("  Spacebar, Backspace, Tab, Escape, PageUp, PageDown, End, Home, Left, Up,\r\n");
+	config_file.append("  Right, Down, Insert, Delete, PrintScreen, Pause, NumLock, -, =, /, . and ,\r\n\r\n");
+	config_file.append("\r\n-->\r\n\r\n");
 
 	config_file.append("<hotkeys>\r\n");
 
@@ -160,6 +172,24 @@ bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotk
 		config_file.append(iter->second->ToXmlString());
 		config_file.append("\r\n");
 	}
+
+	config_file.append("\r\n  <!--\r\n");
+	config_file.append("  <hotkey action=\"PlayPause\" key=\"Spacebar\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"NextTrack\" key=\".\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"PreviousTrack\" key=\",\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"ShowHide\" key=\"q\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"VolumeUp\" key=\"a\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"VolumeDown\" key=\"z\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"ToggleRandom\" key=\"s\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"ToggleRepeat\" key=\"d\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"SongRatingClear\" key=\"0\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"SongRating1\" key=\"1\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"SongRating2\" key=\"2\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"SongRating3\" key=\"3\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"SongRating4\" key=\"4\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"SongRating5\" key=\"5\" alt=\"true\"/>\r\n");
+	config_file.append("  <hotkey action=\"ToggleMute\" key=\"m\" alt=\"true\"/>\r\n");
+	config_file.append("  -->\r\n\r\n");
 
 	config_file.append("</hotkeys>\r\n");
 
