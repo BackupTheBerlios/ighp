@@ -46,7 +46,7 @@ Section "Plugin" pluginSection
   File "release\GlobalHotkeysPlugin.dll"
   File "release\GlobalHotkeysImpl.dll"
   File "/oname=Global Hotkeys License.txt" "License.txt"
- 
+  File "/oname=Global Hotkeys Readme.txt" "Readme.txt" 
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\UninstallGlobalHotkeys.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ighp" \
@@ -72,6 +72,7 @@ Section "Uninstall"
   Delete "$INSTDIR\GlobalHotkeysPlugin.dll"
   Delete "$INSTDIR\GlobalHotkeysImpl.dll"
   Delete "$INSTDIR\Global Hotkeys License.txt"
+  Delete "$INSTDIR\Global Hotkeys Readme.txt"
   Delete "$INSTDIR\UninstallGlobalHotkeys.exe"
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ighp"

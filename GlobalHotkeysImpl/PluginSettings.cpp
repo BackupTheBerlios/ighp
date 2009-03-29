@@ -158,7 +158,7 @@ bool PluginSettings::WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotk
 	config_file.append("  Action can have one of the following values: PlayPause, NextTrack,\r\n");
 	config_file.append("  PreviousTrack, ToggleRandom, ToggleRepeat, SongRatingClear, SongRating1,\r\n");
 	config_file.append("  SongRating2, SongRating3, SongRating4, SongRating5, ShowHide, VolumeUp,\r\n");
-	config_file.append("  VolumeDown, ToggleMute, OpenSettingsFile, ReloadHotkeys\r\n\r\n");
+	config_file.append("  VolumeDown, ToggleMute, OpenSettingsFile, ReloadHotkeys.\r\n\r\n");
 	config_file.append("  Key can have one of the following values: a-z, A-Z, 0-9, F1-F24,\r\n");
 	config_file.append("  Spacebar, Backspace, Tab, Escape, PageUp, PageDown, End, Home, Left, Up,\r\n");
 	config_file.append("  Right, Down, Insert, Delete, PrintScreen, Pause, NumLock, -, =, /, . and ,\r\n\r\n");
