@@ -6,14 +6,15 @@
   
   <hotkey name="Play" action="PlayPause" key="space" alt="true" control="true" shift="true" win="true"/>
   
-  Action can have one of the following values: PlayPause, NextTrack, 
+  Action can have one of the following values: PlayPause, Stop, NextTrack, 
   PreviousTrack, ToggleRandom, ToggleRepeat, SongRatingClear, SongRating1, 
   SongRating2, SongRating3, SongRating4, SongRating5, ShowHide, VolumeUp,
   VolumeDown, ToggleMute
   
   Key can have one of the following values: a-z, A-Z, 0-9, F1-F24, 
   Spacebar, Backspace, Tab, Escape, PageUp, PageDown, End, Home, Left, Up, 
-  Right, Down, Insert, Delete, PrintScreen, Pause, NumLock, -, =, /, . and ,
+  Right, Down, Insert, Delete, PrintScreen, Pause, NumLock, MM_PlayPause,
+  MM_Stop, MM_Previous, MM_Next, MM_VolumeDown, MM_VolumeUp, -, =, /, . and ,
   
 -->
 
@@ -24,6 +25,15 @@
   <hotkey name="Show" action="ShowHide" key="q" alt="true"/>
   <hotkey name="VolUp" action="VolumeUp" key="a" alt="true"/>
   <hotkey name="VolDown" action="VolumeDown" key="z" alt="true"/>
+
+  <hotkey name="MM_Play" action="PlayPause" key="MM_PlayPause" />
+  <hotkey name="MM_Stop" action="Stop" key="MM_Stop" />
+  <hotkey name="MM_Next" action="NextTrack" key="MM_Next" />
+  <hotkey name="MM_Prev" action="PreviousTrack" key="MM_Previous" />
+  <!--
+  <hotkey name="MM_VolUp" action="VolumeUp" key="MM_VolumeUp" />
+  <hotkey name="MM_VolDown" action="VolumeDown" key="MM_VolumeDown" />
+  -->
 
   <!--
   <hotkey name="Random" action="ToggleRandom" key="s" alt="true"/>

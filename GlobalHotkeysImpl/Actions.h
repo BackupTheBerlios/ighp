@@ -33,6 +33,7 @@ static enum Actions
 	eActionOpenSettingsFile,
 	eActionOpenSettingsDialog,
 	eActionPlayPause,
+	eActionStop,
 	eActionNextTrack,
 	eActionPreviousTrack,
 	eActionRandom,
@@ -58,6 +59,7 @@ void OpenSettingsFile();
 void OpenSettingsDialog();
 
 void PlayPause();
+void Stop();
 void NextTrack();
 void PreviousTrack();
 void Random();

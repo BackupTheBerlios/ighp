@@ -22,6 +22,10 @@
 
 #define WIN32_LEAN_AND_MEAN
 
+#ifndef _WIN32_WINNT
+  #define _WIN32_WINNT 0x0500
+#endif
+
 #include <windows.h>
 
 #include "Hotkeys.h"
@@ -107,6 +111,13 @@ void InitHotkeysMap()
 	hotkeysMap["/"] = VK_DIVIDE;
 	hotkeysMap[","] = VK_OEM_COMMA;
 	hotkeysMap["."] = VK_OEM_PERIOD;
+
+	hotkeysMap["MM_PlayPause"] = VK_MEDIA_PLAY_PAUSE;
+	hotkeysMap["MM_Previous"] = VK_MEDIA_PREV_TRACK;
+	hotkeysMap["MM_Next"] = VK_MEDIA_NEXT_TRACK;
+	hotkeysMap["MM_VolumeDown"] = VK_VOLUME_DOWN;
+	hotkeysMap["MM_VolumeUp"] = VK_VOLUME_UP;
+	hotkeysMap["MM_Stop"] = VK_MEDIA_STOP;
 }
 
 Hotkey::Hotkey(const std::string action_name, const std::string key_name, const std::string alt_str,
@@ -145,6 +156,8 @@ void (*Hotkey::GetAction(const std::string action_name))(void)
 		return &OpenSettingsDialog;
 	case eActionPlayPause:
 		return &PlayPause;
+	case eActionStop:
+		return &Stop;
 	case eActionPreviousTrack:
 		return &PreviousTrack;
 	case eActionNextTrack:

@@ -16,6 +16,7 @@ The following actions are supported:
 
 Action	           Description
 PlayPause          toggle play/pause
+Stop               stop playing
 NextTrack          advance to the next track in playlist
 PreviousTrack      go back to previous track in playlist
 ToggleRandom       toggle random on/off
@@ -69,10 +70,11 @@ Each action is defined on a line like this:
 where
 
  - action is an action from the above table
- - key is the hothey bound to the specified action. Keys can have one of the
-   following values: a-z, A-Z, 0-9, F1-F24 Spacebar, Backspace, Tab, Escape,
+ - key is the hotkey bound to the specified action. Keys can have one of the
+   following values: a-z, A-Z, 0-9, F1-F24, Spacebar, Backspace, Tab, Escape,
    PageUp, PageDown, End, Home, Left, Up, Right, Down, Insert, Delete,
-   PrintScreen, Pause, NumLock, -, =, /, . and ,
+   PrintScreen, Pause, NumLock, MM_PlayPause, MM_Stop, MM_Previous, MM_Next,
+   MM_VolumeDown, MM_VolumeUp, -, =, /, . and ,
  - alt, control, shift and win can take one of the values true or false. If the
    value is true, then you must use this key modifier with the hotkey to enable
    the action. If the value is set to false, it can be omitted.

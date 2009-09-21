@@ -43,6 +43,7 @@ void InitActionsMap()
 	actionsMap["OpenSettingsFile"] = eActionOpenSettingsFile;
 	actionsMap["OpenSettingsDialog"] = eActionOpenSettingsDialog;
 	actionsMap["PlayPause"] = eActionPlayPause;
+	actionsMap["Stop"] = eActionStop;
 	actionsMap["NextTrack"] = eActionNextTrack;
 	actionsMap["PreviousTrack"] = eActionPreviousTrack;
 	actionsMap["ToggleRandom"] = eActionRandom;
@@ -123,6 +124,24 @@ void PlayPause()
 
 	if(hRes == S_OK && iITunes) {
 		iITunes->PlayPause();
+		iITunes->Release();
+	}
+
+	CoUninitialize();
+}
+
+void Stop()
+{
+	IiTunes* iITunes = 0;
+	HRESULT hRes;
+
+	CoInitialize(0);
+
+	// Create itunes interface
+    hRes = CoCreateInstance(CLSID_iTunesApp, NULL, CLSCTX_LOCAL_SERVER, IID_IiTunes, (PVOID*)&iITunes);
+
+	if(hRes == S_OK && iITunes) {
+		iITunes->Stop();
 		iITunes->Release();
 	}
 
