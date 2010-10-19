@@ -20,20 +20,35 @@
  * THE SOFTWARE.
  */
 
-#pragma once
+#include <QApplication>
+#include <QDialog>
+#include <GlobalHotkeysImpl.h>
+#include <stdlib.h>
+#include <shlobj.h>
 
-#include <windows.h>
+static HMODULE hDLL;
+static DLL_Function_InitGlobalHotkeysPlugin InitGlobalHotkeysPlugin;
+static DLL_Function_ReleaseGlobalHotkeysPlugin ReleaseGlobalHotkeysPlugin;
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
+#define kGlobalHotkeysImpl              
 
-typedef void (WINAPI *DLL_Function_Initialize) ();
-typedef void (WINAPI *DLL_Function_Release) ();
+static void LoadGlobalHotkeysImplDll()
+{
+	if (NULL == (hDLL = LoadLibrary(TEXT("GlobalHotkeysImpl.dll"))))
+		MessageBox(NULL, TEXT("Could nod load GlobalHotkeysImpl.dll"), TEXT("Global Hotkeys"), MB_OK | MB_ICONERROR);
 
-typedef void (WINAPI *DLL_Function_InitGlobalHotkeysPlugin) ();
-typedef void (WINAPI *DLL_Function_ReleaseGlobalHotkeysPlugin) ();
-
-#if defined (__cplusplus)
+	InitGlobalHotkeysPlugin = (DLL_Function_InitGlobalHotkeysPlugin) GetProcAddress(hDLL, "InitGlobalHotkeysPlugin");
+	ReleaseGlobalHotkeysPlugin = (DLL_Function_ReleaseGlobalHotkeysPlugin) GetProcAddress(hDLL, "ReleaseGlobalHotkeysPlugin");
 }
-#endif
+
+int main(int argc, char **argv)
+{
+	QApplication app(argc, argv);
+	app.setQuitOnLastWindowClosed(false);
+
+	LoadGlobalHotkeysImplDll();
+	InitGlobalHotkeysPlugin();
+
+	return app.exec();
+	return 0;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008 Stefan Cosma <stefan.cosma@gmail.com>
+ * Copyright (c) 2010 Stefan Cosma <stefan.cosma@gmail.com>
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,59 +20,144 @@
  * THE SOFTWARE.
  */
 
-#ifndef ACTIONS_H
-#define ACTIONS_H
+#pragma once
 
-#include <string>
-#include <map>
+#include "GhAction.h"
 
-static enum Actions
+class OpenSettingsDialogAction : public GhAction
 {
-	eActionNotDefined,
-	eActionReloadHotkeys,
-	eActionOpenSettingsFile,
-	eActionOpenSettingsDialog,
-	eActionPlayPause,
-	eActionStop,
-	eActionNextTrack,
-	eActionPreviousTrack,
-	eActionRandom,
-	eActionRepeat,
-	eActionSongRatingClear,
-	eActionSongRating1,
-	eActionSongRating2,
-	eActionSongRating3,
-	eActionSongRating4,
-	eActionSongRating5,
-	eActionShowHide,
-	eActionVolumeUp,
-	eActionVolumeDown,
-	eActionToggleMute
+public:
+	OpenSettingsDialogAction() : GhAction("Open Settings Dialog") {};
+	void execute() const;
+}; 
+
+class PlayPauseAction : public GhAction
+{
+public:
+	PlayPauseAction() : GhAction("Play/Pause") {};
+	void execute() const;
 };
 
-extern std::map<const std::string, Actions> actionsMap;
+class StopAction : public GhAction
+{
+public:
+	StopAction() : GhAction("Stop") {};
+	void execute() const;
+};
 
-void InitActionsMap();
+class NextTrackAction : public GhAction
+{
+public:
+	NextTrackAction() : GhAction("NextTrack") {};
+	void execute() const;
+};
 
-void ReloadHotkeys();
-void OpenSettingsFile();
-void OpenSettingsDialog();
+class PreviousTrackAction : public GhAction
+{
+public:
+	PreviousTrackAction() : GhAction("PreviousTrack") {};
+	void execute() const;
+};
 
-void PlayPause();
-void Stop();
-void NextTrack();
-void PreviousTrack();
-void Random();
-void Repeat();
-void ClearSongRating();
-void SongRating1();
-void SongRating2();
-void SongRating3();
-void SongRating4();
-void SongRating5();
-void ShowHide();
-void VolumeUp();
-void VolumeDown();
-void ToggleMute();
+class ToggleRandomAction : public GhAction
+{
+public:
+	ToggleRandomAction() : GhAction("ToggleRandom") {};
+	void execute() const;
+};
 
-#endif /* ACTIONS_H */
+class ToggleRepeatAction : public GhAction
+{
+public:
+	ToggleRepeatAction() : GhAction("ToggleRepeat") {};
+	void execute() const;
+};
+
+class ShowHideAction : public GhAction
+{
+public:
+	ShowHideAction() : GhAction("ShowHide") {};
+	void execute() const;
+};
+
+class ToggleVolumeAction 
+{
+protected:
+	void ToggleVolume(const long step) const;
+};
+
+class VolumeUpAction : public GhAction, public ToggleVolumeAction
+{
+public:
+	VolumeUpAction() : GhAction("VolumeUp") {};
+	void execute() const;
+};
+
+class VolumeDownAction : public GhAction, public ToggleVolumeAction
+{
+public:
+	VolumeDownAction() : GhAction("VolumeDown") {};
+	void execute() const;
+};
+
+class ToggleMuteAction : public GhAction
+{
+public:
+	ToggleMuteAction() : GhAction("ToggleMute") {};
+	void execute() const;
+};
+
+class RateSongAction
+{
+protected:
+	void RateSong(const unsigned int rating) const;
+};
+
+class SongRatingClearAction : public GhAction, public RateSongAction
+{
+public:
+	SongRatingClearAction() : GhAction("SongRatingClear") {};
+	void execute() const;
+};
+
+class SongRating1Action : public GhAction, public RateSongAction
+{
+public:
+	SongRating1Action() : GhAction("SongRating1") {};
+	void execute() const;
+};
+
+class SongRating2Action : public GhAction, public RateSongAction
+{
+public:
+	SongRating2Action() : GhAction("SongRating2") {};
+	void execute() const;
+};
+
+class SongRating3Action : public GhAction, public RateSongAction
+{
+public:
+	SongRating3Action() : GhAction("SongRating3") {};
+	void execute() const;
+};
+
+class SongRating4Action : public GhAction, public RateSongAction
+{
+public:
+	SongRating4Action() : GhAction("SongRating4") {};
+	void execute() const;
+};
+
+class SongRating5Action : public GhAction, public RateSongAction
+{
+public:
+	SongRating5Action() : GhAction("SongRating5") {};
+	void execute() const;
+};
+
+//class Action : public GhAction
+//{
+//public:
+//	Action() : GhAction("") {};
+//	void execute() const;
+//};

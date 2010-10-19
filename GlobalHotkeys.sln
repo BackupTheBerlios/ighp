@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlobalHotkeysPlugin", "GlobalHotkeysPlugin\GlobalHotkeysPlugin.vcproj", "{74745936-4D3F-471D-8296-937B68532609}"
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlobalHotkeysTest", "GlobalHotkeysTest\GlobalHotkeysTest.vcproj", "{A565F77A-04C7-4B16-BA77-BA94D7C6905B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlobalHotkeysImpl", "GlobalHotkeysImpl\GlobalHotkeysImpl.vcproj", "{656FA21C-B5AD-443C-BD2B-C9FE72B613BC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlobalHotkeysImpl", "GlobalHotkeysImpl\GlobalHotkeysImpl.vcproj", "{057683A0-4D42-4F7D-930E-0EB2DC2C1386}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlobalHotkeysPlugin", "GlobalHotkeysPlugin\GlobalHotkeysPlugin.vcproj", "{74745936-4D3F-471D-8296-937B68532609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +13,18 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Debug|Win32.Build.0 = Debug|Win32
+		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Release|Win32.ActiveCfg = Release|Win32
+		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Release|Win32.Build.0 = Release|Win32
+		{057683A0-4D42-4F7D-930E-0EB2DC2C1386}.Debug|Win32.ActiveCfg = Debug|Win32
+		{057683A0-4D42-4F7D-930E-0EB2DC2C1386}.Debug|Win32.Build.0 = Debug|Win32
+		{057683A0-4D42-4F7D-930E-0EB2DC2C1386}.Release|Win32.ActiveCfg = Release|Win32
+		{057683A0-4D42-4F7D-930E-0EB2DC2C1386}.Release|Win32.Build.0 = Release|Win32
 		{74745936-4D3F-471D-8296-937B68532609}.Debug|Win32.ActiveCfg = Debug|Win32
 		{74745936-4D3F-471D-8296-937B68532609}.Debug|Win32.Build.0 = Debug|Win32
 		{74745936-4D3F-471D-8296-937B68532609}.Release|Win32.ActiveCfg = Release|Win32
 		{74745936-4D3F-471D-8296-937B68532609}.Release|Win32.Build.0 = Release|Win32
-		{656FA21C-B5AD-443C-BD2B-C9FE72B613BC}.Debug|Win32.ActiveCfg = Debug|Win32
-		{656FA21C-B5AD-443C-BD2B-C9FE72B613BC}.Debug|Win32.Build.0 = Debug|Win32
-		{656FA21C-B5AD-443C-BD2B-C9FE72B613BC}.Release|Win32.ActiveCfg = Release|Win32
-		{656FA21C-B5AD-443C-BD2B-C9FE72B613BC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008 Stefan Cosma <stefan.cosma@gmail.com>
+ * Copyright (c) 2010 Stefan Cosma <stefan.cosma@gmail.com>
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,16 +20,22 @@
  * THE SOFTWARE.
  */
 
-#include "PluginSettings.h" 
-#include "GlobalHotkeysPlugin.h"
+#include "GhPlugin.h"
 
-GlobalHotkeysPlugin* globalHotkeysPlugin = 0;
-HANDLE dllHandle = 0;
+#include <windows.h>
+
+#include <QApplication>
+
+GhPlugin *plugin;
+
+static QApplication *application;
+static bool appInitialized = false;
+static HWND hwnd = NULL;
+
+LRESULT CALLBACK WindowProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
-	dllHandle = hModule;
-
 	switch (ul_reason_for_call)
 	{
 		case DLL_PROCESS_ATTACH:
@@ -42,27 +48,82 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 	return true;
 }
 
-extern "C" void WINAPI Initialize()
-{
-	// Write here all the code you need to initialize the DLL
-}
-
-extern "C" void WINAPI Release()
-{
-	// Write here all the code you need to free everything ...
-}
-
 extern "C" void WINAPI InitGlobalHotkeysPlugin()
 {
-	PluginSettings::Instance()->ReadConfigFile(PluginSettings::Instance()->GetHotkeys());
+	if (QApplication::instance() == NULL) {
+		int argc = 1;
+		application = new QApplication(argc, (char **) NULL);
+		application->setQuitOnLastWindowClosed(false);
+		appInitialized = true;
+	}
 
-	globalHotkeysPlugin = new GlobalHotkeysPlugin();
+	plugin = new GhPlugin();
+
+	
+	WNDCLASS wc;
+	TCHAR szAppName [] = TEXT("GlobalHotkeysClass");
+
+	wc.style = CS_HREDRAW|CS_VREDRAW;
+	wc.lpfnWndProc = WindowProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = NULL;
+	wc.hIcon = NULL;
+	wc.hCursor = LoadCursor (NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH) (COLOR_WINDOW+1);
+	wc.lpszMenuName = NULL;
+	wc.lpszClassName = szAppName;
+
+	RegisterClass (&wc);
+
+	hwnd = CreateWindowEx (WS_EX_TRANSPARENT, szAppName, TEXT("Global Hotkeys"),  WS_POPUP, 
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, NULL, NULL);
 }
 
 extern "C" void WINAPI ReleaseGlobalHotkeysPlugin()
 {
-	delete globalHotkeysPlugin;
-	globalHotkeysPlugin = 0;
+	if (hwnd != NULL) {
+		DestroyWindow(hwnd);
+		hwnd = NULL;
+	}
 
-	PluginSettings::Destroy();
+	if (plugin != NULL) {
+		delete plugin;
+		plugin = NULL;
+	}
+
+	if (appInitialized && application != NULL) {
+		delete application;
+		application = NULL;
+	}
+}
+
+extern "C" void WINAPI Initialize()
+{
+	// Nothing to do
+}
+
+extern "C" void WINAPI Release()
+{
+	ReleaseGlobalHotkeysPlugin();
+}
+
+LRESULT CALLBACK WindowProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+        case WM_CREATE:
+			plugin->setHWnd(hwnd);
+			plugin->loadHotkeys();
+			plugin->registerHotkeys();
+            break;
+        case WM_HOTKEY:
+            plugin->handleGlobalKey(wParam);
+            break;
+        case WM_DESTROY:
+            plugin->unregisterHotkeys();
+            return 0;
+    }
+
+    return DefWindowProc (hwnd, message, wParam, lParam);
 }

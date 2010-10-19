@@ -20,20 +20,15 @@
  * THE SOFTWARE.
  */
 
-#pragma once
+#include "GhKey.h"
 
-#include <windows.h>
-
-#if defined (__cplusplus)
-extern "C" {
-#endif
-
-typedef void (WINAPI *DLL_Function_Initialize) ();
-typedef void (WINAPI *DLL_Function_Release) ();
-
-typedef void (WINAPI *DLL_Function_InitGlobalHotkeysPlugin) ();
-typedef void (WINAPI *DLL_Function_ReleaseGlobalHotkeysPlugin) ();
-
-#if defined (__cplusplus)
+GhKey::GhKey(const GhKey &other)
+{
+	key = other.key;
+	ghAction = other.ghAction;
 }
-#endif
+
+bool GhKey::operator==(const GhKey &other) const
+{
+	return key == other.key;
+}
