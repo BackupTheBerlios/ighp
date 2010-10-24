@@ -19,7 +19,6 @@ Global
 		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Release|Win32.ActiveCfg = Release|Win32
 		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Release|Win32.Build.0 = Release|Win32
 		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Static|Win32.ActiveCfg = Static|Win32
-		{A565F77A-04C7-4B16-BA77-BA94D7C6905B}.Static|Win32.Build.0 = Static|Win32
 		{057683A0-4D42-4F7D-930E-0EB2DC2C1386}.Debug|Win32.ActiveCfg = Debug|Win32
 		{057683A0-4D42-4F7D-930E-0EB2DC2C1386}.Debug|Win32.Build.0 = Debug|Win32
 		{057683A0-4D42-4F7D-930E-0EB2DC2C1386}.Release|Win32.ActiveCfg = Release|Win32
@@ -37,6 +36,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		QtVersion = 4.7.0
+		QtVersion = 4.7.0 Static
 	EndGlobalSection
 EndGlobal
