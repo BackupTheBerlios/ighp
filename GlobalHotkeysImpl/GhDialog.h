@@ -32,6 +32,7 @@ class QTableView;
 class QPushButton;
 class QItemSelection;
 class QModelIndex;
+class QModelIndex;
 
 class GhAction;
 class GhKey;
@@ -55,6 +56,8 @@ public slots:
 	void keyModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 	void accept();
+
+	void hotkeysTableDoubleClicked(const QModelIndex& index);
 
 private:
 	GhKeyModel *keyModel;

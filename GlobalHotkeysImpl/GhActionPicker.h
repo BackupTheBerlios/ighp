@@ -27,6 +27,7 @@
 
 class QListWidget;
 class QDialogButtonBox;
+class QModelIndex;
 
 class GhAction;
 
@@ -38,6 +39,9 @@ public:
 	GhActionPicker(const QList<GhAction*> *actions ,QWidget *parent = 0);
 	int selectedId() const { return id; }
 	void done(int result);
+
+public slots:
+	void listDoubleClicked(const QModelIndex& index);
 
 private:
 	int id;

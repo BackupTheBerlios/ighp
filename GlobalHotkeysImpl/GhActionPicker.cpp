@@ -51,6 +51,7 @@ GhActionPicker::GhActionPicker(const QList<GhAction*> *actions, QWidget *parent)
 
 	connect(dialogButtonBox, SIGNAL(accepted()), this, SLOT(accept()));
 	connect(dialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+	connect(list, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(listDoubleClicked(const QModelIndex&)));
 }
 
 void GhActionPicker::done(int result)
@@ -62,4 +63,9 @@ void GhActionPicker::done(int result)
 			id = item->data(Qt::UserRole).toInt();
 	}
 	QDialog::done(result);
+}
+
+void GhActionPicker::listDoubleClicked(const QModelIndex& /* index */)
+{
+	done(QDialog::Accepted);
 }

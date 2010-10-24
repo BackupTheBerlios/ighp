@@ -55,6 +55,8 @@ GhDialog::GhDialog(QWidget *parent) : QDialog(parent)
 
 	connect(keyModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
 		this, SLOT(keyModelDataChanged(const QModelIndex &, const QModelIndex &)));
+
+	connect(hotkeysTable, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(hotkeysTableDoubleClicked(const QModelIndex&)));
 }
 
 GhDialog::~GhDialog()
@@ -162,6 +164,27 @@ void GhDialog::accept()
 {
 	applyButtonClicked();
 	QDialog::accept();
+}
+
+void GhDialog::hotkeysTableDoubleClicked(const QModelIndex& index)
+{
+	GhKeyPicker keyPicker = GhKeyPicker(this);
+	if (keyPicker.exec() != QDialog::Accepted)
+		return;
+
+	int keySequenceId = keyPicker.keySequence();
+	if (keySequenceId < 0) {
+		QMessageBox msgBox;
+		msgBox.setIcon(QMessageBox::Warning);
+		msgBox.setWindowTitle(tr("Invalid Hotkey"));
+		msgBox.setText(tr("Invalid key sequence recieved."));
+		msgBox.exec();
+		return;
+	}
+
+	QModelIndex kindex = keyModel->index(index.row(), GhKeyModel::Column_Hotkey, QModelIndex());
+	keyModel->setData(kindex, keySequenceId, Qt::EditRole);
+	applyButton->setEnabled(true);
 }
 
 #pragma region Gui
