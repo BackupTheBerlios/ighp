@@ -132,6 +132,7 @@ void GhDialog::changeHkButtonClicked()
 
 	QModelIndex index = keyModel->index(indexList[0].row(), GhKeyModel::Column_Hotkey, QModelIndex());
 	keyModel->setData(index, keySequenceId, Qt::EditRole);
+	applyButton->setEnabled(true);
 }
 
 void GhDialog::removeHkButtonClicked()
@@ -142,6 +143,8 @@ void GhDialog::removeHkButtonClicked()
 	foreach(index, indexList) {
 		keyModel->removeRows(index.row(), 1, QModelIndex());
 	}
+
+	applyButton->setEnabled(true);
 }
 
 void GhDialog::keyModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -153,6 +156,12 @@ void GhDialog::applyButtonClicked()
 {
 	plugin->resetKeys(keyModel->hotkeys());
 	applyButton->setEnabled(false);
+}
+
+void GhDialog::accept()
+{
+	applyButtonClicked();
+	QDialog::accept();
 }
 
 #pragma region Gui

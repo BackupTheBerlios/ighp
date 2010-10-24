@@ -54,6 +54,8 @@ public slots:
 	void hotkeysTableSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 	void keyModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
+	void accept();
+
 private:
 	GhKeyModel *keyModel;
 	QTabWidget *tabWidget;
