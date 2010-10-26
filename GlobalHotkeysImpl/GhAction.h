@@ -22,18 +22,24 @@
 
 #pragma once
 
-#include <windows.h>
+#include <QString>
+#include <QList>
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
+class GhAction
+{
+public:
+	static const QList<GhAction*> Actions;
 
-typedef void (WINAPI *DLL_Function_Initialize) ();
-typedef void (WINAPI *DLL_Function_Release) ();
+	GhAction(QString name) : mName(name) {}
+	virtual void execute() const = 0;
 
-typedef void (WINAPI *DLL_Function_InitGlobalHotkeysPlugin) ();
-typedef void (WINAPI *DLL_Function_ReleaseGlobalHotkeysPlugin) ();
+	const QString name() const { return mName; }
 
-#if defined (__cplusplus)
-}
-#endif
+	bool operator==(const GhAction &other) const;
+
+protected:
+	void ShowErrorMessage() const;
+
+private:
+	QString mName;
+};

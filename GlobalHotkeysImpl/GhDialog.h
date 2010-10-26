@@ -22,18 +22,58 @@
 
 #pragma once
 
-#include <windows.h>
+#include <QDialog>
+#include <QList>
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
+class QWidget;
+class QTabWidget;
+class QDialogButtonBox;
+class QTableView;
+class QPushButton;
+class QItemSelection;
+class QModelIndex;
+class QModelIndex;
 
-typedef void (WINAPI *DLL_Function_Initialize) ();
-typedef void (WINAPI *DLL_Function_Release) ();
+class GhAction;
+class GhKey;
+class GhKeyModel;
 
-typedef void (WINAPI *DLL_Function_InitGlobalHotkeysPlugin) ();
-typedef void (WINAPI *DLL_Function_ReleaseGlobalHotkeysPlugin) ();
+class GhDialog : public QDialog
+{
+	Q_OBJECT
 
-#if defined (__cplusplus)
-}
-#endif
+public:
+	GhDialog(QWidget *parent = 0);
+	~GhDialog();
+
+public slots:
+	void addHkButtonClicked();
+	void changeHkButtonClicked();
+	void removeHkButtonClicked();
+	void applyButtonClicked();
+
+	void hotkeysTableSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+	void keyModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+
+	void accept();
+
+	void hotkeysTableDoubleClicked(const QModelIndex& index);
+
+private:
+	GhKeyModel *keyModel;
+	QTabWidget *tabWidget;
+	
+	QWidget *hotkeysPage;
+	QWidget *aboutPage;
+
+	QDialogButtonBox *dialogButtonBox;
+
+	QTableView *hotkeysTable;
+
+	QPushButton *addHkButton;
+	QPushButton *changeHkButton;
+	QPushButton *removeHkButton;
+	QPushButton *applyButton;
+
+	void initializeGui();
+};

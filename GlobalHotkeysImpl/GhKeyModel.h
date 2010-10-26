@@ -22,18 +22,37 @@
 
 #pragma once
 
-#include <windows.h>
+#include <QAbstractTableModel>
+#include <QList>
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
+class QModelIndex;
+class QVariant;
 
-typedef void (WINAPI *DLL_Function_Initialize) ();
-typedef void (WINAPI *DLL_Function_Release) ();
+class GhKey;
 
-typedef void (WINAPI *DLL_Function_InitGlobalHotkeysPlugin) ();
-typedef void (WINAPI *DLL_Function_ReleaseGlobalHotkeysPlugin) ();
+class GhKeyModel : public QAbstractTableModel
+{
+public:
+	enum { ColumnCount = 0x2 };
 
-#if defined (__cplusplus)
-}
-#endif
+	enum Column {
+		Column_Action = 0x0,
+		Column_Hotkey = 0x1,
+	};
+
+	GhKeyModel(QObject *parent = 0);
+
+	const QList<GhKey> hotkeys() const { return keys; }
+	void setGhKeyList(const QList<GhKey> &list) { keys = list; reset(); }
+	int rowCount(const QModelIndex &parent) const;
+	int columnCount(const QModelIndex &parent) const { return ColumnCount; }
+	QVariant data(const QModelIndex &index, int role) const;
+	QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+	bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole);
+	bool insertRows(int position, int rows, const QModelIndex &index=QModelIndex());
+	bool removeRows(int position, int rows, const QModelIndex &index=QModelIndex());
+	bool containsKeySequence(const int keySequenceId) const;
+
+private:
+	QList<GhKey> keys;
+};

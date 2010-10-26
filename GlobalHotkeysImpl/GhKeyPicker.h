@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008 Stefan Cosma <stefan.cosma@gmail.com>
+ * Copyright (c) 2010 Stefan Cosma <stefan.cosma@gmail.com>
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,41 +20,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef PLUGIN_SETTINGS_H
-#define PLUGIN_SETTINGS_H
+#pragma once
 
-#include <string>
-#include <map>
+#include <QDialog>
 
-#include "Hotkeys.h"
-#include "Actions.h"
+class QKeyEvent;
+class QShowEvent;
+class QHideEvent;
 
-class PluginSettings
+class GhKeyPicker : public QDialog
 {
+	Q_OBJECT
+
 public:
-	static PluginSettings* Instance();
-	static void Destroy();
-
-	std::map<const unsigned int, Hotkey*>* GetHotkeys();
-
-	bool ReadConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys);
-	bool WriteConfigFile(std::map<const unsigned int, Hotkey*>* hotkeys);
-
-	bool GetConfigFile(std::string* str);
-	bool GetConfigFileDir(std::string* str);
+	GhKeyPicker(QWidget *parent = 0);
+	int keySequence() const {  return mKeySequence; };
 
 private:
-	static PluginSettings* ms_instance;
+	int mKeySequence;
 
-	const std::string m_configFile;
-	unsigned int m_keyId;
-
-	std::map<const unsigned int, Hotkey*>* m_hotkeys;
-
-	explicit PluginSettings();
-	~PluginSettings();
-
-	void AddDefaultHotkeys();
+	void showEvent(QShowEvent *event);
+	void hideEvent(QHideEvent *event);
+	void keyPressEvent(QKeyEvent *event);
+	void keyReleaseEvent(QKeyEvent *event);
 };
-
-#endif /* PLUGIN_SETTINGS_H */

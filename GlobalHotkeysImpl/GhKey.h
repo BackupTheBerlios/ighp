@@ -22,18 +22,22 @@
 
 #pragma once
 
-#include <windows.h>
+#include <QKeySequence>
+class GhAction;
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
+class GhKey
+{
+public:
+	GhKey(GhAction const* action, QKeySequence keySequence): ghAction(action) { key = keySequence; }
+	GhKey(const GhKey &other);
 
-typedef void (WINAPI *DLL_Function_Initialize) ();
-typedef void (WINAPI *DLL_Function_Release) ();
+	const GhAction* action() const { return ghAction; }
 
-typedef void (WINAPI *DLL_Function_InitGlobalHotkeysPlugin) ();
-typedef void (WINAPI *DLL_Function_ReleaseGlobalHotkeysPlugin) ();
+	QKeySequence keySequence() const { return key; }
+	void setKeySequence(const QKeySequence &keySequence) { key = keySequence; }
 
-#if defined (__cplusplus)
-}
-#endif
+	bool operator==(const GhKey &other) const;
+private:
+	QKeySequence key;
+	const GhAction *ghAction;
+};

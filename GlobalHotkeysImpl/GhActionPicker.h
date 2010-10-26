@@ -22,18 +22,29 @@
 
 #pragma once
 
-#include <windows.h>
+#include <QDialog>
+#include <QList>
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
+class QListWidget;
+class QDialogButtonBox;
+class QModelIndex;
 
-typedef void (WINAPI *DLL_Function_Initialize) ();
-typedef void (WINAPI *DLL_Function_Release) ();
+class GhAction;
 
-typedef void (WINAPI *DLL_Function_InitGlobalHotkeysPlugin) ();
-typedef void (WINAPI *DLL_Function_ReleaseGlobalHotkeysPlugin) ();
+class GhActionPicker : public QDialog
+{
+	Q_OBJECT
 
-#if defined (__cplusplus)
-}
-#endif
+public:
+	GhActionPicker(const QList<GhAction*> *actions ,QWidget *parent = 0);
+	int selectedId() const { return id; }
+	void done(int result);
+
+public slots:
+	void listDoubleClicked(const QModelIndex& index);
+
+private:
+	int id;
+	QListWidget* list;
+	QDialogButtonBox* dialogButtonBox;
+};

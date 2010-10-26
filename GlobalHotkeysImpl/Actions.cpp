@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008 Stefan Cosma <stefan.cosma@gmail.com>
+ * Copyright (c) 2010 Stefan Cosma <stefan.cosma@gmail.com>
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,99 +20,62 @@
  * THE SOFTWARE.
  */
 
-#include "Actions.h"
-
-#define WIN32_LEAN_AND_MEAN
+#include "actions.h"
+#include "GhDialog.h"
 
 #include <windows.h>
 #include <comutil.h>
 
 #include "iTunesCOMInterface.h"
-#include "GlobalHotkeysPlugin.h"
 
-#include "PluginSettings.h" 
-#include "Hotkeys.h"
+#include <QString>
+#include <QTextStream>
+#include <QMessageBox>
 
-extern HWND hWd;
-
-std::map<const std::string, Actions> actionsMap = std::map<const std::string, Actions>();
-
-void InitActionsMap()
+bool GhAction::operator==(const GhAction &other) const
 {
-	actionsMap["ReloadHotkeys"] = eActionReloadHotkeys;
-	actionsMap["OpenSettingsFile"] = eActionOpenSettingsFile;
-	actionsMap["OpenSettingsDialog"] = eActionOpenSettingsDialog;
-	actionsMap["PlayPause"] = eActionPlayPause;
-	actionsMap["Stop"] = eActionStop;
-	actionsMap["NextTrack"] = eActionNextTrack;
-	actionsMap["PreviousTrack"] = eActionPreviousTrack;
-	actionsMap["ToggleRandom"] = eActionRandom;
-	actionsMap["ToggleRepeat"] = eActionRepeat;
-	actionsMap["SongRatingClear"] = eActionSongRatingClear;
-	actionsMap["SongRating1"] = eActionSongRating1;
-	actionsMap["SongRating2"] = eActionSongRating2;
-	actionsMap["SongRating3"] = eActionSongRating3;
-	actionsMap["SongRating4"] = eActionSongRating4;
-	actionsMap["SongRating5"] = eActionSongRating5;
-	actionsMap["ShowHide"] = eActionShowHide;
-	actionsMap["VolumeUp"] = eActionVolumeUp;
-	actionsMap["VolumeDown"] = eActionVolumeDown;
-	actionsMap["ToggleMute"] = eActionToggleMute;
+	return mName == other.mName;
 }
 
-void ReloadHotkeys()
+void GhAction::ShowErrorMessage() const
 {
-	std::map<const unsigned int, Hotkey*>* hotkeys = PluginSettings::Instance()->GetHotkeys();
-	std::map<const unsigned int, Hotkey*>::iterator iter;
+	QString errorMessage;
+	QTextStream(&errorMessage) << "Could not execute action: " << mName 
+		<< ". iTunes is not responding.";
 
-	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
-		UnregisterHotKey(hWd, iter->first);
-		delete iter->second;
-		iter->second = 0;
-	}
-
-	PluginSettings::Instance()->ReadConfigFile(PluginSettings::Instance()->GetHotkeys());
-
-	hotkeys = PluginSettings::Instance()->GetHotkeys();
-	for (iter = hotkeys->begin(); iter != hotkeys->end(); iter++) {
-		unsigned int modifiers = (iter->second->GetAlt() ? MOD_ALT : 0) | 
-			                     (iter->second->GetControl() ? MOD_CONTROL : 0) | 
-			                     (iter->second->GetShift() ? MOD_SHIFT : 0) | 
-			                     (iter->second->GetWin() ? MOD_WIN : 0);
-		RegisterHotKey(hWd, iter->first, modifiers, iter->second->GetKeyCode());
-	}
-
-	MessageBox(NULL, "Hotkeys reloaded", "Ighp", MB_OK | MB_ICONINFORMATION);
+	QMessageBox msgBox;
+	msgBox.setIcon(QMessageBox::Critical);
+	msgBox.setWindowTitle("Global Hotkeys Plugin");
+	msgBox.setText(errorMessage);
+	msgBox.exec();
 }
 
-void OpenSettingsFile()
+const QList<GhAction*> GhAction::Actions = QList<GhAction*>()
+	<< new OpenSettingsDialogAction()
+	<< new PlayPauseAction()
+	<< new StopAction()
+	<< new NextTrackAction()
+	<< new PreviousTrackAction()
+	<< new ToggleRandomAction()
+	<< new ToggleRepeatAction()
+	<< new ShowHideAction()
+	<< new VolumeUpAction()
+	<< new VolumeDownAction()
+	<< new ToggleMuteAction()
+	<< new SongRatingClearAction()
+	<< new SongRating1Action()
+	<< new SongRating2Action()
+	<< new SongRating3Action()
+	<< new SongRating4Action()
+	<< new SongRating5Action();
+
+void OpenSettingsDialogAction::execute() const
 {
-	STARTUPINFO si;
-	PROCESS_INFORMATION pi;
-
-	ZeroMemory( &si, sizeof(si) );
-	si.cb = sizeof(si);
-	ZeroMemory( &pi, sizeof(pi) );
-
-	std::string configFilePath = std::string("");
-	if (!(PluginSettings::Instance()->GetConfigFile(&configFilePath)))
-		return;
-
-	char params[MAX_PATH];
-	ZeroMemory(params, sizeof(char) * MAX_PATH);
-
-	strncpy_s(params, MAX_PATH, "notepad.exe ", _TRUNCATE);
-	strcat_s(params, MAX_PATH, configFilePath.c_str());
-
-	CreateProcess(NULL, params, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi); 
+	GhDialog dialog = GhDialog(0);
+	dialog.exec();
 }
 
-void OpenSettingsDialog()
-{
-	GetGlobalHotkeysPlugin().GetGlobalHotkeysDialog().DoModal();
-}
-
-void PlayPause()
+void PlayPauseAction::execute() const 
 {
 	IiTunes* iITunes = 0;
 	HRESULT hRes;
@@ -125,12 +88,14 @@ void PlayPause()
 	if(hRes == S_OK && iITunes) {
 		iITunes->PlayPause();
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
 }
 
-void Stop()
+void StopAction::execute() const
 {
 	IiTunes* iITunes = 0;
 	HRESULT hRes;
@@ -143,12 +108,14 @@ void Stop()
 	if(hRes == S_OK && iITunes) {
 		iITunes->Stop();
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
 }
 
-void NextTrack()
+void NextTrackAction::execute() const
 {
 	IiTunes* iITunes = 0;
 	HRESULT hRes;
@@ -161,13 +128,14 @@ void NextTrack()
 	if(hRes == S_OK && iITunes) {
 		iITunes->NextTrack();
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
-
 }
 
-void PreviousTrack()
+void PreviousTrackAction::execute() const
 {
 	IiTunes* iITunes = 0;
 	HRESULT hRes;
@@ -180,12 +148,14 @@ void PreviousTrack()
 	if(hRes == S_OK && iITunes) {
 		iITunes->PreviousTrack();
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
 }
 
-void Random()
+void ToggleRandomAction::execute() const
 {
 	IiTunes* iITunes = 0;
 	IITPlaylist* iIPlaylist = 0;
@@ -211,13 +181,14 @@ void Random()
 		}
 		
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
-
 }
 
-void Repeat()
+void ToggleRepeatAction::execute() const
 {
 	IiTunes* iITunes = 0;
 	IITPlaylist* iIPlaylist = 0;
@@ -253,68 +224,14 @@ void Repeat()
 		}
 
 		iITunes->Release();
-	}
-
-	CoUninitialize();
-
-}
-
-void RateSong(unsigned int rating)
-{
-	IiTunes* iITunes = 0;
-	IITTrack* iITTrack = 0;
-	HRESULT hRes;
-
-	CoInitialize(0);
-
-	// Create itunes interface
-    hRes = CoCreateInstance(CLSID_iTunesApp, NULL, CLSCTX_LOCAL_SERVER, IID_IiTunes, (PVOID*)&iITunes);
-
-	if(hRes == S_OK && iITunes) {
-		iITunes->get_CurrentTrack(&iITTrack);
-
-		if(iITTrack) {
-			iITTrack->put_Rating(rating);
-			iITTrack->Release();
-		}
-
-		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
 }
 
-void ClearSongRating()
-{
-	RateSong(0);
-}
-
-void SongRating1()
-{
-	RateSong(20);
-}
-
-void SongRating2()
-{
-	RateSong(40);
-}
-
-void SongRating3()
-{
-	RateSong(60);
-}
-
-void SongRating4()
-{
-	RateSong(80);
-}
-
-void SongRating5()
-{
-	RateSong(100);
-}
-
-void ShowHide()
+void ShowHideAction::execute() const
 {
 	IiTunes* iITunes = 0;
 	IITBrowserWindow* iITBrowserWindow = 0; 
@@ -339,12 +256,14 @@ void ShowHide()
 		}
 
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
 }
 
-void ToggleVolume(long step)
+void ToggleVolumeAction::ToggleVolume(const long step) const
 {
 	IiTunes* iITunes = 0;
 	HRESULT hRes;
@@ -367,17 +286,17 @@ void ToggleVolume(long step)
 	CoUninitialize();
 }
 
-void VolumeUp()
+void VolumeUpAction::execute() const
 {
 	ToggleVolume(5);
 }
 
-void VolumeDown()
+void VolumeDownAction::execute() const
 {
 	ToggleVolume(-5);
 }
 
-void ToggleMute()
+void ToggleMuteAction::execute() const
 {
 	IiTunes* iITunes = 0;
 	HRESULT hRes;
@@ -395,7 +314,69 @@ void ToggleMute()
 		iITunes->put_Mute(isMuted);
 
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
 }
+
+void RateSongAction::RateSong(const unsigned int rating) const
+{
+	IiTunes* iITunes = 0;
+	IITTrack* iITTrack = 0;
+	HRESULT hRes;
+
+	CoInitialize(0);
+
+	// Create itunes interface
+    hRes = CoCreateInstance(CLSID_iTunesApp, NULL, CLSCTX_LOCAL_SERVER, IID_IiTunes, (PVOID*)&iITunes);
+
+	if(hRes == S_OK && iITunes) {
+		iITunes->get_CurrentTrack(&iITTrack);
+
+		if(iITTrack) {
+			iITTrack->put_Rating(rating);
+			iITTrack->Release();
+		}
+
+		iITunes->Release();
+	}
+
+	CoUninitialize();
+}
+
+void SongRatingClearAction::execute() const
+{
+	RateSong(0);
+}
+
+void SongRating1Action::execute() const
+{
+	RateSong(20);
+}
+
+void SongRating2Action::execute() const
+{
+	RateSong(40);
+}
+
+void SongRating3Action::execute() const
+{
+	RateSong(60);
+}
+
+void SongRating4Action::execute() const
+{
+	RateSong(80);
+}
+
+void SongRating5Action::execute() const
+{
+	RateSong(100);
+}
+
+//void Action::execute() const
+//{
+//
+//}
