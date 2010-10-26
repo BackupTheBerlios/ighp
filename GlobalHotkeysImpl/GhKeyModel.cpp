@@ -114,3 +114,13 @@ QVariant GhKeyModel::headerData(int section, Qt::Orientation orientation, int ro
 
 	return QVariant();
 }
+
+bool GhKeyModel::containsKeySequence(const int keySequenceId) const
+{
+	for (int i = 0; i < keys.size(); ++i) {
+		if(keys[i].keySequence()[0] == keySequenceId)
+			return true;
+	}
+
+	return false;
+}

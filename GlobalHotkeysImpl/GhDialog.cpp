@@ -103,7 +103,14 @@ void GhDialog::addHkButtonClicked()
 		return;
 	}
 
-	//TODO: Check for duplicate keys;
+	if (keyModel->containsKeySequence(keySequenceId)) {
+		QMessageBox msgBox;
+		msgBox.setIcon(QMessageBox::Warning);
+		msgBox.setWindowTitle(tr("Invalid Hotkey"));
+		msgBox.setText(tr("Key combination already defined."));
+		msgBox.exec();
+		return;
+	}
 
 	int rowIndex = keyModel->hotkeys().count();
 	keyModel->insertRows(rowIndex, 1, QModelIndex());
@@ -128,6 +135,15 @@ void GhDialog::changeHkButtonClicked()
 		msgBox.setIcon(QMessageBox::Warning);
 		msgBox.setWindowTitle(tr("Invalid Hotkey"));
 		msgBox.setText(tr("Invalid key sequence recieved."));
+		msgBox.exec();
+		return;
+	}
+
+	if (keyModel->containsKeySequence(keySequenceId)) {
+		QMessageBox msgBox;
+		msgBox.setIcon(QMessageBox::Warning);
+		msgBox.setWindowTitle(tr("Invalid Hotkey"));
+		msgBox.setText(tr("Key combination already defined."));
 		msgBox.exec();
 		return;
 	}
