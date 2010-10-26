@@ -271,10 +271,10 @@ void GhPlugin::initializeHotkeysMap()
 	hotkeysMap["Space"] = VK_SPACE;
 	hotkeysMap["Backspace"] = VK_BACK;
 	hotkeysMap["Tab"] = VK_TAB;
-	hotkeysMap["Escape"] = VK_ESCAPE;
+	hotkeysMap["Esc"] = VK_ESCAPE;
 	
-	hotkeysMap["PageUp"] = VK_PRIOR;
-	hotkeysMap["PageDown"] = VK_NEXT;
+	hotkeysMap["PgUp"] = VK_PRIOR;
+	hotkeysMap["PgDown"] = VK_NEXT;
 	
 	hotkeysMap["End"] = VK_END;
 	hotkeysMap["Home"] = VK_HOME;
@@ -284,8 +284,8 @@ void GhPlugin::initializeHotkeysMap()
 	hotkeysMap["Right"] = VK_RIGHT;
 	hotkeysMap["Down"] = VK_DOWN;
 
-	hotkeysMap["Insert"] = VK_INSERT;
-	hotkeysMap["Delete"] = VK_DELETE;
+	hotkeysMap["Ins"] = VK_INSERT;
+	hotkeysMap["Del"] = VK_DELETE;
 
 	hotkeysMap["PrintScreen"] = VK_SNAPSHOT;
 	hotkeysMap["Pause"] = VK_PAUSE;
@@ -297,12 +297,12 @@ void GhPlugin::initializeHotkeysMap()
 	hotkeysMap[","] = VK_OEM_COMMA;
 	hotkeysMap["."] = VK_OEM_PERIOD;
 
-	hotkeysMap["MM_PlayPause"] = VK_MEDIA_PLAY_PAUSE;
-	hotkeysMap["MM_Previous"] = VK_MEDIA_PREV_TRACK;
-	hotkeysMap["MM_Next"] = VK_MEDIA_NEXT_TRACK;
-	hotkeysMap["MM_VolumeDown"] = VK_VOLUME_DOWN;
-	hotkeysMap["MM_VolumeUp"] = VK_VOLUME_UP;
-	hotkeysMap["MM_Stop"] = VK_MEDIA_STOP;
+	hotkeysMap["Media Play"] = VK_MEDIA_PLAY_PAUSE;
+	hotkeysMap["Media Stop"] = VK_MEDIA_STOP;
+	hotkeysMap["Media Previous"] = VK_MEDIA_PREV_TRACK;
+	hotkeysMap["Media Next"] = VK_MEDIA_NEXT_TRACK;
+	hotkeysMap["Volume Down"] = VK_VOLUME_DOWN;
+	hotkeysMap["Volume Up"] = VK_VOLUME_UP;
 }
 
 QString GhPlugin::getLastWinErrorMessage()

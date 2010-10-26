@@ -233,7 +233,32 @@ void GhDialog::initializeGui()
 	hpLayout->addLayout(hpButtonLayout);
 
 	QVBoxLayout *apLayout = new QVBoxLayout;
-	apLayout->addWidget(new QLabel("<a href='http://ighp.berlios.de/'>http://ighp.berlios.de/</a>"));
+	apLayout->addWidget(new QLabel(
+		"<p><strong>iTunes Global Hotkeys Plugin 0.5</strong><br>"
+		"Copiright (C) 2008-2010 Stefan Cosma</p>"
+		""
+		"<p>Project homepage: <a href='http://ighp.berlios.de'>http://ighp.berlios.de</a></p>"
+		""
+		"<p>Permission is hereby granted, free of charge, to any person obtaining a copy<br>"
+		"of this software and associated documentation files (the \"Software\"), to deal<br>"
+		"in the Software without restriction, including without limitation the rights<br>"
+		"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<br>"
+		"copies of the Software, and to permit persons to whom the Software is<br>"
+		"furnished to do so, subject to the following conditions:<br>"
+		"<br>"
+		"The above copyright notice and this permission notice shall be included in<br>"
+		"all copies or substantial portions of the Software.<br>"
+		"<br>"
+		"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,<br>"
+		"EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<br>"
+		"MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<br>"
+		"NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT<br>"
+		"HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,<br>"
+		"WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<br>"
+		"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER<br>"
+		"DEALINGS IN THE SOFTWARE.</p>"
+	));
+	apLayout->addStretch();
 
 	hotkeysPage = new QWidget;
 	hotkeysPage->setLayout(hpLayout);
@@ -258,6 +283,7 @@ void GhDialog::initializeGui()
 	layout->addWidget(dialogButtonBox);
 	
 	setLayout(layout);
+	resize(400, 450);
 	setWindowTitle(tr("Global Hotkeys"));
 }
 #pragma endregion

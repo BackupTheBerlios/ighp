@@ -48,35 +48,35 @@ public:
 class NextTrackAction : public GhAction
 {
 public:
-	NextTrackAction() : GhAction("NextTrack") {};
+	NextTrackAction() : GhAction("Next Track") {};
 	void execute() const;
 };
 
 class PreviousTrackAction : public GhAction
 {
 public:
-	PreviousTrackAction() : GhAction("PreviousTrack") {};
+	PreviousTrackAction() : GhAction("Previous Track") {};
 	void execute() const;
 };
 
 class ToggleRandomAction : public GhAction
 {
 public:
-	ToggleRandomAction() : GhAction("ToggleRandom") {};
+	ToggleRandomAction() : GhAction("Toggle Random") {};
 	void execute() const;
 };
 
 class ToggleRepeatAction : public GhAction
 {
 public:
-	ToggleRepeatAction() : GhAction("ToggleRepeat") {};
+	ToggleRepeatAction() : GhAction("Toggle Repeat") {};
 	void execute() const;
 };
 
 class ShowHideAction : public GhAction
 {
 public:
-	ShowHideAction() : GhAction("ShowHide") {};
+	ShowHideAction() : GhAction("Show/Hide") {};
 	void execute() const;
 };
 
@@ -89,21 +89,21 @@ protected:
 class VolumeUpAction : public GhAction, public ToggleVolumeAction
 {
 public:
-	VolumeUpAction() : GhAction("VolumeUp") {};
+	VolumeUpAction() : GhAction("Increase Volume") {};
 	void execute() const;
 };
 
 class VolumeDownAction : public GhAction, public ToggleVolumeAction
 {
 public:
-	VolumeDownAction() : GhAction("VolumeDown") {};
+	VolumeDownAction() : GhAction("Decrease Volume") {};
 	void execute() const;
 };
 
 class ToggleMuteAction : public GhAction
 {
 public:
-	ToggleMuteAction() : GhAction("ToggleMute") {};
+	ToggleMuteAction() : GhAction("Toggle Mute") {};
 	void execute() const;
 };
 
@@ -116,42 +116,42 @@ protected:
 class SongRatingClearAction : public GhAction, public RateSongAction
 {
 public:
-	SongRatingClearAction() : GhAction("SongRatingClear") {};
+	SongRatingClearAction() : GhAction("Clear Song Rating") {};
 	void execute() const;
 };
 
 class SongRating1Action : public GhAction, public RateSongAction
 {
 public:
-	SongRating1Action() : GhAction("SongRating1") {};
+	SongRating1Action() : GhAction("Set Rate 1 Star") {};
 	void execute() const;
 };
 
 class SongRating2Action : public GhAction, public RateSongAction
 {
 public:
-	SongRating2Action() : GhAction("SongRating2") {};
+	SongRating2Action() : GhAction("Set Rate 2 Stars") {};
 	void execute() const;
 };
 
 class SongRating3Action : public GhAction, public RateSongAction
 {
 public:
-	SongRating3Action() : GhAction("SongRating3") {};
+	SongRating3Action() : GhAction("Set Rate 3 Stars") {};
 	void execute() const;
 };
 
 class SongRating4Action : public GhAction, public RateSongAction
 {
 public:
-	SongRating4Action() : GhAction("SongRating4") {};
+	SongRating4Action() : GhAction("Set Rate 4 Stars") {};
 	void execute() const;
 };
 
 class SongRating5Action : public GhAction, public RateSongAction
 {
 public:
-	SongRating5Action() : GhAction("SongRating5") {};
+	SongRating5Action() : GhAction("Set Rate 5 Stars") {};
 	void execute() const;
 };
 
