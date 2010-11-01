@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "GlobalHotkeys.h"
+
 #include <QList>
 #include <QMap>
 
@@ -48,6 +50,8 @@ public:
 	void handleGlobalKey(const unsigned int wParam) const;
 
 private:
+	DISALLOW_COPY_AND_ASSIGN(GhPlugin);
+
 	void *hWnd;
 	QList<GhKey> ghKeys;
 

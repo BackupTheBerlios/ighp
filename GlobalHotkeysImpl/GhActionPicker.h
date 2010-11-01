@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "GlobalHotkeys.h"
+
 #include <QDialog>
 #include <QList>
 
@@ -44,6 +46,8 @@ public slots:
 	void listDoubleClicked(const QModelIndex& index);
 
 private:
+	DISALLOW_COPY_AND_ASSIGN(GhActionPicker);
+
 	int id;
 	QListWidget* list;
 	QDialogButtonBox* dialogButtonBox;

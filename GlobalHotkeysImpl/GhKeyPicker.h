@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "GlobalHotkeys.h"
+
 #include <QDialog>
 
 class QKeyEvent;
@@ -33,10 +35,12 @@ class GhKeyPicker : public QDialog
 	Q_OBJECT
 
 public:
-	GhKeyPicker(QWidget *parent = 0);
+	explicit GhKeyPicker(QWidget *parent = 0);
 	int keySequence() const {  return mKeySequence; };
 
 private:
+	DISALLOW_COPY_AND_ASSIGN(GhKeyPicker);
+
 	int mKeySequence;
 
 	void showEvent(QShowEvent *event);

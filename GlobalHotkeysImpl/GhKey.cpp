@@ -28,6 +28,17 @@ GhKey::GhKey(const GhKey &other)
 	ghAction = other.ghAction;
 }
 
+GhKey& GhKey::operator=(const GhKey &other)
+{
+	if (this == &other)
+        return *this;
+
+	key = other.key;
+	ghAction = other.ghAction;
+
+	return *this;
+}
+
 bool GhKey::operator==(const GhKey &other) const
 {
 	return key == other.key;

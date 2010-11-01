@@ -22,62 +22,8 @@
 
 #pragma once
 
-#include "GlobalHotkeys.h"
-
-#include <QDialog>
-#include <QList>
-
-class QWidget;
-class QTabWidget;
-class QDialogButtonBox;
-class QTableView;
-class QPushButton;
-class QItemSelection;
-class QModelIndex;
-class QModelIndex;
-
-class GhAction;
-class GhKey;
-class GhKeyModel;
-
-class GhDialog : public QDialog
-{
-	Q_OBJECT
-
-public:
-	explicit GhDialog(QWidget *parent = 0);
-	~GhDialog();
-
-public slots:
-	void addHkButtonClicked();
-	void changeHkButtonClicked();
-	void removeHkButtonClicked();
-	void applyButtonClicked();
-
-	void hotkeysTableSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-	void keyModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
-	void accept();
-
-	void hotkeysTableDoubleClicked(const QModelIndex& index);
-
-private:
-	DISALLOW_COPY_AND_ASSIGN(GhDialog);
-
-	GhKeyModel *keyModel;
-	QTabWidget *tabWidget;
-	
-	QWidget *hotkeysPage;
-	QWidget *aboutPage;
-
-	QDialogButtonBox *dialogButtonBox;
-
-	QTableView *hotkeysTable;
-
-	QPushButton *addHkButton;
-	QPushButton *changeHkButton;
-	QPushButton *removeHkButton;
-	QPushButton *applyButton;
-
-	void initializeGui();
-};
+// A macro to disallow the copy constructor and operator= functions
+// This should be used in the private: declarations for a class
+#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
+  TypeName(const TypeName&);               \
+  void operator=(const TypeName&)

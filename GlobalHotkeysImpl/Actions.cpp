@@ -71,7 +71,7 @@ const QList<GhAction*> GhAction::Actions = QList<GhAction*>()
 
 void OpenSettingsDialogAction::execute() const
 {
-	GhDialog dialog = GhDialog(0);
+	GhDialog dialog(0);
 	dialog.exec();
 }
 
@@ -281,6 +281,8 @@ void ToggleVolumeAction::ToggleVolume(const long step) const
 		iITunes->put_SoundVolume(volume);
 
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();
@@ -341,6 +343,8 @@ void RateSongAction::RateSong(const unsigned int rating) const
 		}
 
 		iITunes->Release();
+	} else {
+		ShowErrorMessage();
 	}
 
 	CoUninitialize();

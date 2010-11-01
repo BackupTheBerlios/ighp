@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "GlobalHotkeys.h"
 #include "GhAction.h"
 
 class OpenSettingsDialogAction : public GhAction
@@ -29,6 +30,9 @@ class OpenSettingsDialogAction : public GhAction
 public:
 	OpenSettingsDialogAction() : GhAction("Open Settings Dialog") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(OpenSettingsDialogAction);
 }; 
 
 class PlayPauseAction : public GhAction
@@ -36,6 +40,9 @@ class PlayPauseAction : public GhAction
 public:
 	PlayPauseAction() : GhAction("Play/Pause") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(PlayPauseAction);
 };
 
 class StopAction : public GhAction
@@ -43,6 +50,9 @@ class StopAction : public GhAction
 public:
 	StopAction() : GhAction("Stop") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(StopAction);
 };
 
 class NextTrackAction : public GhAction
@@ -50,6 +60,9 @@ class NextTrackAction : public GhAction
 public:
 	NextTrackAction() : GhAction("Next Track") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(NextTrackAction);
 };
 
 class PreviousTrackAction : public GhAction
@@ -57,6 +70,9 @@ class PreviousTrackAction : public GhAction
 public:
 	PreviousTrackAction() : GhAction("Previous Track") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(PreviousTrackAction);
 };
 
 class ToggleRandomAction : public GhAction
@@ -64,6 +80,9 @@ class ToggleRandomAction : public GhAction
 public:
 	ToggleRandomAction() : GhAction("Toggle Random") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(ToggleRandomAction);
 };
 
 class ToggleRepeatAction : public GhAction
@@ -71,6 +90,9 @@ class ToggleRepeatAction : public GhAction
 public:
 	ToggleRepeatAction() : GhAction("Toggle Repeat") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(ToggleRepeatAction);
 };
 
 class ShowHideAction : public GhAction
@@ -78,26 +100,39 @@ class ShowHideAction : public GhAction
 public:
 	ShowHideAction() : GhAction("Show/Hide") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(ShowHideAction);
 };
 
-class ToggleVolumeAction 
+class ToggleVolumeAction : public GhAction
 {
 protected:
+	explicit ToggleVolumeAction(QString name) : GhAction(name) {}
 	void ToggleVolume(const long step) const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(ToggleVolumeAction);
 };
 
-class VolumeUpAction : public GhAction, public ToggleVolumeAction
+class VolumeUpAction : public ToggleVolumeAction
 {
 public:
-	VolumeUpAction() : GhAction("Increase Volume") {};
+	VolumeUpAction() : ToggleVolumeAction("Increase Volume") {}
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(VolumeUpAction);
 };
 
-class VolumeDownAction : public GhAction, public ToggleVolumeAction
+class VolumeDownAction : public ToggleVolumeAction
 {
 public:
-	VolumeDownAction() : GhAction("Decrease Volume") {};
+	VolumeDownAction() : ToggleVolumeAction("Decrease Volume") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(VolumeDownAction);
 };
 
 class ToggleMuteAction : public GhAction
@@ -105,54 +140,79 @@ class ToggleMuteAction : public GhAction
 public:
 	ToggleMuteAction() : GhAction("Toggle Mute") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(ToggleMuteAction);
 };
 
-class RateSongAction
+class RateSongAction : public GhAction
 {
 protected:
+	explicit RateSongAction(QString name) : GhAction(name) {}
 	void RateSong(const unsigned int rating) const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(RateSongAction);
 };
 
-class SongRatingClearAction : public GhAction, public RateSongAction
+class SongRatingClearAction : public RateSongAction
 {
 public:
-	SongRatingClearAction() : GhAction("Clear Song Rating") {};
+	SongRatingClearAction() : RateSongAction("Clear Song Rating") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(SongRatingClearAction);
 };
 
-class SongRating1Action : public GhAction, public RateSongAction
+class SongRating1Action : public RateSongAction
 {
 public:
-	SongRating1Action() : GhAction("Set Rate 1 Star") {};
+	SongRating1Action() : RateSongAction("Set Rate 1 Star") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(SongRating1Action);
 };
 
-class SongRating2Action : public GhAction, public RateSongAction
+class SongRating2Action : public RateSongAction
 {
 public:
-	SongRating2Action() : GhAction("Set Rate 2 Stars") {};
+	SongRating2Action() : RateSongAction("Set Rate 2 Stars") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(SongRating2Action);
 };
 
-class SongRating3Action : public GhAction, public RateSongAction
+class SongRating3Action : public RateSongAction
 {
 public:
-	SongRating3Action() : GhAction("Set Rate 3 Stars") {};
+	SongRating3Action() : RateSongAction("Set Rate 3 Stars") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(SongRating3Action);
 };
 
-class SongRating4Action : public GhAction, public RateSongAction
+class SongRating4Action : public RateSongAction
 {
 public:
-	SongRating4Action() : GhAction("Set Rate 4 Stars") {};
+	SongRating4Action() : RateSongAction("Set Rate 4 Stars") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(SongRating4Action);
 };
 
-class SongRating5Action : public GhAction, public RateSongAction
+class SongRating5Action : public RateSongAction
 {
 public:
-	SongRating5Action() : GhAction("Set Rate 5 Stars") {};
+	SongRating5Action() : RateSongAction("Set Rate 5 Stars") {};
 	void execute() const;
+
+private:
+	DISALLOW_COPY_AND_ASSIGN(SongRating5Action);
 };
 
 //class Action : public GhAction
@@ -160,4 +220,7 @@ public:
 //public:
 //	Action() : GhAction("") {};
 //	void execute() const;
+//
+//private:
+//	DISALLOW_COPY_AND_ASSIGN();
 //};

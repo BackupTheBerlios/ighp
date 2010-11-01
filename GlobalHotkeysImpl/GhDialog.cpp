@@ -75,7 +75,7 @@ void GhDialog::hotkeysTableSelectionChanged(const QItemSelection &selected, cons
 
 void GhDialog::addHkButtonClicked()
 {
-	GhActionPicker actionPicker = GhActionPicker(&GhAction::Actions, this);
+	GhActionPicker actionPicker(&GhAction::Actions, this);
 	if (actionPicker.exec() != QDialog::Accepted)
 		return;
 
@@ -89,7 +89,7 @@ void GhDialog::addHkButtonClicked()
 		return;
 	}
 
-	GhKeyPicker keyPicker = GhKeyPicker(this);
+	GhKeyPicker keyPicker(this);
 	if (keyPicker.exec() != QDialog::Accepted)
 		return;
 
@@ -125,7 +125,7 @@ void GhDialog::changeHkButtonClicked()
 {
 	QModelIndexList indexList = hotkeysTable->selectionModel()->selectedRows();
 
-	GhKeyPicker keyPicker = GhKeyPicker(this);
+	GhKeyPicker keyPicker(this);
 	if (keyPicker.exec() != QDialog::Accepted)
 		return;
 
@@ -184,7 +184,7 @@ void GhDialog::accept()
 
 void GhDialog::hotkeysTableDoubleClicked(const QModelIndex& index)
 {
-	GhKeyPicker keyPicker = GhKeyPicker(this);
+	GhKeyPicker keyPicker(this);
 	if (keyPicker.exec() != QDialog::Accepted)
 		return;
 

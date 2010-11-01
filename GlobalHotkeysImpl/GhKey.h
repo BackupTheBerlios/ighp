@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "GlobalHotkeys.h"
+
 #include <QKeySequence>
 class GhAction;
 
@@ -29,7 +31,9 @@ class GhKey
 {
 public:
 	GhKey(GhAction const* action, QKeySequence keySequence): ghAction(action) { key = keySequence; }
+	
 	GhKey(const GhKey &other);
+	GhKey& operator=(const GhKey &other);
 
 	const GhAction* action() const { return ghAction; }
 

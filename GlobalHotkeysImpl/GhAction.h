@@ -22,24 +22,36 @@
 
 #pragma once
 
+#include "GlobalHotkeys.h"
+
 #include <QString>
 #include <QList>
 
-class GhAction
+class GhActionInterface
+{
+public:
+	virtual void execute() const = 0;
+
+protected:
+	virtual ~GhActionInterface() {}
+};
+
+class GhAction : public GhActionInterface
 {
 public:
 	static const QList<GhAction*> Actions;
-
-	GhAction(QString name) : mName(name) {}
-	virtual void execute() const = 0;
 
 	const QString name() const { return mName; }
 
 	bool operator==(const GhAction &other) const;
 
 protected:
+	explicit GhAction(QString name) : mName(name) {}
+	virtual ~GhAction() {}
 	void ShowErrorMessage() const;
 
 private:
+	DISALLOW_COPY_AND_ASSIGN(GhAction);
+
 	QString mName;
 };

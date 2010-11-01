@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "GlobalHotkeys.h"
+
 #include <QAbstractTableModel>
 #include <QList>
 
@@ -40,7 +42,7 @@ public:
 		Column_Hotkey = 0x1,
 	};
 
-	GhKeyModel(QObject *parent = 0);
+	explicit GhKeyModel(QObject *parent = 0);
 
 	const QList<GhKey> hotkeys() const { return keys; }
 	void setGhKeyList(const QList<GhKey> &list) { keys = list; reset(); }
@@ -54,5 +56,7 @@ public:
 	bool containsKeySequence(const int keySequenceId) const;
 
 private:
+	DISALLOW_COPY_AND_ASSIGN(GhKeyModel);
+
 	QList<GhKey> keys;
 };

@@ -42,6 +42,7 @@
 				PreprocessorDefinitions="UNICODE;WIN32;WIN32_LEAN_AND_MEAN;QT_LARGEFILE_SUPPORT;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;GLOBALHOTKEYSIMPL_LIB;QT_DLL"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"
 				DebugInformationFormat="0"
 			/>
 			<Tool
@@ -113,6 +114,7 @@
 				PreprocessorDefinitions="UNICODE;WIN32;WIN32_LEAN_AND_MEAN;QT_LARGEFILE_SUPPORT;QT_CORE_LIB;QT_GUI_LIB;GLOBALHOTKEYSIMPL_LIB;QT_DLL"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -182,6 +184,7 @@
 				PreprocessorDefinitions="UNICODE;WIN32;WIN32_LEAN_AND_MEAN;QT_LARGEFILE_SUPPORT;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;GLOBALHOTKEYSIMPL_LIB;QT_DLL"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"
 				DebugInformationFormat="0"
 			/>
 			<Tool
@@ -443,6 +446,10 @@
 						Outputs=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GlobalHotkeys.h"
+				>
 			</File>
 			<File
 				RelativePath=".\GlobalHotkeysImpl.h"
