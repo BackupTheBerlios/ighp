@@ -4,10 +4,13 @@ syntax: glob
 *.suo
 *.user
 *.aps
+*.sdf
+*.opensdf
 Debug
 debug
 Release
 release
 Static
+ipch
 ighp_*.exe
 
