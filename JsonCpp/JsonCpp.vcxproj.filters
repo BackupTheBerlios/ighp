@@ -15,7 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
     <None Include="src\lib_json\json_internalarray.inl">
       <Filter>Source Files</Filter>
     </None>

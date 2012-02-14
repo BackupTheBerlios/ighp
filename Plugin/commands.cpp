@@ -26,6 +26,11 @@
 #include <comutil.h>
 #include <iTunesCOMInterface.h>
 
+void OpenConfigDialog()
+{
+	
+}
+
 void ShowErrorMessage()
 {
 
@@ -369,6 +374,7 @@ void SongRating5()
 
 const Command COMMANDS [ CMD_COUNT ] = 
 {
+	{ /* CMD_OPEN_CONFIG_DIALOG */		TEXT("Open Settings Dialog"),	&OpenConfigDialog	},
 	{ /* CMD_PLAYPAUSE */				TEXT("Play/Pause"),				&PlayPause			},
 	{ /* CMD_STOP */					TEXT("Stop"),					&Stop				},
 	{ /* CMD_NEXT_TRACK */				TEXT("Next Track"),				&NextTrack			},

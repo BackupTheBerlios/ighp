@@ -39,6 +39,33 @@ GlobalHotkeys::~GlobalHotkeys()
 
 void GlobalHotkeys::RegisterHotkeys()
 {
+	// Check for settings dialog hotkey
+	bool hasConfigDialogShortcut = false;
+	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
+	{
+		HotKey hk = (*it);
+
+		if (hk.command == CMD_OPEN_CONFIG_DIALOG)
+		{
+			hasConfigDialogShortcut = true;
+			break;
+		}
+	}
+
+	if (!hasConfigDialogShortcut)
+	{
+		// add default settings dialog hotkey: Ctrl + Shift + P
+		HotKey hk;
+		ZeroMemory(&hk, sizeof(HotKey));
+
+		hk.command			= CMD_OPEN_CONFIG_DIALOG;
+		hk.keycomb.control	= true;
+		hk.keycomb.shift	= true;
+		hk.keycomb.key		= 0x50;
+
+		m_hotkeys.push_back(hk);
+	}
+
 	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
 	{
 		HotKey hk = (*it);
@@ -139,10 +166,10 @@ void GlobalHotkeys::LoadHotkeys()
 		return;
 	}
 
-	unsigned long bufsize	= 0;
+	unsigned long bufsize	= GetFileSize(hFile, 0);
 	unsigned long bytesRead = 0;
 	
-	if (GetFileSize(hFile, &bufsize) == INVALID_FILE_SIZE)
+	if (bufsize == INVALID_FILE_SIZE)
 	{
 		// TODO: Report error
 		OutputDebugString(TEXT("Could not get file size\n"));
@@ -150,7 +177,7 @@ void GlobalHotkeys::LoadHotkeys()
 	}
 
 	char* ReadBuffer = new char[bufsize];
-	ZeroMemory(&ReadBuffer, sizeof(char) * bufsize);
+	ZeroMemory(ReadBuffer, bufsize * sizeof(char));
 
 	if (ReadFile(hFile, ReadBuffer, bufsize - 1, &bytesRead, NULL) == FALSE)
 	{
