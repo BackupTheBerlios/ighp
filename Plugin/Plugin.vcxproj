@@ -41,13 +41,13 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetName>ighp</TargetName>
     <LibraryPath>$(WXWIDGETS_PATH)\lib\vc_lib;$(OutDir);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(BOOST_PATH);$(SolutionDir)\win32++;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
+    <IncludePath>$(BOOST_PATH);$(SolutionDir)\Win32++\include;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>ighp</TargetName>
     <LibraryPath>$(WXWIDGETS_PATH)\lib\vc_lib;$(OutDir);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(BOOST_PATH);$(SolutionDir)\win32++;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
+    <IncludePath>$(BOOST_PATH);$(SolutionDir)\Win32++\include;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -62,6 +62,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glue.lib;json.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>
+      </AdditionalManifestFiles>
+      <InputResourceManifests>
+      </InputResourceManifests>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -80,14 +86,22 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>glue.lib;json.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>
+      </AdditionalManifestFiles>
+      <InputResourceManifests>
+      </InputResourceManifests>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="commands.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="ConfigDialog.h" />
     <ClInclude Include="GlobalHotkeys.h" />
+    <ClInclude Include="HotKeyManager.h" />
     <ClInclude Include="hotkeys.h" />
     <ClInclude Include="Plugin.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -95,6 +109,7 @@
   <ItemGroup>
     <ClCompile Include="commands.cpp" />
     <ClCompile Include="commons.cpp" />
+    <ClCompile Include="ConfigDialog.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -104,11 +119,15 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="GlobalHotkeys.cpp" />
+    <ClCompile Include="HotKeyManager.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

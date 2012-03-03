@@ -24,72 +24,17 @@
 #include "Plugin.h"
 #include "GlobalHotkeys.h"
 
-LRESULT CALLBACK WindowProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	GlobalHotkeys* pGlobalHotkeys = GHI::GetInstance();
-
-    switch (message)
-    {
-        case WM_CREATE:
-		{
-			pGlobalHotkeys->SetHwnd(hwnd);
-			pGlobalHotkeys->LoadHotkeys();
-			pGlobalHotkeys->RegisterHotkeys();
-            break;
-		}
-
-        case WM_HOTKEY:
-		{
-            pGlobalHotkeys->HandleGlobalKey(wParam);
-            break;
-		}
-
-        case WM_DESTROY:
-		{
-            pGlobalHotkeys->UnregisterHotkeys();
-			//pGlobalHotkeys->SaveHotkeys();
-            return 0;
-		}
-    }
-
-    return DefWindowProc (hwnd, message, wParam, lParam);
-}
-
 extern "C" IGHP_API void InitPlugin()
 {
-	WNDCLASS wc;
-	TCHAR szAppName [] = TEXT("GlobalHotkeysPlugin");
-
-	wc.style = CS_HREDRAW|CS_VREDRAW;
-	wc.lpfnWndProc = WindowProc;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hInstance = NULL;
-	wc.hIcon = NULL;
-	wc.hCursor = LoadCursor (NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH) (COLOR_WINDOW+1);
-	wc.lpszMenuName = NULL;
-	wc.lpszClassName = szAppName;
-
-	RegisterClass (&wc);
-
-	CreateWindowEx (WS_EX_TRANSPARENT, szAppName, TEXT("Global Hotkeys Plugin"),  WS_POPUP, 
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, NULL, NULL);
+	PluginWinApp* pPlugin = Plugin::GetInstance();
+	pPlugin->Run();
 }
 
 extern "C" IGHP_API void ReleasePlugin()
 {
-	GlobalHotkeys* pGlobalHotkeys = GHI::GetInstance();
-	HWND hwnd = pGlobalHotkeys->GetHwnd();
-
-	if (hwnd != NULL) {
-		DestroyWindow(hwnd);
-	}
-
-	SAFE_DEL(pGlobalHotkeys);
+	PluginWinApp* pPlugin = Plugin::GetInstance();
+	SAFE_DEL(pPlugin);
 }
-
-IGHP_API bool g_bIsRunning = true;
 
 extern "C"
 {

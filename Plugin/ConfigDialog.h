@@ -24,40 +24,55 @@
 
 #include <boost/utility.hpp>
 
-#include "Singleton.h"
 #include "HotKeyManager.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include <wincore.h>
+#include <dialog.h>
+#include <controls.h>
+#include <listview.h>
 
-class GlobalHotkeys : public CWnd, public HotKeyManager, boost::noncopyable
+#include "resource.h"
+
+class HotkeysListView : public CListView, boost::noncopyable
 {
 public:
-	GlobalHotkeys()				{ }
-	virtual ~GlobalHotkeys()	{ }
+	HotkeysListView()			{ };
+	virtual ~HotkeysListView()	{ };
+
+	void SetHotkeysList(HotKeys* pHotkeys) { m_pHotkeys = pHotkeys; }
+	void PopulateList();
 
 private:
-	virtual LRESULT WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	virtual void PreRegisterClass(WNDCLASS &wc);
+	HotKeys* m_pHotkeys;
+
+	virtual void OnInitialUpdate();
 	virtual void PreCreate(CREATESTRUCT &cs);
-
-	void OnCreate(HWND hWnd);
-	void OnHotkey(WPARAM wParam, LPARAM lParam);
-	void OnDestroy(HWND hWnd);
+	virtual LRESULT OnNotifyReflect(WPARAM wParam, LPARAM lParam);
 };
 
-class PluginWinApp : public CWinApp, boost::noncopyable
+class CommandsCombo : public CComboBox, boost::noncopyable
 {
 public:
-	PluginWinApp();
-	virtual ~PluginWinApp();
-
-	GlobalHotkeys* GetMainWindow() { return m_pMainWindow; }
-
-private:
-	GlobalHotkeys* m_pMainWindow;
+	CommandsCombo()				{ };
+	virtual ~CommandsCombo()	{ };
+	virtual void PreCreate(CREATESTRUCT &cs);
 };
 
-typedef Singleton<PluginWinApp> Plugin;
+class ConfigDialog : public CDialog, public HotKeyManager, boost::noncopyable
+{
+public:
+	ConfigDialog(UINT nResID = IDD_CONFIG_DIALOG, CWnd* pParent = NULL) : CDialog(nResID, pParent) { };
+	virtual ~ConfigDialog() { };
+
+private:
+	HotkeysListView	m_listView;
+	CommandsCombo	m_comboBox;
+
+	virtual BOOL OnInitDialog();
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	virtual void OnOK();
+
+	void OnApply();
+};

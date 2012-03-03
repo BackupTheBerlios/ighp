@@ -22,11 +22,27 @@
 
 #pragma once
 
-#ifdef PLUGIN_EXPORTS
-#define IGHP_API __declspec(dllexport)
-#else
-#define IGHP_API __declspec(dllimport)
-#endif
+#include <list>
 
-extern "C" IGHP_API void InitPlugin();
-extern "C" IGHP_API void ReleasePlugin();
+#include "hotkeys.h"
+
+typedef std::list<HotKey>			HotKeys;
+typedef std::list<HotKey>::iterator HotKeysIterator;
+
+class HotKeyManager
+{
+public:
+	HotKeyManager()				{ }
+	virtual ~HotKeyManager()	{ }
+
+protected:
+	HotKeys				m_hotkeys;
+
+	void SaveHotkeys();
+	void LoadHotkeys();
+
+private:
+	const string_t		GetConfigFileDir() const;
+	const string_t		GetConfigFilePath() const;
+
+};

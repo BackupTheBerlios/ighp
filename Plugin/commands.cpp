@@ -26,9 +26,23 @@
 #include <comutil.h>
 #include <iTunesCOMInterface.h>
 
+#include "GlobalHotkeys.h"
+#include "ConfigDialog.h"
+
 void OpenConfigDialog()
 {
-	
+	static ConfigDialog* pDialog = 0;
+
+	if (pDialog && pDialog->IsWindow())
+	{
+		pDialog->ShowWindow();
+		pDialog->BringWindowToTop();
+		return;
+	}
+
+	pDialog = new ConfigDialog(IDD_CONFIG_DIALOG, Plugin::GetInstance()->GetMainWindow());
+	pDialog->DoModal();
+	SAFE_DEL(pDialog);
 }
 
 void ShowErrorMessage()
@@ -374,21 +388,21 @@ void SongRating5()
 
 const Command COMMANDS [ CMD_COUNT ] = 
 {
-	{ /* CMD_OPEN_CONFIG_DIALOG */		TEXT("Open Settings Dialog"),	&OpenConfigDialog	},
-	{ /* CMD_PLAYPAUSE */				TEXT("Play/Pause"),				&PlayPause			},
-	{ /* CMD_STOP */					TEXT("Stop"),					&Stop				},
-	{ /* CMD_NEXT_TRACK */				TEXT("Next Track"),				&NextTrack			},
-	{ /* CMD_PREVIOUS_TRACK */			TEXT("Previous Track"),			&PreviousTrack		},
-	{ /* CMD_TOGGLE_RANDOM */			TEXT("Toggle Random"),			&ToggleRandom		},
-	{ /* CMD_TOGGLE_REPEAT */			TEXT("Toggle Repeat"),			&ToggleRepeat		},
-	{ /* CMD_SHOWHIDE */				TEXT("Show/Hide"),				&ShowHide			},
-	{ /* CMD_VOLUME_UP */				TEXT("Increase Volume"),		&VolumeUp			},
-	{ /* CMD_VOLUME_DOWN */				TEXT("Decrease Volume"),		&VolumeDown			},
-	{ /* CMD_TOGGLE_MUTE */				TEXT("Toggle Mute"),			&ToggleMute			},
-	{ /* CMD_SONG_RATING_CLEAR */		TEXT("Clear Song Rating"),		&SongRatingClear	},
-	{ /* CMD_SONG_RATING_1 */			TEXT("Set Rate 1 Star"),		&SongRating1		},
-	{ /* CMD_SONG_RATING_2 */			TEXT("Set Rate 2 Stars"),		&SongRating2		},
-	{ /* CMD_SONG_RATING_3 */			TEXT("Set Rate 3 Stars"),		&SongRating3		},
-	{ /* CMD_SONG_RATING_4 */			TEXT("Set Rate 4 Stars"),		&SongRating4		},
-	{ /* CMD_SONG_RATING_5 */			TEXT("Set Rate 5 Stars"),		&SongRating5		}
+	{ /* CMD_OPEN_CONFIG_DIALOG */		IDS_CMD_OPEN_CONFIG_DIALOG,			&OpenConfigDialog	},
+	{ /* CMD_PLAYPAUSE */				IDS_CMD_PLAYPAUSE,					&PlayPause			},
+	{ /* CMD_STOP */					IDS_CMD_STOP,						&Stop				},
+	{ /* CMD_NEXT_TRACK */				IDS_CMD_NEXT_TRACK,					&NextTrack			},
+	{ /* CMD_PREVIOUS_TRACK */			IDS_CMD_PREVIOUS_TRACK,				&PreviousTrack		},
+	{ /* CMD_TOGGLE_RANDOM */			IDS_CMD_TOGGLE_RANDOM,				&ToggleRandom		},
+	{ /* CMD_TOGGLE_REPEAT */			IDS_CMD_TOGGLE_REPEAT,				&ToggleRepeat		},
+	{ /* CMD_SHOWHIDE */				IDS_CMD_SHOWHIDE,					&ShowHide			},
+	{ /* CMD_VOLUME_UP */				IDS_CMD_VOLUME_UP,					&VolumeUp			},
+	{ /* CMD_VOLUME_DOWN */				IDS_CMD_VOLUME_DOWN,				&VolumeDown			},
+	{ /* CMD_TOGGLE_MUTE */				IDS_CMD_TOGGLE_MUTE,				&ToggleMute			},
+	{ /* CMD_SONG_RATING_CLEAR */		IDS_CMD_SONG_RATING_CLEAR,			&SongRatingClear	},
+	{ /* CMD_SONG_RATING_1 */			IDS_CMD_SONG_RATING_1,				&SongRating1		},
+	{ /* CMD_SONG_RATING_2 */			IDS_CMD_SONG_RATING_2,				&SongRating2		},
+	{ /* CMD_SONG_RATING_3 */			IDS_CMD_SONG_RATING_3,				&SongRating3		},
+	{ /* CMD_SONG_RATING_4 */			IDS_CMD_SONG_RATING_4,				&SongRating4		},
+	{ /* CMD_SONG_RATING_5 */			IDS_CMD_SONG_RATING_5,				&SongRating5		}
 };

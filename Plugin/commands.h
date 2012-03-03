@@ -46,8 +46,8 @@ enum eCommand
 
 struct Command
 {
-	char_t* name;
-	void (* execute)(void);
+	int		textid;
+	void	(* execute)(void);
 };
 
 extern const Command COMMANDS [ CMD_COUNT ];

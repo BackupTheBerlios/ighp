@@ -1,0 +1,171 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_CONFIG_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 258
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG_DIALOG DIALOGEX 0, 0, 258, 265
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "iTunes Global HotKeys Plugin"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,87,244,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,144,244,50,14
+    PUSHBUTTON      "Apply",IDAPPLY,201,244,50,14
+    GROUPBOX        "HotKeys",IDC_STATIC,7,7,244,185
+    CONTROL         "HotKeys List",IDC_HOTKEYS_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,12,17,234,121
+    COMBOBOX        IDC_ACTIONS_COMBO,54,150,192,30,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Command",IDC_STATIC,18,153,31,8
+    PUSHBUTTON      "Modify",IDC_MODIFY,168,174,78,14
+    PUSHBUTTON      "Add",IDC_ADD,12,174,78,14
+    PUSHBUTTON      "Remove",IDC_CLEAR,90,174,78,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_COLUMN_COMMAND      "Command"
+    IDS_COLUMN_KEYCOMB      "Key Combination"
+    IDS_VK_SPACE            "Spacebar"
+    IDS_VK_BACK             "Backspace"
+    IDS_VK_TAB              "Tab"
+    IDS_VK_ESCAPE           "Escape"
+    IDS_VK_PRIOR            "PageUp"
+    IDS_VK_NEXT             "PageDown"
+    IDS_VK_END              "End"
+    IDS_VK_HOME             "Home"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_VK_LEFT             "Left"
+    IDS_VK_UP               "Up"
+    IDS_VK_RIGHT            "Right"
+    IDS_VK_DOWN             "Down"
+    IDS_VK_INSERT           "Insert"
+    IDS_VK_DELETE           "Delete"
+    IDS_VK_SNAPSHOT         "PrintScreen"
+    IDS_VK_PAUSE            "Pause"
+    IDS_VK_NUMLOCK          "NumLock"
+    IDS_VK_SUBTRACT         "-"
+    IDS_VK_ADD              "+"
+    IDS_VK_DIVIDE           "/"
+    IDS_VK_OEM_COMMA        ","
+    IDS_VK_OEM_PERIOD       "."
+    IDS_VK_CONTROL          "Ctrl"
+    IDS_VK_ALT              "Alt"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_VK_SHIFT            "Shift"
+    IDS_VK_META             "Win"
+    IDS_CMD_OPEN_CONFIG_DIALOG "Open Settings Dialog"
+    IDS_CMD_PLAYPAUSE       "Play/Pause"
+    IDS_CMD_STOP            "Stop"
+    IDS_CMD_NEXT_TRACK      "Next Track"
+    IDS_CMD_PREVIOUS_TRACK  "Previous Track"
+    IDS_CMD_TOGGLE_RANDOM   "Toggle Random"
+    IDS_CMD_TOGGLE_REPEAT   "Toggle Repeat"
+    IDS_CMD_SHOWHIDE        "Show/Hide"
+    IDS_CMD_VOLUME_UP       "Increase Volume"
+    IDS_CMD_VOLUME_DOWN     "Decrease Volume"
+    IDS_CMD_TOGGLE_MUTE     "Toggle Mute"
+    IDS_CMD_SONG_RATING_CLEAR "Clear Song Rating"
+    IDS_CMD_SONG_RATING_1   "Set Rate 1 Star"
+    IDS_CMD_SONG_RATING_2   "Set Rate 2 Stars"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_CMD_SONG_RATING_3   "Set Rate 3 Stars"
+    IDS_CMD_SONG_RATING_4   "Set Rate 4 Stars"
+    IDS_CMD_SONG_RATING_5   "Set Rate 5 Stars"
+    IDS_CONFIG_DIALOG_CAPTION "iTunes Global Hotkeys Plugin"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

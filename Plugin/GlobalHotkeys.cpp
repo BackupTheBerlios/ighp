@@ -20,51 +20,82 @@
  * THE SOFTWARE.
  */
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "stdafx.h"
 #include "GlobalHotkeys.h"
 
-#include <shlobj.h>
-#include <json\json.h>
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GlobalHotkeys::GlobalHotkeys()
-	: m_hwnd(0)
+LRESULT GlobalHotkeys::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	HWND hWnd = GetHwnd();
 
-}
-
-GlobalHotkeys::~GlobalHotkeys()
-{
-	m_hotkeys.clear();
-}
-
-void GlobalHotkeys::RegisterHotkeys()
-{
-	// Check for settings dialog hotkey
-	bool hasConfigDialogShortcut = false;
-	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
+	switch (uMsg)
 	{
-		HotKey hk = (*it);
-
-		if (hk.command == CMD_OPEN_CONFIG_DIALOG)
+		case WM_CREATE:
 		{
-			hasConfigDialogShortcut = true;
+			OnCreate(hWnd);
+			break;
+		}
+		
+		case WM_HOTKEY:
+		{
+			OnHotkey(wParam, lParam);
+			break;
+		}
+		
+		case WM_DESTROY:
+		{
+			OnDestroy(hWnd);
 			break;
 		}
 	}
 
-	if (!hasConfigDialogShortcut)
-	{
-		// add default settings dialog hotkey: Ctrl + Shift + P
-		HotKey hk;
-		ZeroMemory(&hk, sizeof(HotKey));
+	// Pass unhandled messages on to parent DialogProc
+	return WndProcDefault(uMsg, wParam, lParam);
+}
 
-		hk.command			= CMD_OPEN_CONFIG_DIALOG;
-		hk.keycomb.control	= true;
-		hk.keycomb.shift	= true;
-		hk.keycomb.key		= 0x50;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		m_hotkeys.push_back(hk);
-	}
+void GlobalHotkeys::PreRegisterClass(WNDCLASS &wc)
+{
+	wc.style			= CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc		= CWnd::StaticWindowProc;
+	wc.cbClsExtra		= 0;
+	wc.cbWndExtra		= 0;
+	wc.hInstance		= GetApp()->GetInstanceHandle();
+	wc.hIcon			= NULL;
+	wc.hCursor			= LoadCursor (NULL, IDC_ARROW);
+	wc.hbrBackground	= (HBRUSH) (COLOR_WINDOW + 1);
+	wc.lpszMenuName		= NULL;
+	wc.lpszClassName	= TEXT("GlobalHotkeysPlugin");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GlobalHotkeys::PreCreate(CREATESTRUCT &cs)
+{
+	cs.cx             = CW_USEDEFAULT;
+	cs.cy             = CW_USEDEFAULT;
+	cs.dwExStyle      = WS_EX_TRANSPARENT;
+	cs.hInstance      = GetApp()->GetInstanceHandle();
+	cs.hMenu          = NULL;
+	cs.hwndParent     = NULL;
+	cs.lpCreateParams = cs.lpCreateParams;
+	cs.lpszClass      = cs.lpszClass;
+	cs.lpszName       = TEXT("Global Hotkeys Plugin");
+	cs.style          = WS_POPUP;
+	cs.x              = CW_USEDEFAULT;
+	cs.y              = CW_USEDEFAULT;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GlobalHotkeys::OnCreate(HWND hWnd)
+{
+	LoadHotkeys();
 
 	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
 	{
@@ -76,7 +107,7 @@ void GlobalHotkeys::RegisterHotkeys()
 		if (hk.keycomb.shift)	modifiers |= MOD_SHIFT;
 		if (hk.keycomb.meta)	modifiers |= MOD_WIN;
 
-		if (RegisterHotKey(m_hwnd, hk.command, modifiers, hk.keycomb.key) == FALSE)
+		if (RegisterHotKey(hWnd, hk.command, modifiers, hk.keycomb.key) == FALSE)
 		{
 			// TODO: Report error
 			OutputDebugString(TEXT("Error while registering hotkey\n"));
@@ -84,13 +115,31 @@ void GlobalHotkeys::RegisterHotkeys()
 	}
 }
 
-void GlobalHotkeys::UnregisterHotkeys()
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GlobalHotkeys::OnHotkey(WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+
+	if (wParam < 0 || wParam >= CMD_COUNT)
+	{
+		// TODO: Report error
+		OutputDebugString(TEXT("Error while handling hotkey\n"));
+		return;
+	}
+
+	COMMANDS[wParam].execute();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GlobalHotkeys::OnDestroy(HWND hWnd)
 {
 	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
 	{
 		HotKey hk = (*it);
 
-		if (UnregisterHotKey(m_hwnd, hk.command) == FALSE)
+		if (UnregisterHotKey(hWnd, hk.command) == FALSE)
 		{
 			// TODO: Report error
 			OutputDebugString(TEXT("Error while unregistering hotkey\n"));
@@ -98,177 +147,28 @@ void GlobalHotkeys::UnregisterHotkeys()
 	}
 }
 
-void GlobalHotkeys::HandleGlobalKey(const unsigned int cmdId) const
-{
-	if (cmdId < 0 || cmdId >= CMD_COUNT)
-	{
-		// TODO: Report error
-		OutputDebugString(TEXT("Error while handling hotkey\n"));
-		return;
-	}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	COMMANDS[cmdId].execute();
+extern HANDLE g_dllHandle;
+
+PluginWinApp::PluginWinApp()
+	: m_pMainWindow(0)
+{
+	SetResourceHandle((HINSTANCE) g_dllHandle);
+
+	m_pMainWindow = new GlobalHotkeys();
+	m_pMainWindow->Create();
 }
 
-void GlobalHotkeys::SaveHotkeys()
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+PluginWinApp::~PluginWinApp()
 {
-	using namespace Json;
+	m_pMainWindow->Destroy();
+	//::PostQuitMessage(0); // really ?!?!
 
-	string_t configFile = GetConfigFilePath();
-	HANDLE hFile = CreateFile(configFile.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE) 
-	{
-		// TODO: Report error
-		OutputDebugString(TEXT("Could not open file for writing\n"));
-		return;
-	}
-
-	Value root;
-	
-	Value hotkeysobj;
-	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
-	{
-		HotKey hk = (*it);
-		
-		Value hkobj;
-		Value keycombobj;
-
-		keycombobj["key"]		= hk.keycomb.key;
-		keycombobj["alt"]		= hk.keycomb.alt;
-		keycombobj["control"]	= hk.keycomb.control;
-		keycombobj["shift"]		= hk.keycomb.shift;
-		keycombobj["meta"]		= hk.keycomb.meta;
-
-		hkobj["command"]		= hk.command;
-		hkobj["keycomb"]		= keycombobj;
-
-		hotkeysobj.append(hkobj);
-	}
-
-	root["hotkeys"] = hotkeysobj;
-
-	StyledWriter writer;
-	std::string configDoc = writer.write(root);
-	WriteFile(hFile, configDoc.c_str(), configDoc.size(), 0, NULL);
-	CloseHandle(hFile);
+	SAFE_DEL(m_pMainWindow);
 }
 
-void GlobalHotkeys::LoadHotkeys()
-{
-	using namespace Json;
-
-	string_t configFile = GetConfigFilePath();
-	HANDLE hFile = CreateFile(configFile.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE) 
-	{
-		// TODO: Report error
-		OutputDebugString(TEXT("Could not open file for reading\n"));
-		return;
-	}
-
-	unsigned long bufsize	= GetFileSize(hFile, 0);
-	unsigned long bytesRead = 0;
-	
-	if (bufsize == INVALID_FILE_SIZE)
-	{
-		// TODO: Report error
-		OutputDebugString(TEXT("Could not get file size\n"));
-		return;
-	}
-
-	char* ReadBuffer = new char[bufsize];
-	ZeroMemory(ReadBuffer, bufsize * sizeof(char));
-
-	if (ReadFile(hFile, ReadBuffer, bufsize - 1, &bytesRead, NULL) == FALSE)
-	{
-		// TODO: Report error
-		OutputDebugString(TEXT("Could not read file\n"));
-		return;
-	}
-
-	if (bytesRead <= 0 || bytesRead > bufsize)
-	{
-		// TODO: Report error
-		OutputDebugString(TEXT("No data read\n"));
-		return;
-	}
-
-	CloseHandle(hFile);
-
-	Value root;
-	Reader reader;
-
-	if (!reader.parse(std::string(ReadBuffer), root))
-	{
-		// TODO: Report error
-		OutputDebugString(TEXT("Error while reading config file\n"));
-		return;
-	}
-
-	const Value hotkeys = root["hotkeys"];
-	for (size_t i = 0; i < hotkeys.size(); ++i)
-	{
-		Value hotkey = hotkeys[i];
-		Value keycomb = hotkey["keycomb"];
-
-		HotKey hk;	
-		ZeroMemory(&hk, sizeof(HotKey));
-
-		hk.command			= static_cast<eCommand>(hotkey["command"].asUInt());
-		hk.keycomb.key		= keycomb["key"].asUInt();
-		hk.keycomb.alt		= keycomb["alt"].asBool();
-		hk.keycomb.control	= keycomb["control"].asBool();
-		hk.keycomb.shift	= keycomb["shift"].asBool();
-		hk.keycomb.meta		= keycomb["meta"].asBool();
-
-		m_hotkeys.push_back(hk);
-	}
-
-	SAFE_DEL_ARRAY(ReadBuffer);
-}
-
-const string_t GlobalHotkeys::GetConfigFileDir() const
-{
-	string_t dir;
-
-	OSVERSIONINFO osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-	GetVersionEx(&osvi);
-
-	TCHAR path[MAX_PATH];
-	ZeroMemory(path, sizeof(TCHAR) * MAX_PATH);
-
-	if (osvi.dwMajorVersion > 5)
-	{
-		// Vista and above
-		SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, path);
-		dir.append(path);
-		dir.append(TEXT("\\Apple Computer"));
-	}
-	else
-	{
-		// XP and 2000
-		SHGetFolderPath(NULL, CSIDL_MYMUSIC, NULL, 0, path);
-		dir.append(path);
-	}
-
-	dir.append(TEXT("\\iTunes\\iTunes Plug-ins"));
-	return dir;
-}
-
-const string_t GlobalHotkeys::GetConfigFilePath() const
-{
-	string_t path;
-
-	path.append(GetConfigFileDir());
-
-	if (path.length() != 0)
-	{
-		path.append(TEXT("\\"));
-	}
-
-	path.append(TEXT("GlobalHotkeys.config"));
-	return path;
-}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
