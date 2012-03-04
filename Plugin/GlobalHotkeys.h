@@ -38,6 +38,10 @@ public:
 	GlobalHotkeys()				{ }
 	virtual ~GlobalHotkeys()	{ }
 
+	void RegisterHotkeys();
+	void UnregisterHotkeys();
+	void ReloadHotkeys();
+
 private:
 	virtual LRESULT WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	virtual void PreRegisterClass(WNDCLASS &wc);

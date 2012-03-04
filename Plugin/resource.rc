@@ -170,6 +170,7 @@ BEGIN
     IDS_CONFIG_DIALOG_CAPTION "iTunes Global Hotkeys Plugin"
     IDS_HOTKEY_DIALOG_CAPTION "Hotkey for %s"
     IDS_HOTKEY_DIALOG_TEXT  "Press the new key combination for %s"
+    IDS_VK_UNKNOWN          "Key %#x"
 END
 
 #endif    // English (United States) resources

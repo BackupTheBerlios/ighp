@@ -36,7 +36,7 @@ void HotKeyManager::SaveHotkeys()
 	using namespace Json;
 
 	string_t configFile = GetConfigFilePath();
-	HANDLE hFile = CreateFile(configFile.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(configFile.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) 
 	{
 		// TODO: Report error
@@ -81,7 +81,7 @@ void HotKeyManager::LoadHotkeys()
 	using namespace Json;
 
 	string_t configFile = GetConfigFilePath();
-	HANDLE hFile = CreateFile(configFile.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(configFile.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) 
 	{
 		// TODO: Report error

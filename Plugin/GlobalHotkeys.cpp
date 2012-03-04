@@ -95,24 +95,7 @@ void GlobalHotkeys::PreCreate(CREATESTRUCT &cs)
 
 void GlobalHotkeys::OnCreate(HWND hWnd)
 {
-	LoadHotkeys();
-
-	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
-	{
-		HotKey hk = (*it);
-
-		unsigned int modifiers = 0;
-		if (hk.keycomb.alt)		modifiers |= MOD_ALT;
-		if (hk.keycomb.control)	modifiers |= MOD_CONTROL;
-		if (hk.keycomb.shift)	modifiers |= MOD_SHIFT;
-		if (hk.keycomb.meta)	modifiers |= MOD_WIN;
-
-		if (RegisterHotKey(hWnd, hk.command, modifiers, hk.keycomb.key) == FALSE)
-		{
-			// TODO: Report error
-			OutputDebugString(TEXT("Error while registering hotkey\n"));
-		}
-	}
+	RegisterHotkeys();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,16 +118,55 @@ void GlobalHotkeys::OnHotkey(WPARAM wParam, LPARAM lParam)
 
 void GlobalHotkeys::OnDestroy(HWND hWnd)
 {
+	UnregisterHotkeys();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GlobalHotkeys::RegisterHotkeys()
+{
+	LoadHotkeys();
+
 	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
 	{
 		HotKey hk = (*it);
 
-		if (UnregisterHotKey(hWnd, hk.command) == FALSE)
+		unsigned int modifiers = 0;
+		if (hk.keycomb.alt)		modifiers |= MOD_ALT;
+		if (hk.keycomb.control)	modifiers |= MOD_CONTROL;
+		if (hk.keycomb.shift)	modifiers |= MOD_SHIFT;
+		if (hk.keycomb.meta)	modifiers |= MOD_WIN;
+
+		if (RegisterHotKey(GetHwnd(), hk.command, modifiers, hk.keycomb.key) == FALSE)
+		{
+			// TODO: Report error
+			OutputDebugString(TEXT("Error while registering hotkey\n"));
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GlobalHotkeys::UnregisterHotkeys()
+{
+	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)
+	{
+		HotKey hk = (*it);
+
+		if (UnregisterHotKey(GetHwnd(), hk.command) == FALSE)
 		{
 			// TODO: Report error
 			OutputDebugString(TEXT("Error while unregistering hotkey\n"));
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GlobalHotkeys::ReloadHotkeys()
+{
+	UnregisterHotkeys();
+	RegisterHotkeys();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

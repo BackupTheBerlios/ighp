@@ -25,6 +25,8 @@
 
 #include "stdafx.h"
 #include "ConfigDialog.h"
+#include "Plugin.h"
+#include "GlobalHotkeys.h"
 
 #include "commands.h"
 
@@ -120,6 +122,7 @@ void ConfigDialog::OnOK()
 void ConfigDialog::OnApply()
 {
 	SaveHotkeys();
+	Plugin::GetInstance()->GetMainWindow()->ReloadHotkeys();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -390,28 +393,28 @@ BOOL HotkeyDialog::OnInitDialog()
 
 BOOL HotkeyDialog::PreTranslateMessage(MSG* pMsg)
 {
-	if (pMsg->message == WM_KEYDOWN)
+	if (pMsg->message != WM_KEYDOWN)
 	{
-		unsigned int key = pMsg->wParam;
-
-		if (key == VK_CONTROL || key == VK_MENU || key == VK_SHIFT || key == VK_RWIN || key == VK_LWIN)
-		{
-			return CDialog::PreTranslateMessage(pMsg);
-		}
-
-		m_hotkey.keycomb.control	= (::GetKeyState(VK_CONTROL) != 0);
-		m_hotkey.keycomb.alt		= (::GetKeyState(VK_MENU) != 0);
-		m_hotkey.keycomb.shift		= (::GetKeyState(VK_SHIFT) != 0);
-		//m_hotkey.keycomb.meta		= (::GetKeyState(VK_RWIN) != 0 || ::GetKeyState(VK_LWIN) != 0);
-
-		m_hotkey.keycomb.key		= key;
-
-		OnOK();
-
-		return TRUE;
+		return CDialog::PreTranslateMessage(pMsg);
 	}
 
-	return CDialog::PreTranslateMessage(pMsg);
+	unsigned int key = pMsg->wParam;
+
+	if (key == VK_CONTROL || key == VK_MENU || key == VK_SHIFT || key == VK_RWIN || key == VK_LWIN)
+	{
+		return CDialog::PreTranslateMessage(pMsg);
+	}
+
+	m_hotkey.keycomb.control	= (::GetKeyState(VK_CONTROL) < 0);
+	m_hotkey.keycomb.alt		= (::GetKeyState(VK_MENU) < 0);
+	m_hotkey.keycomb.shift		= (::GetKeyState(VK_SHIFT) < 0);
+	m_hotkey.keycomb.meta		= (::GetKeyState(VK_RWIN) < 0 || ::GetKeyState(VK_LWIN) < 0);
+
+	m_hotkey.keycomb.key		= key;
+
+	OnOK();
+
+	return TRUE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -569,8 +572,11 @@ string_t BuildKeyCombinationString(KeyCombination kc)
 	}
 	else
 	{
+		TCHAR ftext[256] = {0};
+		LoadString(GetApp()->GetInstanceHandle(), IDS_VK_UNKNOWN, ftext, sizeof(ftext)/sizeof(ftext[0]));
+		
 		ZeroMemory(text, 256);
-		_stprintf_s(text, 256, TEXT("%#x"), kc.key);
+		_stprintf_s(text, 256, ftext, kc.key);
 		str.append(text);
 	}
 
