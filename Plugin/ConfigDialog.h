@@ -44,12 +44,19 @@ public:
 	void SetHotkeysList(HotKeys* pHotkeys) { m_pHotkeys = pHotkeys; }
 	void PopulateList();
 
+	int GetSelectedItem() { return (int)::SendMessage(m_hWnd, LVM_GETNEXTITEM, (WPARAM) -1, (LPARAM) MAKELPARAM(LVNI_FOCUSED, 0)); }
+
+	void InsertHotkey(HotKey hk);
+	void UpdateHotkey(int item, KeyCombination keycomb);
+
 private:
 	HotKeys* m_pHotkeys;
 
 	virtual void OnInitialUpdate();
 	virtual void PreCreate(CREATESTRUCT &cs);
 	virtual LRESULT OnNotifyReflect(WPARAM wParam, LPARAM lParam);
+
+	void UpdateGuiFromSelection();
 };
 
 class CommandsCombo : public CComboBox, boost::noncopyable
@@ -63,16 +70,37 @@ public:
 class ConfigDialog : public CDialog, public HotKeyManager, boost::noncopyable
 {
 public:
-	ConfigDialog(UINT nResID = IDD_CONFIG_DIALOG, CWnd* pParent = NULL) : CDialog(nResID, pParent) { };
+	ConfigDialog(CWnd* pParent = NULL) : CDialog(IDD_CONFIG_DIALOG, pParent) { };
 	virtual ~ConfigDialog() { };
+
+	CListView* GetListView() {return &m_listView; }
+	CComboBox* GetComboBox() {return &m_comboBox; }
 
 private:
 	HotkeysListView	m_listView;
 	CommandsCombo	m_comboBox;
-
+	
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	virtual void OnOK();
 
 	void OnApply();
+	void OnAdd();
+	void OnRemove();
+	void OnModify();
+};
+
+class HotkeyDialog : public CDialog, boost::noncopyable
+{
+public:
+	HotkeyDialog(eCommand command, CWnd* pParent = NULL) : CDialog(IDD_HOTKEY_DIALOG, pParent) { m_hotkey.command = command; };
+	virtual ~HotkeyDialog() { };
+
+	HotKey GetHotKey() { return m_hotkey; }
+
+private:
+	HotKey m_hotkey; 
+
+	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

@@ -54,10 +54,13 @@ public:
 	PluginWinApp();
 	virtual ~PluginWinApp();
 
-	GlobalHotkeys* GetMainWindow() { return m_pMainWindow; }
+	virtual BOOL InitInstance();
+
+	GlobalHotkeys* GetMainWindow() { return &m_mainWindow; }
+	void Quit() { ::PostQuitMessage(0); }
 
 private:
-	GlobalHotkeys* m_pMainWindow;
+	GlobalHotkeys m_mainWindow;
 };
 
 typedef Singleton<PluginWinApp> Plugin;

@@ -24,6 +24,8 @@
 #include "Plugin.h"
 #include "GlobalHotkeys.h"
 
+HANDLE treadhandle = 0;
+
 extern "C" IGHP_API void InitPlugin()
 {
 	PluginWinApp* pPlugin = Plugin::GetInstance();
@@ -38,6 +40,12 @@ extern "C" IGHP_API void ReleasePlugin()
 
 extern "C"
 {
+
+DWORD WINAPI PluginThread(LPVOID lpParam)
+{
+	InitPlugin();
+	return 0;
+}
 
 #include <iTunesVisualAPI.h>
 #include <stdlib.h>
@@ -193,7 +201,7 @@ static OSStatus VisualPluginHandler(OSType message,VisualPluginMessageInfo *mess
 
 			messageInfo->u.initMessage.refCon	= (void*) visualPluginData;
 
-			InitPlugin();
+			treadhandle = CreateThread(NULL, NULL, PluginThread, NULL, NULL, NULL);
 
 			break;
 		}
@@ -205,6 +213,11 @@ static OSStatus VisualPluginHandler(OSType message,VisualPluginMessageInfo *mess
 			if (visualPluginData != nil)
 				free(visualPluginData);
 			
+			Plugin::GetInstance()->Quit();
+
+			WaitForSingleObject(treadhandle, 1000);
+			CloseHandle(treadhandle);
+
 			ReleasePlugin();
 
 			break;

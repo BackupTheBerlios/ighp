@@ -5,6 +5,7 @@
 #define IDD_CONFIG_DIALOG               101
 #define IDS_COLUMN_COMMAND              102
 #define IDS_COLUMN_KEYCOMB              103
+#define IDD_HOTKEY_DIALOG               103
 #define IDS_VK_SPACE                    104
 #define IDS_VK_BACK                     105
 #define IDS_VK_TAB                      106
@@ -49,21 +50,24 @@
 #define IDS_CMD_SONG_RATING_4           145
 #define IDS_CMD_SONG_RATING_5           146
 #define IDS_CONFIG_DIALOG_CAPTION       147
-#define IDAPPLY                         1001
+#define IDS_HOTKEY_DIALOG_CAPTION       148
+#define IDS_HOTKEY_DIALOG_TEXT          149
+#define IDC_APPLY                       1001
 #define IDC_HOTKEYS_LIST                1002
 #define IDC_ACTIONS_COMBO               1003
 #define IDC_HOTKEY_TEXT                 1004
 #define IDC_MODIFY                      1005
 #define IDC_CLEAR                       1006
 #define IDC_ADD                         1007
+#define IDC_LABEL                       1008
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        103
+#define _APS_NEXT_RESOURCE_VALUE        104
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1008
+#define _APS_NEXT_CONTROL_VALUE         1009
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

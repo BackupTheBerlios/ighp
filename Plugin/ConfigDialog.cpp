@@ -68,7 +68,9 @@ BOOL ConfigDialog::OnInitDialog()
 		int result = m_comboBox.AddString(text);
 		result++;
 	}
+	m_comboBox.SetCurSel(0);
 
+	CenterWindow();
 	return TRUE;
 }
 
@@ -78,9 +80,27 @@ BOOL ConfigDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	switch (LOWORD(wParam))
     {
-		case IDAPPLY:
+		case IDC_APPLY:
 		{
 			OnApply();
+			return TRUE;
+		}
+
+		case IDC_ADD:
+		{
+			OnAdd();
+			return TRUE;
+		}
+
+		case IDC_CLEAR:
+		{
+			OnRemove();
+			return TRUE;
+		}
+
+		case IDC_MODIFY:
+		{
+			OnModify();
 			return TRUE;
 		}
     }
@@ -100,6 +120,81 @@ void ConfigDialog::OnOK()
 void ConfigDialog::OnApply()
 {
 	SaveHotkeys();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ConfigDialog::OnAdd()
+{
+	eCommand command = static_cast<eCommand>(m_comboBox.GetCurSel());
+	HotkeyDialog hkDialog(command, this);
+
+	int result = hkDialog.DoModal();
+
+	if (result != IDOK)
+	{
+		return;
+	}
+
+	HotKey hk = hkDialog.GetHotKey();
+
+	//TODO: Check for duplicates
+	m_hotkeys.push_back(hk);
+	m_listView.InsertHotkey(hk);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ConfigDialog::OnRemove()
+{
+	int itemIndex = m_listView.GetSelectedItem();
+
+	LVITEM lvItem;
+	ZeroMemory(&lvItem, sizeof(LVITEM));
+	lvItem.iItem	= itemIndex;
+	lvItem.mask		= LVIF_PARAM;
+
+	if (m_listView.GetItem(lvItem))
+	{
+		int index = lvItem.lParam;
+		m_hotkeys.erase(m_hotkeys.begin() + index);
+	}
+
+	m_listView.PopulateList();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ConfigDialog::OnModify()
+{
+	int itemIndex = m_listView.GetSelectedItem();
+
+	LVITEM lvItem;
+	ZeroMemory(&lvItem, sizeof(LVITEM));
+	lvItem.iItem	= itemIndex;
+	lvItem.mask		= LVIF_PARAM;
+
+	if (!m_listView.GetItem(lvItem))
+	{
+		return;
+	}
+
+	int index = lvItem.lParam;
+
+	HotkeyDialog hkDialog(m_hotkeys[index].command, this);
+
+	int result = hkDialog.DoModal();
+
+	if (result != IDOK)
+	{
+		return;
+	}
+
+	HotKey hk = hkDialog.GetHotKey();
+
+	//TODO: Check for duplicates
+	m_hotkeys[index].keycomb = hk.keycomb;
+	m_listView.UpdateHotkey(itemIndex, hk.keycomb);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,45 +235,65 @@ void HotkeysListView::OnInitialUpdate()
 void HotkeysListView::PopulateList()
 {
 	DeleteAllItems();
+	UpdateGuiFromSelection();
 
-	for (HotKeysIterator it = m_pHotkeys->begin(); it != m_pHotkeys->end(); ++it)
+	for (size_t i = 0; i < m_pHotkeys->size(); ++i)
 	{
-		HotKey hk = (*it);
-
-		TCHAR text[256] = {0};
-
-		::LoadString(GetApp()->GetInstanceHandle(), COMMANDS[hk.command].textid,
-				text, sizeof(text)/sizeof(text[0]));
-
-		LVITEM lvItem;
-		ZeroMemory(&lvItem, sizeof(LVITEM));
-
-		lvItem.mask		= LVIF_TEXT;
-		lvItem.pszText	= (LPTSTR) text;
-
-		int item = InsertItem(lvItem);
-		
-		const string_t str = BuildKeyCombinationString(hk.keycomb);
-		ZeroMemory(&lvItem, sizeof(LVITEM));
-
-		lvItem.mask		= LVIF_TEXT;
-		lvItem.iItem	= item;
-		lvItem.iSubItem	= 1;
-		lvItem.pszText	= (LPTSTR) str.c_str();
-
-		SendMessage(LVM_SETITEM, 0, (LPARAM)&lvItem);
+		InsertHotkey(m_pHotkeys->at(i));
 	}
+}
 
-	int count = GetItemCount();
-	count++;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void HotkeysListView::InsertHotkey(HotKey hk)
+{
+	TCHAR text[256] = {0};
+
+	::LoadString(GetApp()->GetInstanceHandle(), COMMANDS[hk.command].textid,
+			text, sizeof(text)/sizeof(text[0]));
+
+	LVITEM lvItem;
+	ZeroMemory(&lvItem, sizeof(LVITEM));
+
+	lvItem.mask		= LVIF_PARAM | LVIF_TEXT;
+	lvItem.pszText	= (LPTSTR) text;
+	lvItem.lParam	= (LPARAM) GetItemCount();
+
+	int item = InsertItem(lvItem);
+		
+	const string_t str = BuildKeyCombinationString(hk.keycomb);
+	ZeroMemory(&lvItem, sizeof(LVITEM));
+
+	lvItem.mask		= LVIF_TEXT;
+	lvItem.iItem	= item;
+	lvItem.iSubItem	= 1;
+	lvItem.pszText	= (LPTSTR) str.c_str();
+
+	SendMessage(LVM_SETITEM, 0, (LPARAM)&lvItem);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void HotkeysListView::UpdateHotkey(int item, KeyCombination keycomb)
+{
+	LVITEM lvItem;
+	ZeroMemory(&lvItem, sizeof(LVITEM));
+
+	const string_t str = BuildKeyCombinationString(keycomb);
+
+	lvItem.mask		= LVIF_TEXT;
+	lvItem.iItem	= item;
+	lvItem.iSubItem	= 1;
+	lvItem.pszText	= (LPTSTR) str.c_str();
+
+	SendMessage(LVM_SETITEM, 0, (LPARAM)&lvItem);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void HotkeysListView::PreCreate(CREATESTRUCT &cs)
 {
-	cs.style = WS_TABSTOP | WS_CHILD | WS_VISIBLE | LVS_AUTOARRANGE |
-            LVS_ICON | LVS_SHAREIMAGELISTS | LVS_SHOWSELALWAYS;
+	cs.style = WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | LVS_SHOWSELALWAYS | LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER;
 	cs.dwExStyle = WS_EX_CLIENTEDGE;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,18 +304,19 @@ LRESULT HotkeysListView::OnNotifyReflect(WPARAM wParam, LPARAM lParam)
 
 	switch(pnmh->code)
 	{
-		case NM_RCLICK:
+		case NM_CLICK:
 		{
-			//get the item that has the focus
-			int item = (int)::SendMessage(m_hWnd, LVM_GETNEXTITEM, (WPARAM) -1, (LPARAM) MAKELPARAM (LVNI_FOCUSED, 0));
+			UpdateGuiFromSelection();
 			break;
 		}
 
 		case NM_DBLCLK:
-		case NM_RETURN:
 		{
-			//get the item that has the focus
-			int item = (int)::SendMessage(m_hWnd, LVM_GETNEXTITEM, (WPARAM) -1, (LPARAM) MAKELPARAM (LVNI_FOCUSED, 0));
+			UpdateGuiFromSelection();
+
+			WPARAM wParam = MAKEWPARAM(IDC_MODIFY, BN_CLICKED);
+			LPARAM lParam = (LPARAM) GetParent()->GetDlgItem(IDC_MODIFY);
+			SendMessage(GetParent()->GetHwnd(), WM_COMMAND, wParam, lParam);
 			break;
 		}
 	}
@@ -210,9 +326,92 @@ LRESULT HotkeysListView::OnNotifyReflect(WPARAM wParam, LPARAM lParam)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void HotkeysListView::UpdateGuiFromSelection()
+{
+	ConfigDialog* pDialog = (ConfigDialog*) GetParent();
+
+	int itemIndex = GetSelectedItem();
+
+	LVITEM lvItem;
+	ZeroMemory(&lvItem, sizeof(LVITEM));
+	lvItem.iItem	= itemIndex;
+	lvItem.mask		= LVIF_PARAM;
+
+	int index = -1;
+	if (GetItem(lvItem))
+	{
+		index = lvItem.lParam;
+		HotKey hk = m_pHotkeys->at(index);
+		pDialog->GetComboBox()->SetCurSel(hk.command);
+	}
+
+	BOOL enable = index == -1 ? FALSE : TRUE;
+	pDialog->GetDlgItem(IDC_CLEAR)->EnableWindow(enable);
+	pDialog->GetDlgItem(IDC_MODIFY)->EnableWindow(enable);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CommandsCombo::PreCreate(CREATESTRUCT &cs)
 {
 	cs.style = WS_VISIBLE | WS_CHILD | CBS_DROPDOWN;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+BOOL HotkeyDialog::OnInitDialog()
+{
+	TCHAR cmdtext[256] = {0};
+	TCHAR restext[256] = {0};
+
+	LoadString(GetApp()->GetInstanceHandle(), COMMANDS[m_hotkey.command].textid, 
+		cmdtext, sizeof(cmdtext)/sizeof(cmdtext[0]));
+	LoadString(GetApp()->GetInstanceHandle(), IDS_HOTKEY_DIALOG_CAPTION, 
+		restext, sizeof(restext)/sizeof(restext[0]));
+	
+	TCHAR captiontext[256] = {0};
+	_stprintf_s(captiontext, 256, restext, cmdtext);
+	SetWindowText(captiontext);
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_HOTKEY_DIALOG_TEXT, 
+		restext, sizeof(restext)/sizeof(restext[0]));
+
+	TCHAR labeltext[256] = {0};
+	_stprintf_s(labeltext, 256, restext, cmdtext);
+	SetDlgItemText(IDC_LABEL, labeltext);
+
+	CenterWindow();
+	SetFocus();
+
+	return TRUE;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+BOOL HotkeyDialog::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		unsigned int key = pMsg->wParam;
+
+		if (key == VK_CONTROL || key == VK_MENU || key == VK_SHIFT || key == VK_RWIN || key == VK_LWIN)
+		{
+			return CDialog::PreTranslateMessage(pMsg);
+		}
+
+		m_hotkey.keycomb.control	= (::GetKeyState(VK_CONTROL) != 0);
+		m_hotkey.keycomb.alt		= (::GetKeyState(VK_MENU) != 0);
+		m_hotkey.keycomb.shift		= (::GetKeyState(VK_SHIFT) != 0);
+		//m_hotkey.keycomb.meta		= (::GetKeyState(VK_RWIN) != 0 || ::GetKeyState(VK_LWIN) != 0);
+
+		m_hotkey.keycomb.key		= key;
+
+		OnOK();
+
+		return TRUE;
+	}
+
+	return CDialog::PreTranslateMessage(pMsg);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

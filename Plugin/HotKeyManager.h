@@ -22,12 +22,12 @@
 
 #pragma once
 
-#include <list>
+#include <vector>
 
 #include "hotkeys.h"
 
-typedef std::list<HotKey>			HotKeys;
-typedef std::list<HotKey>::iterator HotKeysIterator;
+typedef std::vector<HotKey>				HotKeys;
+typedef std::vector<HotKey>::iterator	HotKeysIterator;
 
 class HotKeyManager
 {
