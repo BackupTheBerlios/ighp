@@ -22,8 +22,6 @@
 
 #pragma once
 
-#include <boost/utility.hpp>
-
 #include "HotKeyManager.h"
 
 #define WIN32_LEAN_AND_MEAN
@@ -35,7 +33,7 @@
 
 #include "resource.h"
 
-class HotkeysListView : public CListView, boost::noncopyable
+class HotkeysListView : public CListView
 {
 public:
 	HotkeysListView()			{ };
@@ -59,7 +57,7 @@ private:
 	void UpdateGuiFromSelection();
 };
 
-class CommandsCombo : public CComboBox, boost::noncopyable
+class CommandsCombo : public CComboBox
 {
 public:
 	CommandsCombo()				{ };
@@ -67,7 +65,7 @@ public:
 	virtual void PreCreate(CREATESTRUCT &cs);
 };
 
-class ConfigDialog : public CDialog, public HotKeyManager, boost::noncopyable
+class ConfigDialog : public CDialog, public HotKeyManager
 {
 public:
 	ConfigDialog(CWnd* pParent = NULL) : CDialog(IDD_CONFIG_DIALOG, pParent) { };
@@ -90,7 +88,7 @@ private:
 	void OnModify();
 };
 
-class HotkeyDialog : public CDialog, boost::noncopyable
+class HotkeyDialog : public CDialog
 {
 public:
 	HotkeyDialog(eCommand command, CWnd* pParent = NULL) : CDialog(IDD_HOTKEY_DIALOG, pParent) { m_hotkey.command = command; };

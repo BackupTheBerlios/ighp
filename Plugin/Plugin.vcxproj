@@ -40,14 +40,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>ighp</TargetName>
-    <LibraryPath>$(WXWIDGETS_PATH)\lib\vc_lib;$(OutDir);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(BOOST_PATH);$(SolutionDir)\Win32++\include;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Win32++\include;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>ighp</TargetName>
-    <LibraryPath>$(WXWIDGETS_PATH)\lib\vc_lib;$(OutDir);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(BOOST_PATH);$(SolutionDir)\Win32++\include;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Win32++\include;$(SolutionDir)\JsonCpp\include;$(SolutionDir)\iTunesGlue;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

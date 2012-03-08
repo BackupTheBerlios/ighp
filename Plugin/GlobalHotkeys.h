@@ -22,8 +22,6 @@
 
 #pragma once
 
-#include <boost/utility.hpp>
-
 #include "Singleton.h"
 #include "HotKeyManager.h"
 
@@ -32,7 +30,7 @@
 
 #include <wincore.h>
 
-class GlobalHotkeys : public CWnd, public HotKeyManager, boost::noncopyable
+class GlobalHotkeys : public CWnd, public HotKeyManager
 {
 public:
 	GlobalHotkeys()				{ }
@@ -52,7 +50,7 @@ private:
 	void OnDestroy(HWND hWnd);
 };
 
-class PluginWinApp : public CWinApp, boost::noncopyable
+class PluginWinApp : public CWinApp
 {
 public:
 	PluginWinApp();

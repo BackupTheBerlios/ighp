@@ -24,10 +24,8 @@
 
 #include "common.h"
 
-#include <boost/utility.hpp>
-
 template<class T>
-class Singleton : boost::noncopyable
+class Singleton
 {
 protected:
     Singleton() { }
