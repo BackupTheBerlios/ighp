@@ -70,7 +70,9 @@ void HotKeyManager::SaveHotkeys()
 
 	StyledWriter writer;
 	std::string configDoc = writer.write(root);
-	WriteFile(hFile, configDoc.c_str(), configDoc.size(), 0, NULL);
+
+	unsigned long writesize = 0;
+	WriteFile(hFile, configDoc.c_str(), configDoc.size(), &writesize, NULL);
 	CloseHandle(hFile);
 }
 
@@ -86,6 +88,7 @@ void HotKeyManager::LoadHotkeys()
 	{
 		// TODO: Report error
 		OutputDebugString(TEXT("Could not open file for reading\n"));
+		CheckForSettingsSialog();
 		return;
 	}
 
@@ -96,6 +99,7 @@ void HotKeyManager::LoadHotkeys()
 	{
 		// TODO: Report error
 		OutputDebugString(TEXT("Could not get file size\n"));
+		CheckForSettingsSialog();
 		return;
 	}
 
@@ -106,6 +110,7 @@ void HotKeyManager::LoadHotkeys()
 	{
 		// TODO: Report error
 		OutputDebugString(TEXT("Could not read file\n"));
+		CheckForSettingsSialog();
 		return;
 	}
 
@@ -113,6 +118,7 @@ void HotKeyManager::LoadHotkeys()
 	{
 		// TODO: Report error
 		OutputDebugString(TEXT("No data read\n"));
+		CheckForSettingsSialog();
 		return;
 	}
 
@@ -125,6 +131,7 @@ void HotKeyManager::LoadHotkeys()
 	{
 		// TODO: Report error
 		OutputDebugString(TEXT("Error while reading config file\n"));
+		CheckForSettingsSialog();
 		return;
 	}
 
@@ -148,7 +155,13 @@ void HotKeyManager::LoadHotkeys()
 	}
 
 	SAFE_DEL_ARRAY(ReadBuffer);
+	CheckForSettingsSialog();
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void HotKeyManager::CheckForSettingsSialog()
+{
 	// Check for settings dialog hotkey
 	bool hasConfigDialogShortcut = false;
 	for (HotKeysIterator it = m_hotkeys.begin(); it != m_hotkeys.end(); ++it)

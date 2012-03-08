@@ -45,4 +45,5 @@ private:
 	const string_t		GetConfigFileDir() const;
 	const string_t		GetConfigFilePath() const;
 
+	void				CheckForSettingsSialog();
 };
