@@ -394,7 +394,7 @@ BOOL HotkeyDialog::OnInitDialog()
 
 BOOL HotkeyDialog::PreTranslateMessage(MSG* pMsg)
 {
-	if (pMsg->message != WM_KEYDOWN)
+	if (pMsg->message != WM_KEYDOWN && pMsg->message != WM_SYSKEYDOWN)
 	{
 		return CDialog::PreTranslateMessage(pMsg);
 	}
@@ -403,7 +403,7 @@ BOOL HotkeyDialog::PreTranslateMessage(MSG* pMsg)
 
 	if (key == VK_CONTROL || key == VK_MENU || key == VK_SHIFT || key == VK_RWIN || key == VK_LWIN)
 	{
-		return CDialog::PreTranslateMessage(pMsg);
+		return TRUE;
 	}
 
 	m_hotkey.keycomb.control	= (::GetKeyState(VK_CONTROL) < 0);
