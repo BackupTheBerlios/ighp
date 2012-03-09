@@ -40,7 +40,7 @@ void OpenConfigDialog()
 		return;
 	}
 
-	pDialog = new ConfigDialog(Plugin::GetInstance()->GetMainWindow());
+	pDialog = new ConfigDialog();
 	pDialog->DoModal();
 	SAFE_DEL(pDialog);
 }

@@ -72,7 +72,6 @@ BOOL ConfigDialog::OnInitDialog()
 	}
 	m_comboBox.SetCurSel(0);
 
-	CenterWindow();
 	return TRUE;
 }
 
