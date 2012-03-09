@@ -22,7 +22,9 @@
 
 #pragma once
 
+#ifdef HAVE_WINSDKVER_H
 #include "targetver.h"
+#endif
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 // Windows Header Files:

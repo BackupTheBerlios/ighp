@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iTunesGlue", "iTunesGlue\iTunesGlue2005.vcproj", "{8C174226-EC08-4745-BB7A-7FF38CEF8762}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JsonCpp", "JsonCpp\JsonCpp2005.vcproj", "{458A27ED-E7BF-4622-98DB-D7244CEB77B7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin", "Plugin\Plugin2005.vcproj", "{7FFB65F9-0D3A-4D84-AB3E-D0699DA9D8C7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C174226-EC08-4745-BB7A-7FF38CEF8762} = {8C174226-EC08-4745-BB7A-7FF38CEF8762}
+		{458A27ED-E7BF-4622-98DB-D7244CEB77B7} = {458A27ED-E7BF-4622-98DB-D7244CEB77B7}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test2005.vcproj", "{8B570941-2989-408F-97C0-8D55706A5631}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7FFB65F9-0D3A-4D84-AB3E-D0699DA9D8C7} = {7FFB65F9-0D3A-4D84-AB3E-D0699DA9D8C7}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C174226-EC08-4745-BB7A-7FF38CEF8762}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8C174226-EC08-4745-BB7A-7FF38CEF8762}.Debug|Win32.Build.0 = Debug|Win32
+		{8C174226-EC08-4745-BB7A-7FF38CEF8762}.Release|Win32.ActiveCfg = Release|Win32
+		{8C174226-EC08-4745-BB7A-7FF38CEF8762}.Release|Win32.Build.0 = Release|Win32
+		{458A27ED-E7BF-4622-98DB-D7244CEB77B7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{458A27ED-E7BF-4622-98DB-D7244CEB77B7}.Debug|Win32.Build.0 = Debug|Win32
+		{458A27ED-E7BF-4622-98DB-D7244CEB77B7}.Release|Win32.ActiveCfg = Release|Win32
+		{458A27ED-E7BF-4622-98DB-D7244CEB77B7}.Release|Win32.Build.0 = Release|Win32
+		{7FFB65F9-0D3A-4D84-AB3E-D0699DA9D8C7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7FFB65F9-0D3A-4D84-AB3E-D0699DA9D8C7}.Debug|Win32.Build.0 = Debug|Win32
+		{7FFB65F9-0D3A-4D84-AB3E-D0699DA9D8C7}.Release|Win32.ActiveCfg = Release|Win32
+		{7FFB65F9-0D3A-4D84-AB3E-D0699DA9D8C7}.Release|Win32.Build.0 = Release|Win32
+		{8B570941-2989-408F-97C0-8D55706A5631}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8B570941-2989-408F-97C0-8D55706A5631}.Debug|Win32.Build.0 = Debug|Win32
+		{8B570941-2989-408F-97C0-8D55706A5631}.Release|Win32.ActiveCfg = Release|Win32
+		{8B570941-2989-408F-97C0-8D55706A5631}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

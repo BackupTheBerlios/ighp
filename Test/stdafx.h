@@ -5,7 +5,9 @@
 
 #pragma once
 
+#ifdef HAVE_WINSDKVER_H
 #include "targetver.h"
+#endif
 
 #include <stdio.h>
 #include <tchar.h>
