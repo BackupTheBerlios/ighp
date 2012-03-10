@@ -31,6 +31,9 @@ struct KeyCombination
 	bool			control;
 	bool			shift;
 	bool			meta;		// win logo
+
+	bool operator ==(const KeyCombination& other) const { return key == other.key && alt == other.alt && control == other.control && shift == other.shift && meta == other.meta; }
+	bool operator !=(const KeyCombination& other) const { return key != other.key && alt != other.alt && control != other.control && shift != other.shift && meta != other.meta; }
 };
 
 struct HotKey

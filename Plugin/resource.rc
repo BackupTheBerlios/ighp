@@ -210,6 +210,8 @@ BEGIN
     IDS_HOTKEY_DIALOG_CAPTION "Hotkey for %s"
     IDS_HOTKEY_DIALOG_TEXT  "Press the new key combination for %s"
     IDS_VK_UNKNOWN          "Key %#x"
+    IDS_DUPLICATE_ERROR_TEXT "Hotkey already defined"
+    IDS_DUPLICATE_ERROR_CAPTION "Duplicate Hotkey"
 END
 
 #endif    // English (United States) resources

@@ -53,6 +53,8 @@
 #define IDS_HOTKEY_DIALOG_CAPTION       148
 #define IDS_HOTKEY_DIALOG_TEXT          149
 #define IDS_VK_UNKNOWN                  150
+#define IDS_DUPLICATE_ERROR_TEXT        151
+#define IDS_DUPLICATE_ERROR_CAPTION     152
 #define IDC_APPLY                       1001
 #define IDC_HOTKEYS_LIST                1002
 #define IDC_ACTIONS_COMBO               1003

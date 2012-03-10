@@ -141,7 +141,23 @@ void ConfigDialog::OnAdd()
 
 	HotKey hk = hkDialog.GetHotKey();
 
-	//TODO: Check for duplicates
+	if (IsDefined(hk))
+	{
+		TCHAR text[256] = {0};
+
+		::LoadString(GetApp()->GetInstanceHandle(), IDS_DUPLICATE_ERROR_TEXT,
+				text, sizeof(text)/sizeof(text[0]));
+
+		TCHAR caption[256] = {0};
+
+		::LoadString(GetApp()->GetInstanceHandle(), IDS_DUPLICATE_ERROR_CAPTION,
+				caption, sizeof(caption)/sizeof(caption[0]));
+
+		MessageBox(text, caption, MB_OK | MB_ICONERROR | MB_APPLMODAL);
+
+		return;
+	}
+
 	m_hotkeys.push_back(hk);
 	m_listView.InsertHotkey(hk);
 }
@@ -195,7 +211,23 @@ void ConfigDialog::OnModify()
 
 	HotKey hk = hkDialog.GetHotKey();
 
-	//TODO: Check for duplicates
+	if (IsDefined(hk))
+	{
+		TCHAR text[256] = {0};
+
+		::LoadString(GetApp()->GetInstanceHandle(), IDS_DUPLICATE_ERROR_TEXT,
+				text, sizeof(text)/sizeof(text[0]));
+
+		TCHAR caption[256] = {0};
+
+		::LoadString(GetApp()->GetInstanceHandle(), IDS_DUPLICATE_ERROR_CAPTION,
+				caption, sizeof(caption)/sizeof(caption[0]));
+
+		MessageBox(text, caption, MB_OK | MB_ICONERROR | MB_APPLMODAL);
+
+		return;
+	}
+
 	m_hotkeys[index].keycomb = hk.keycomb;
 	m_listView.UpdateHotkey(itemIndex, hk.keycomb);
 }

@@ -41,6 +41,8 @@ protected:
 	void SaveHotkeys();
 	void LoadHotkeys();
 
+	bool IsDefined(HotKey hk);
+
 private:
 	const string_t		GetConfigFileDir() const;
 	const string_t		GetConfigFilePath() const;
