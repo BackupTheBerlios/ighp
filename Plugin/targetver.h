@@ -22,9 +22,14 @@
 
 #pragma once
 
+#ifdef HAVE_WINSDKVER_H
 #include <WinSDKVer.h>
+#endif
 
 #define WINVER		 0x0502
 #define _WIN32_WINNT 0x0502
 
+#ifdef HAVE_WINSDKVER_H
 #include <SDKDDKVer.h>
+#endif
+

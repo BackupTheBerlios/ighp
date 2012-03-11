@@ -222,21 +222,10 @@ const string_t HotKeyManager::GetConfigFileDir() const
 	TCHAR path[MAX_PATH];
 	ZeroMemory(path, sizeof(TCHAR) * MAX_PATH);
 
-	if (osvi.dwMajorVersion > 5)
-	{
-		// Vista and above
-		SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, path);
-		dir.append(path);
-		dir.append(TEXT("\\Apple Computer"));
-	}
-	else
-	{
-		// XP and 2000
-		SHGetFolderPath(NULL, CSIDL_MYMUSIC, NULL, 0, path);
-		dir.append(path);
-	}
+	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, path);
+	dir.append(path);
+	dir.append(TEXT("\\Apple Computer\\iTunes\\iTunes Plug-ins"));
 
-	dir.append(TEXT("\\iTunes\\iTunes Plug-ins"));
 	return dir;
 }
 
