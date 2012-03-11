@@ -228,6 +228,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\icon.ico"
+			>
+		</File>
+		<File
 			RelativePath=".\Plugin.cpp"
 			>
 		</File>
