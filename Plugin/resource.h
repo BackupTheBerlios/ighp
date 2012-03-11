@@ -56,6 +56,14 @@
 #define IDS_VK_UNKNOWN                  150
 #define IDS_DUPLICATE_ERROR_TEXT        151
 #define IDS_DUPLICATE_ERROR_CAPTION     152
+#define IDS_VK_VOLUME_MUTE              153
+#define IDS_VK_VOLUME_DOWN              154
+#define IDS_VK_VOLUME_UP                155
+#define IDS_VK_MEDIA_NEXT_TRACK         156
+#define IDS_VK_MEDIA_PREV_TRACK         157
+#define IDS_VK_MEDIA_STOP               158
+#define IDS_VK_MEDIA_PLAY_PAUSE         159
+#define IDS_VK_NUMPADX                  160
 #define IDC_APPLY                       1001
 #define IDC_HOTKEYS_LIST                1002
 #define IDC_ACTIONS_COMBO               1003

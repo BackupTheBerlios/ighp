@@ -568,6 +568,36 @@ void InitKeyNames()
 	
 	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_OEM_PERIOD, text, sizeof(text)/sizeof(text[0]));
 	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_OEM_PERIOD, string_t(text)));
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_VOLUME_MUTE, text, sizeof(text)/sizeof(text[0]));
+	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_VOLUME_MUTE, string_t(text)));
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_VOLUME_DOWN, text, sizeof(text)/sizeof(text[0]));
+	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_VOLUME_DOWN, string_t(text)));
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_VOLUME_UP, text, sizeof(text)/sizeof(text[0]));
+	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_VOLUME_UP, string_t(text)));
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_MEDIA_NEXT_TRACK, text, sizeof(text)/sizeof(text[0]));
+	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_MEDIA_NEXT_TRACK, string_t(text)));
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_MEDIA_PREV_TRACK, text, sizeof(text)/sizeof(text[0]));
+	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_MEDIA_PREV_TRACK, string_t(text)));
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_MEDIA_STOP, text, sizeof(text)/sizeof(text[0]));
+	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_MEDIA_STOP, string_t(text)));
+
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_MEDIA_PLAY_PAUSE, text, sizeof(text)/sizeof(text[0]));
+	g_KeyNames.insert(std::pair<unsigned int, const string_t>(VK_MEDIA_PLAY_PAUSE, string_t(text)));
+
+	// add num pad 0-9
+	LoadString(GetApp()->GetInstanceHandle(), IDS_VK_NUMPADX, text, sizeof(text)/sizeof(text[0]));
+	for (unsigned int i = 0x60; i < 0x6A; i++)
+	{
+		TCHAR keytext[256] = {0};
+		_stprintf_s(keytext, 256, text, i - 0x60);
+		g_KeyNames.insert(std::pair<unsigned int, const string_t>(i, string_t(keytext)));
+	}
 }
 
 string_t BuildKeyCombinationString(KeyCombination kc)

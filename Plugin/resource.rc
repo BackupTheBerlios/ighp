@@ -222,6 +222,18 @@ BEGIN
     IDS_VK_UNKNOWN          "Key %#x"
     IDS_DUPLICATE_ERROR_TEXT "Hotkey already defined"
     IDS_DUPLICATE_ERROR_CAPTION "Duplicate Hotkey"
+    IDS_VK_VOLUME_MUTE      "Mute Key"
+    IDS_VK_VOLUME_DOWN      "Volume Down Key"
+    IDS_VK_VOLUME_UP        "Volume Up Key"
+    IDS_VK_MEDIA_NEXT_TRACK "Next Track Key"
+    IDS_VK_MEDIA_PREV_TRACK "Previous Track Key"
+    IDS_VK_MEDIA_STOP       "Stop Key"
+    IDS_VK_MEDIA_PLAY_PAUSE "Play/Pause Key"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_VK_NUMPADX          "NumPad %u"
 END
 
 #endif    // English (United States) resources
