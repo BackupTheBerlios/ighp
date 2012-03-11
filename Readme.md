@@ -8,27 +8,23 @@ or hidden.
 
 The following commands are supported:
 
------------------------------------------------------------------
-| Command       	| Key Combination                       	|
------------------------------------------------------------------
-| PlayPause     	| toggle play/pause                     	|
-| Stop          	| stop playing                          	|
-| NextTrack     	| advance to the next track in playlist 	|
-| PreviousTrack 	| go back to previous track in playlist 	|
-| ToggleRandom  	| toggle random on/off                  	|
-| ToggleRepeat  	| toggle repeat on/off                  	|
-| SongRatingClear	| clear rating for the selected song    	|
-| SongRating1      	| set rating to one star                	|
-| SongRating2      	| set rating to two stars               	|
-| SongRating3   	| set rating to three stars             	|
-| SongRating4   	| set rating to four stars                	|
-| SongRating5   	| set rating to five stars              	|
-| ShowHide      	| minimize/restore player window        	|
-| VolumeUp      	| increase volume level                 	|
-| VolumeDown    	| decrease volume level                 	|
-| ToggleMute    	| toggle mute/unmute                    	|
-| OpenConfigDialog	| open configuration dialog             	|
------------------------------------------------------------------
+ - open configuration dialog
+ - toggle play/pause
+ - stop playing
+ - advance to the next track in playlist
+ - go back to previous track in playlist
+ - toggle random on/off
+ - toggle repeat on/off
+ - clear rating for the selected song
+ - set rating to one star
+ - set rating to two stars
+ - set rating to three stars
+ - set rating to four stars
+ - set rating to five stars
+ - minimize/restore player window
+ - increase volume level
+ - decrease volume level
+ - toggle mute/unmute
 
 ## Download and Install ##
 
@@ -40,8 +36,8 @@ directory (`C:\Program Files\iTunes\Plug-ins`) and then configure the hotkeys.
 
 ## Configuration ##
 
-You can define the hotkeys in the configuration dialog. Use the default shortcut 
-for the OpenConfigDialog command to open the he configuration dialog `Ctrl + Shift + P`.
+You can define hotkeys in the configuration dialog. Use the default shortcut 
+`Ctrl + Shift + P` to open the configuration dialog.
 
 ## License ##
 
