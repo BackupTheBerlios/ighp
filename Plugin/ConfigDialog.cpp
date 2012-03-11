@@ -46,6 +46,9 @@ string_t BuildKeyCombinationString(KeyCombination kc);
 
 BOOL ConfigDialog::OnInitDialog()
 {
+	SetIconLarge(IDI_HOTKEYS_ICON);
+	SetIconSmall(IDI_HOTKEYS_ICON);
+
 	if (g_KeyNames.size() == 0)
 	{
 		::InitKeyNames();

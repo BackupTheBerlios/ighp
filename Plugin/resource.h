@@ -7,6 +7,7 @@
 #define IDS_COLUMN_KEYCOMB              103
 #define IDD_HOTKEY_DIALOG               103
 #define IDS_VK_SPACE                    104
+#define IDI_HOTKEYS_ICON                104
 #define IDS_VK_BACK                     105
 #define IDS_VK_TAB                      106
 #define IDS_VK_ESCAPE                   107
@@ -68,7 +69,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        104
+#define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1009
 #define _APS_NEXT_SYMED_VALUE           101
